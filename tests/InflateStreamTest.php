@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  */
 class InflateStreamTest extends TestCase
 {
-    public function testInflatesStreams()
+    public function testInflatesRfc1952Streams()
     {
         $content = gzencode('test');
         $a = Psr7\stream_for($content);
@@ -22,7 +22,7 @@ class InflateStreamTest extends TestCase
         self::assertEquals('test', (string) $b);
     }
 
-    public function testInflatesStreamsWithFilename()
+    public function testInflatesStreamsRfc1952WithFilename()
     {
         $content = $this->getGzipStringWithFilename('test');
         $a = Psr7\stream_for($content);
@@ -30,14 +30,54 @@ class InflateStreamTest extends TestCase
         self::assertEquals('test', (string) $b);
     }
 
+    public function testInflatesRfc1950Streams()
+    {
+        $content = gzcompress('test');
+        $a = Psr7\stream_for($content);
+        $b = new InflateStream($a);
+        self::assertEquals('test', (string) $b);
+    }
+
+    public function testInflatesRfc1952StreamsWithExtraFlags()
+    {
+        $content = gzdeflate('test'); // RFC 1951. Raw deflate. No header.
+
+        //  +---+---+---+---+---+---+---+---+---+---+
+        //  |ID1|ID2|CM |FLG|     MTIME     |XFL|OS | (more-->)
+        //  +---+---+---+---+---+---+---+---+---+---+
+        $header = "\x1f\x8B\x08";
+        // set flags FHCRC, FEXTRA, FNAME and FCOMMENT
+        $header .= chr(0b00011110);
+        $header .= "\x00\x00\x00\x00"; // MTIME
+        $header .= "\x02\x03"; // XFL, OS
+        // 4 byte extra data
+        $header .= "\x04\x00" /* XLEN */ . "\x41\x70\x00\x00" /*EXTRA*/;
+        // file name (2 bytes + terminator)
+        $header .= "\x41\x70\x00";
+        // file comment (3 bytes + terminator)
+        $header .= "\x41\x42\x43\x00";
+
+        // crc16
+        $header .= pack('v', crc32($header));
+
+        $a = Psr7\stream_for($header . $content);
+        $b = new InflateStream($a);
+        self::assertEquals('test', (string) $b);
+    }
+
     public function testInflatesStreamsPreserveSeekable()
     {
-        $content = $this->getGzipStringWithFilename('test');
+        $content = gzencode('test');
         $seekable = Psr7\stream_for($content);
-        $nonSeekable = new NoSeekStream(Psr7\stream_for($content));
 
-        self::assertTrue((new InflateStream($seekable))->isSeekable());
-        self::assertFalse((new InflateStream($nonSeekable))->isSeekable());
+        $seekableInflate = new InflateStream($seekable);
+        self::assertTrue($seekableInflate->isSeekable());
+        self::assertEquals('test', (string) $seekableInflate);
+
+        $nonSeekable = new NoSeekStream(Psr7\stream_for($content));
+        $nonSeekableInflate = new InflateStream($nonSeekable);
+        self::assertFalse($nonSeekableInflate->isSeekable());
+        self::assertEquals('test', (string) $nonSeekableInflate);
     }
 
     private function getGzipStringWithFilename($original_string)
