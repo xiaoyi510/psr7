@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7\Factory;
 
 use GuzzleHttp\Psr7\Request;
@@ -19,7 +20,10 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
-class HttpFactory implements
+/**
+ * Implements all of the PSR-17 interfaces.
+ */
+final class HttpFactory implements
     RequestFactoryInterface,
     ResponseFactoryInterface,
     ServerRequestFactoryInterface,
