@@ -115,7 +115,7 @@ class UploadedFileTest extends TestCase
      */
     public function testRaisesExceptionOnInvalidClientFilename($filename)
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('filename');
 
         new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, $filename);
@@ -126,7 +126,7 @@ class UploadedFileTest extends TestCase
      */
     public function testRaisesExceptionOnInvalidClientMediaType($mediaType)
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('media type');
 
         new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
@@ -199,7 +199,7 @@ class UploadedFileTest extends TestCase
 
         $this->cleanup[] = $path;
 
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('path');
         $upload->moveTo($path);
     }
@@ -213,7 +213,7 @@ class UploadedFileTest extends TestCase
         $upload->moveTo($to);
         $this->assertFileExists($to);
 
-        $this->expectException('RuntimeException');
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('moved');
         $upload->moveTo($to);
     }
@@ -227,7 +227,7 @@ class UploadedFileTest extends TestCase
         $upload->moveTo($to);
         $this->assertFileExists($to);
 
-        $this->expectException('RuntimeException');
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('moved');
         $upload->getStream();
     }
