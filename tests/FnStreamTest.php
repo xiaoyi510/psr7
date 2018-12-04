@@ -1,13 +1,15 @@
 <?php
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\FnStream;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers GuzzleHttp\Psr7\FnStream
  */
-class FnStreamTest extends BaseTest
+class FnStreamTest extends TestCase
 {
     /**
      * @expectedException \BadMethodCallException
