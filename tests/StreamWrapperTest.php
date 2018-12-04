@@ -1,13 +1,15 @@
 <?php
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7\StreamWrapper;
 use GuzzleHttp\Psr7;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers GuzzleHttp\Psr7\StreamWrapper
  */
-class StreamWrapperTest extends BaseTest
+class StreamWrapperTest extends TestCase
 {
     public function testResource()
     {

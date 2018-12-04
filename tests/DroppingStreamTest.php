@@ -1,10 +1,12 @@
 <?php
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7\BufferStream;
 use GuzzleHttp\Psr7\DroppingStream;
+use PHPUnit\Framework\TestCase;
 
-class DroppingStreamTest extends BaseTest
+class DroppingStreamTest extends TestCase
 {
     public function testBeginsDroppingWhenSizeExceeded()
     {

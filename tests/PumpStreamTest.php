@@ -1,11 +1,13 @@
 <?php
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7\LimitStream;
 use GuzzleHttp\Psr7\PumpStream;
 use GuzzleHttp\Psr7;
+use PHPUnit\Framework\TestCase;
 
-class PumpStreamTest extends BaseTest
+class PumpStreamTest extends TestCase
 {
     public function testHasMetadataAndSize()
     {
