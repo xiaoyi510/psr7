@@ -258,7 +258,8 @@ class ResponseTest extends TestCase
      */
     public function testResponseInitializedWithNonIntegerStatusCodeProvider($invalidValues)
     {
-        $this->expectException('InvalidArgumentException', 'Status code must be an integer value.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Status code must be an integer value.');
         new Response($invalidValues);
     }
 
