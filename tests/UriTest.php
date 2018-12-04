@@ -623,7 +623,7 @@ class UriTest extends TestCase
 
         $uri = $uri->withScheme('');
         $this->assertSame('//example.org//path-not-host.com', (string) $uri); // This is still valid
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $uri->withHost(''); // Now it becomes invalid
     }
 
