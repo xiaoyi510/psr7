@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -38,7 +41,7 @@ class StreamWrapper
                 . 'writable, or both.');
         }
 
-        return fopen('guzzle://stream', $mode, null, self::createStreamContext($stream));
+        return fopen('guzzle://stream', $mode, false, self::createStreamContext($stream));
     }
 
     /**

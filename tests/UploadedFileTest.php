@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use ReflectionProperty;
@@ -196,8 +198,6 @@ class UploadedFileTest extends TestCase
     {
         $stream = \GuzzleHttp\Psr7\stream_for('Foo bar!');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
-
-        $this->cleanup[] = $path;
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('path');

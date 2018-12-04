@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7;
@@ -141,7 +143,7 @@ class CachingStreamTest extends TestCase
     {
         $decorated = Psr7\stream_for(
             implode("\n", array_map(function ($n) {
-                return str_pad($n, 4, '0', STR_PAD_LEFT);
+                return str_pad((string)$n, 4, '0', STR_PAD_LEFT);
             }, range(0, 25)))
         );
 
