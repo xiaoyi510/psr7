@@ -55,7 +55,7 @@ class PumpStream implements StreamInterface
     {
         try {
             return copy_to_string($this);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return '';
         }
     }

@@ -36,7 +36,7 @@ class AppendStream implements StreamInterface
         try {
             $this->rewind();
             return $this->getContents();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return '';
         }
     }

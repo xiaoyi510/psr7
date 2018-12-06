@@ -86,7 +86,7 @@ class Stream implements StreamInterface
         try {
             $this->seek(0);
             return (string) stream_get_contents($this->stream);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return '';
         }
     }
