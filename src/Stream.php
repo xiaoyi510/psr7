@@ -87,6 +87,7 @@ class Stream implements StreamInterface
             $this->seek(0);
             return (string) stream_get_contents($this->stream);
         } catch (\Throwable $e) {
+            trigger_error(sprintf('%s::__toString exception: %s', self::class, (string) $e), E_USER_ERROR);
             return '';
         }
     }
