@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace GuzzleHttp\Tests\Psr7;
 
+use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\LimitStream;
 use GuzzleHttp\Psr7\PumpStream;
-use GuzzleHttp\Psr7;
 use PHPUnit\Framework\TestCase;
 
 class PumpStreamTest extends TestCase
@@ -72,5 +72,19 @@ class PumpStreamTest extends TestCase
             $this->assertFalse($p->write('aa'));
             $this->fail();
         } catch (\RuntimeException $e) {}
+    }
+
+    public function testThatConvertingStreamToStringWillTriggerErrorAndWillReturnEmptyString()
+    {
+        $p = Psr7\stream_for(function ($size) {
+            throw new \Exception();
+        });
+        $this->assertInstanceOf(PumpStream::class, $p);
+
+        try {
+            $p->__toString();
+        } catch (\Throwable $e) {
+            $this->assertInstanceOf(\Throwable::class, $e);
+        }
     }
 }

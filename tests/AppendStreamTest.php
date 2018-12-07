@@ -208,7 +208,8 @@ class AppendStreamTest extends TestCase
             ->will($this->returnValue(false));
         $a = new AppendStream([$s]);
         $this->assertFalse($a->eof());
-        $this->assertSame('', (string) $a);
+        $this->expectException(\PHPUnit\Framework\Error\Error::class);
+        (string) $a;
     }
 
     public function testReturnsEmptyMetadata()

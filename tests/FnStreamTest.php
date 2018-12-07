@@ -101,4 +101,16 @@ class FnStreamTest extends TestCase
         $this->expectExceptionMessage('FnStream should never be unserialized');
         unserialize($b);
     }
+
+    public function testThatConvertingStreamToStringWillTriggerErrorAndWillReturnEmptyString()
+    {
+        $a = new FnStream([
+            '__toString' => function () {
+                throw new \Exception();
+            },
+        ]);
+
+        $this->expectException(\PHPUnit\Framework\Error\Error::class);
+        $a->__toString();
+    }
 }
