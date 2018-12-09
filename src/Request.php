@@ -33,11 +33,11 @@ class Request implements RequestInterface
      * @param string                               $version Protocol version
      */
     public function __construct(
-        $method,
+        string $method,
         $uri,
         array $headers = [],
         $body = null,
-        $version = '1.1'
+        string $version = '1.1'
     ) {
         $this->assertMethod($method);
         if (!($uri instanceof UriInterface)) {

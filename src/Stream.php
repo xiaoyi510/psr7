@@ -8,8 +8,6 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * PHP stream implementation.
- *
- * @var $stream
  */
 class Stream implements StreamInterface
 {
@@ -46,7 +44,7 @@ class Stream implements StreamInterface
      *
      * @throws \InvalidArgumentException if the stream is not a stream resource
      */
-    public function __construct($stream, $options = [])
+    public function __construct($stream, array $options = [])
     {
         if (!is_resource($stream)) {
             throw new \InvalidArgumentException('Stream must be a resource');

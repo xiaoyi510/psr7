@@ -26,7 +26,7 @@ class UploadedFile implements UploadedFileInterface
     ];
 
     /**
-     * @var string
+     * @var string|null
      */
     private $clientFilename;
 
@@ -69,15 +69,15 @@ class UploadedFile implements UploadedFileInterface
      */
     public function __construct(
         $streamOrFile,
-        $size,
-        $errorStatus,
-        $clientFilename = null,
-        $clientMediaType = null
+        int $size,
+        int $errorStatus,
+        string $clientFilename = null,
+        string $clientMediaType = null
     ) {
         $this->setError($errorStatus);
-        $this->setSize($size);
-        $this->setClientFilename($clientFilename);
-        $this->setClientMediaType($clientMediaType);
+        $this->size = $size;
+        $this->clientFilename = $clientFilename;
+        $this->clientMediaType = $clientMediaType;
 
         if ($this->isOk()) {
             $this->setStreamOrFile($streamOrFile);
@@ -90,7 +90,7 @@ class UploadedFile implements UploadedFileInterface
      * @param mixed $streamOrFile
      * @throws InvalidArgumentException
      */
-    private function setStreamOrFile($streamOrFile)
+    private function setStreamOrFile($streamOrFile): void
     {
         if (is_string($streamOrFile)) {
             $this->file = $streamOrFile;
@@ -109,14 +109,8 @@ class UploadedFile implements UploadedFileInterface
      * @param int $error
      * @throws InvalidArgumentException
      */
-    private function setError($error)
+    private function setError(int $error): void
     {
-        if (false === is_int($error)) {
-            throw new InvalidArgumentException(
-                'Upload file error status must be an integer'
-            );
-        }
-
         if (false === in_array($error, UploadedFile::$errors)) {
             throw new InvalidArgumentException(
                 'Invalid error status for UploadedFile'
@@ -127,66 +121,12 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * @param int $size
-     * @throws InvalidArgumentException
-     */
-    private function setSize($size)
-    {
-        if (false === is_int($size)) {
-            throw new InvalidArgumentException(
-                'Upload file size must be an integer'
-            );
-        }
-
-        $this->size = $size;
-    }
-
-    /**
-     * @param mixed $param
-     * @return boolean
-     */
-    private function isStringOrNull($param)
-    {
-        return in_array(gettype($param), ['string', 'NULL']);
-    }
-
-    /**
      * @param mixed $param
      * @return boolean
      */
     private function isStringNotEmpty($param)
     {
         return is_string($param) && false === empty($param);
-    }
-
-    /**
-     * @param string|null $clientFilename
-     * @throws InvalidArgumentException
-     */
-    private function setClientFilename($clientFilename)
-    {
-        if (false === $this->isStringOrNull($clientFilename)) {
-            throw new InvalidArgumentException(
-                'Upload file client filename must be a string or null'
-            );
-        }
-
-        $this->clientFilename = $clientFilename;
-    }
-
-    /**
-     * @param string|null $clientMediaType
-     * @throws InvalidArgumentException
-     */
-    private function setClientMediaType($clientMediaType)
-    {
-        if (false === $this->isStringOrNull($clientMediaType)) {
-            throw new InvalidArgumentException(
-                'Upload file client media type must be a string or null'
-            );
-        }
-
-        $this->clientMediaType = $clientMediaType;
     }
 
     /**
@@ -210,7 +150,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @throws RuntimeException if is moved or not ok
      */
-    private function validateActive()
+    private function validateActive(): void
     {
         if (false === $this->isOk()) {
             throw new RuntimeException('Cannot retrieve stream due to upload error');
@@ -280,7 +220,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * {@inheritdoc}
      *
-     * @return int|null The file size in bytes or null if unknown.
+     * @return int The file size in bytes or null if unknown.
      */
     public function getSize()
     {

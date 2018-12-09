@@ -137,7 +137,7 @@ trait MessageTrait
         return $new;
     }
 
-    private function setHeaders(array $headers)
+    private function setHeaders(array $headers): void
     {
         $this->headerNames = $this->headers = [];
         foreach ($headers as $header => $value) {
@@ -186,7 +186,7 @@ trait MessageTrait
      *
      * @see https://tools.ietf.org/html/rfc7230#section-3.2.4
      */
-    private function trimHeaderValues(array $values)
+    private function trimHeaderValues(array $values): array
     {
         return array_map(function ($value) {
             if (!is_string($value) && !is_numeric($value)) {
