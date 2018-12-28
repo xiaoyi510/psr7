@@ -68,7 +68,7 @@ class Uri implements UriInterface
     public function __construct(string $uri = '')
     {
         // weak type check to also accept null until we can add scalar type hints
-        if ($uri != '') {
+        if ($uri !== '') {
             $parts = parse_url($uri);
             if ($parts === false) {
                 throw new \InvalidArgumentException("Unable to parse URI: $uri");
@@ -348,7 +348,7 @@ class Uri implements UriInterface
         $result = self::getFilteredQueryString($uri, array_keys($keyValueArray));
 
         foreach ($keyValueArray as $key => $value) {
-            $result[] = self::generateQueryString($key, $value);
+            $result[] = self::generateQueryString((string)$key, $value !== null ? (string) $value : null);
         }
 
         return $uri->withQuery(implode('&', $result));
@@ -640,12 +640,6 @@ class Uri implements UriInterface
         return $port;
     }
 
-    /**
-     * @param UriInterface $uri
-     * @param array        $keys
-     *
-     * @return array
-     */
     private static function getFilteredQueryString(UriInterface $uri, array $keys): array
     {
         $current = $uri->getQuery();
@@ -661,12 +655,6 @@ class Uri implements UriInterface
         });
     }
 
-    /**
-     * @param string      $key
-     * @param string|null $value
-     *
-     * @return string
-     */
     private static function generateQueryString(string $key, ?string $value): string
     {
         // Query string separators ("=", "&") within the key or value need to be encoded

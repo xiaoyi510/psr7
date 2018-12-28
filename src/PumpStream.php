@@ -19,7 +19,7 @@ use Psr\Http\Message\StreamInterface;
 class PumpStream implements StreamInterface
 {
     /** @var callable|null */
-    private $source = null;
+    private $source;
 
     /** @var int */
     private $size;

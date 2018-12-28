@@ -106,7 +106,6 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * @param int $error
      * @throws InvalidArgumentException
      */
     private function setError(int $error): void
@@ -217,11 +216,6 @@ class UploadedFile implements UploadedFileInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return int The file size in bytes or null if unknown.
-     */
     public function getSize()
     {
         return $this->size;
