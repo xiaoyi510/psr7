@@ -36,7 +36,8 @@ class AppendStream implements StreamInterface
         try {
             $this->rewind();
             return $this->getContents();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            trigger_error(sprintf('%s::__toString exception: %s', self::class, (string) $e), E_USER_ERROR);
             return '';
         }
     }

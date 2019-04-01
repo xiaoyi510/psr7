@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\NoSeekStream;
 use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 
@@ -182,7 +181,17 @@ class StreamTest extends TestCase
         $throws(function () use ($stream) { $stream->tell(); });
         $throws(function () use ($stream) { $stream->eof(); });
         $throws(function () use ($stream) { $stream->getContents(); });
-        $this->assertSame('', (string) $stream);
+
+        $errors = [];
+        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors) {
+            $errors[] = ['message' => $errorMessage, 'number' => $errorNumber];
+        });
+        $this->assertSame('', (string)$stream);
+        restore_error_handler();
+
+        $this->assertCount(1, $errors);
+        $this->assertStringStartsWith('GuzzleHttp\Psr7\Stream::__toString exception', $errors[0]['message']);
+        $this->assertSame(E_USER_ERROR, $errors[0]['number']);
     }
 
     public function testStreamReadingWithZeroLength()

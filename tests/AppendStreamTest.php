@@ -208,7 +208,18 @@ class AppendStreamTest extends TestCase
             ->will($this->returnValue(false));
         $a = new AppendStream([$s]);
         $this->assertFalse($a->eof());
-        $this->assertSame('', (string) $a);
+
+        $errors = [];
+        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors){
+            $errors[] = ['number' => $errorNumber, 'message' => $errorMessage];
+        });
+        (string) $a;
+
+        restore_error_handler();
+
+        $this->assertCount(1, $errors);
+        $this->assertSame(E_USER_ERROR, $errors[0]['number']);
+        $this->assertStringStartsWith('GuzzleHttp\Psr7\AppendStream::__toString exception:', $errors[0]['message']);
     }
 
     public function testReturnsEmptyMetadata()

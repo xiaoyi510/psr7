@@ -101,4 +101,25 @@ class FnStreamTest extends TestCase
         $this->expectExceptionMessage('FnStream should never be unserialized');
         unserialize($b);
     }
+
+    public function testThatConvertingStreamToStringWillTriggerErrorAndWillReturnEmptyString()
+    {
+        $a = new FnStream([
+            '__toString' => function () {
+                throw new \Exception();
+            },
+        ]);
+
+        $errors = [];
+        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors){
+            $errors[] = ['number' => $errorNumber, 'message' => $errorMessage];
+        });
+        (string) $a;
+
+        restore_error_handler();
+
+        $this->assertCount(1, $errors);
+        $this->assertSame(E_USER_ERROR, $errors[0]['number']);
+        $this->assertStringStartsWith('GuzzleHttp\Psr7\FnStream::__toString exception:', $errors[0]['message']);
+    }
 }
