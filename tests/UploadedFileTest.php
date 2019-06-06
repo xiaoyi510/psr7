@@ -16,12 +16,12 @@ class UploadedFileTest extends TestCase
 {
     private $cleanup;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cleanup = [];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->cleanup as $file) {
             if (is_scalar($file) && file_exists($file)) {

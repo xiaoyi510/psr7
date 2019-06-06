@@ -31,10 +31,6 @@ class BufferStreamTest extends TestCase
         $this->assertEquals('', $b->read(10));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Cannot determine the position of a BufferStream
-     */
     public function testCanCastToStringOrGetContents()
     {
         $b = new BufferStream();
@@ -43,6 +39,8 @@ class BufferStreamTest extends TestCase
         $this->assertEquals('foo', $b->read(3));
         $b->write('bar');
         $this->assertEquals('bazbar', (string) $b);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot determine the position of a BufferStream');
         $b->tell();
     }
 

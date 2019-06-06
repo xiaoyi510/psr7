@@ -22,7 +22,7 @@ class LimitStreamTest extends TestCase
     /** @var Stream */
     private $decorated;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->decorated = Psr7\stream_for(fopen(__FILE__, 'r'));
         $this->body = new LimitStream($this->decorated, 10, 3);
@@ -103,16 +103,14 @@ class LimitStreamTest extends TestCase
         $this->assertNotSame($data, $newData);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Could not seek to stream offset 2
-     */
     public function testThrowsWhenCurrentGreaterThanOffsetSeek()
     {
         $a = Psr7\stream_for('foo_bar');
         $b = new NoSeekStream($a);
         $c = new LimitStream($b);
         $a->getContents();
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Could not seek to stream offset 2');
         $c->setOffset(2);
     }
 

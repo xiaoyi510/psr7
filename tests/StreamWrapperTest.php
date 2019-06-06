@@ -28,37 +28,34 @@ class StreamWrapperTest extends TestCase
 
         $stBlksize  = defined('PHP_WINDOWS_VERSION_BUILD') ? -1 : 0;
 
-        // This fails on HHVM for some reason
-        if (!defined('HHVM_VERSION')) {
-            $this->assertEquals([
-                'dev'     => 0,
-                'ino'     => 0,
-                'mode'    => 33206,
-                'nlink'   => 0,
-                'uid'     => 0,
-                'gid'     => 0,
-                'rdev'    => 0,
-                'size'    => 6,
-                'atime'   => 0,
-                'mtime'   => 0,
-                'ctime'   => 0,
-                'blksize' => $stBlksize,
-                'blocks'  => $stBlksize,
-                0         => 0,
-                1         => 0,
-                2         => 33206,
-                3         => 0,
-                4         => 0,
-                5         => 0,
-                6         => 0,
-                7         => 6,
-                8         => 0,
-                9         => 0,
-                10        => 0,
-                11        => $stBlksize,
-                12        => $stBlksize,
-            ], fstat($handle));
-        }
+        $this->assertEquals([
+            'dev'     => 0,
+            'ino'     => 0,
+            'mode'    => 33206,
+            'nlink'   => 0,
+            'uid'     => 0,
+            'gid'     => 0,
+            'rdev'    => 0,
+            'size'    => 6,
+            'atime'   => 0,
+            'mtime'   => 0,
+            'ctime'   => 0,
+            'blksize' => $stBlksize,
+            'blocks'  => $stBlksize,
+            0         => 0,
+            1         => 0,
+            2         => 33206,
+            3         => 0,
+            4         => 0,
+            5         => 0,
+            6         => 0,
+            7         => 6,
+            8         => 0,
+            9         => 0,
+            10        => 0,
+            11        => $stBlksize,
+            12        => $stBlksize,
+        ], fstat($handle));
 
         $this->assertTrue(fclose($handle));
         $this->assertSame('foobar', (string) $stream);
@@ -79,12 +76,9 @@ class StreamWrapperTest extends TestCase
         ];
         $write = null;
         $except = null;
-        $this->assertInternalType('integer', stream_select($streams, $write, $except, 0));
+        $this->assertIsInt(stream_select($streams, $write, $except, 0));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidatesStream()
     {
         $stream = $this->getMockBuilder(StreamInterface::class)
@@ -96,14 +90,14 @@ class StreamWrapperTest extends TestCase
         $stream->expects($this->once())
             ->method('isWritable')
             ->will($this->returnValue(false));
+
+        $this->expectException(\InvalidArgumentException::class);
         StreamWrapper::getResource($stream);
     }
 
-    /**
-     * @expectedException \PHPUnit\Framework\Error\Warning
-     */
     public function testReturnsFalseWhenStreamDoesNotExist()
     {
+        $this->expectException(\PHPUnit\Framework\Error\Warning::class);
         fopen('guzzle://foo', 'r');
     }
 
@@ -119,7 +113,7 @@ class StreamWrapperTest extends TestCase
             ->method('isWritable')
             ->will($this->returnValue(true));
         $r = StreamWrapper::getResource($stream);
-        $this->assertInternalType('resource', $r);
+        $this->assertIsResource($r);
         fclose($r);
     }
 
@@ -160,15 +154,11 @@ class StreamWrapperTest extends TestCase
         );
     }
 
+    /**
+     * @requires extension xmlreader
+     */
     public function testXmlReaderWithStream()
     {
-        if (!class_exists('XMLReader')) {
-            $this->markTestSkipped('XML Reader is not available.');
-        }
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('This does not work on HHVM.');
-        }
-
         $stream = Psr7\stream_for('<?xml version="1.0" encoding="utf-8"?><foo />');
 
         StreamWrapper::register();
@@ -180,15 +170,11 @@ class StreamWrapperTest extends TestCase
         $this->assertEquals('foo', $reader->name);
     }
 
+    /**
+     * @requires extension xmlreader
+     */
     public function testXmlWriterWithStream()
     {
-        if (!class_exists('XMLWriter')) {
-            $this->markTestSkipped('XML Writer is not available.');
-        }
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('This does not work on HHVM.');
-        }
-
         $stream = Psr7\stream_for(fopen('php://memory', 'wb'));
 
         StreamWrapper::register();

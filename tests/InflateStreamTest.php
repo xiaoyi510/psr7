@@ -9,6 +9,9 @@ use GuzzleHttp\Psr7\InflateStream;
 use GuzzleHttp\Psr7\NoSeekStream;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @requires extension zlib
+ */
 class InflateStreamTest extends TestCase
 {
     public function testInflatesStreams()
