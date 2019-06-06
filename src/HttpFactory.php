@@ -61,7 +61,15 @@ final class HttpFactory implements
      */
     public function createStreamFromFile(string $file, string $mode = 'r'): StreamInterface
     {
-        $resource = \GuzzleHttp\Psr7\try_fopen($file, $mode);
+        try {
+            $resource = \GuzzleHttp\Psr7\try_fopen($file, $mode);
+        } catch (\RuntimeException $e) {
+            if ('' === $mode || false === \in_array($mode[0], ['r', 'w', 'a', 'x', 'c'], true)) {
+                throw new \InvalidArgumentException(sprintf('Invalid file opening mode "%s"', $mode), 0, $e);
+            }
+
+            throw $e;
+        }
 
         return \GuzzleHttp\Psr7\stream_for($resource);
     }
