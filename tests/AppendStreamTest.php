@@ -7,6 +7,7 @@ namespace GuzzleHttp\Tests\Psr7;
 use GuzzleHttp\Psr7\AppendStream;
 use GuzzleHttp\Psr7;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 class AppendStreamTest extends TestCase
 {
@@ -17,7 +18,7 @@ class AppendStreamTest extends TestCase
     public function testValidatesStreamsAreReadable()
     {
         $a = new AppendStream();
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isReadable'])
             ->getMockForAbstractClass();
         $s->expects($this->once())
@@ -43,7 +44,7 @@ class AppendStreamTest extends TestCase
     public function testTriesToRewindOnSeek()
     {
         $a = new AppendStream();
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isReadable', 'rewind', 'isSeekable'])
             ->getMockForAbstractClass();
         $s->expects($this->once())
@@ -176,7 +177,7 @@ class AppendStreamTest extends TestCase
         ]);
         $this->assertEquals(6, $a->getSize());
 
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isSeekable', 'isReadable'])
             ->getMockForAbstractClass();
         $s->expects($this->once())
@@ -191,7 +192,7 @@ class AppendStreamTest extends TestCase
 
     public function testCatchesExceptionsWhenCastingToString()
     {
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isSeekable', 'read', 'isReadable', 'eof'])
             ->getMockForAbstractClass();
         $s->expects($this->once())

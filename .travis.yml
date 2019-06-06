@@ -5,11 +5,11 @@ php:
   - 7.3
 
 cache:
-  directories:
-    - vendor
-    - $HOME/.composer/cache
+    directories:
+        - vendor
+        - $HOME/.composer/cache
 
 install:
-  - travis_retry composer install --no-interaction --prefer-dist
+    - travis_retry composer install --no-interaction --prefer-dist
 
 script: make test

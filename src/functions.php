@@ -724,6 +724,7 @@ function mimetype_from_extension($extension)
         'txt' => 'text/plain',
         'wav' => 'audio/x-wav',
         'webm' => 'video/webm',
+        'webp' => 'image/webp',
         'wma' => 'audio/x-ms-wma',
         'wmv' => 'video/x-ms-wmv',
         'woff' => 'application/x-font-woff',
@@ -858,6 +859,11 @@ function get_message_body_summary(MessageInterface $message, $truncateAt = 120)
     }
 
     $size = $body->getSize();
+
+    if ($size === 0) {
+        return null;
+    }
+
     $summary = $body->read($truncateAt);
     $body->rewind();
 

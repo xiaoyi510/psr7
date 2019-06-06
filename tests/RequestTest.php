@@ -8,8 +8,10 @@ use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 /**
+ * @covers GuzzleHttp\Psr7\MessageTrait
  * @covers GuzzleHttp\Psr7\Request
  */
 class RequestTest extends TestCase
@@ -38,21 +40,21 @@ class RequestTest extends TestCase
     public function testCanConstructWithBody()
     {
         $r = new Request('GET', '/', [], 'baz');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertEquals('baz', (string) $r->getBody());
     }
 
     public function testNullBody()
     {
         $r = new Request('GET', '/', [], null);
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('', (string) $r->getBody());
     }
 
     public function testFalseyBody()
     {
         $r = new Request('GET', '/', [], '0');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('0', (string) $r->getBody());
     }
 
@@ -92,6 +94,35 @@ class RequestTest extends TestCase
         $this->assertNotSame($r1, $r2);
         $this->assertSame($u2, $r2->getUri());
         $this->assertSame($u1, $r1->getUri());
+    }
+
+    /**
+     * @dataProvider invalidMethodsProvider
+     */
+    public function testConstructWithInvalidMethods($method)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Request($method, '/');
+    }
+
+    /**
+     * @dataProvider invalidMethodsProvider
+     */
+    public function testWithInvalidMethods($method)
+    {
+        $r = new Request('get', '/');
+        $this->expectException(\InvalidArgumentException::class);
+        $r->withMethod($method);
+    }
+
+    public function invalidMethodsProvider()
+    {
+        return [
+            [null],
+            [false],
+            [['foo']],
+            [new \stdClass()],
+        ];
     }
 
     public function testSameInstanceWhenSameUri()

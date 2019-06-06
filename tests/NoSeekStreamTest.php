@@ -7,6 +7,7 @@ namespace GuzzleHttp\Tests\Psr7;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\NoSeekStream;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers GuzzleHttp\Psr7\NoSeekStream
@@ -20,7 +21,7 @@ class NoSeekStreamTest extends TestCase
      */
     public function testCannotSeek()
     {
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isSeekable', 'seek'])
             ->getMockForAbstractClass();
         $s->expects($this->never())->method('seek');

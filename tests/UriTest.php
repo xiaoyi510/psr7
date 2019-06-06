@@ -6,6 +6,7 @@ namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @covers GuzzleHttp\Psr7\Uri
@@ -121,7 +122,7 @@ class UriTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid port: 100000. Must be between 1 and 65535
+     * @expectedExceptionMessage Invalid port: 100000. Must be between 0 and 65535
      */
     public function testPortMustBeValid()
     {
@@ -130,11 +131,11 @@ class UriTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid port: 0. Must be between 1 and 65535
+     * @expectedExceptionMessage Invalid port: -1. Must be between 0 and 65535
      */
-    public function testWithPortCannotBeZero()
+    public function testWithPortCannotBeNegative()
     {
-        (new Uri())->withPort(0);
+        (new Uri())->withPort(-1);
     }
 
     /**
@@ -225,7 +226,7 @@ class UriTest extends TestCase
      */
     public function testIsDefaultPort($scheme, $port, $isDefaultPort)
     {
-        $uri = $this->getMockBuilder('Psr\Http\Message\UriInterface')->getMock();
+        $uri = $this->getMockBuilder(UriInterface::class)->getMock();
         $uri->expects($this->any())->method('getScheme')->will($this->returnValue($scheme));
         $uri->expects($this->any())->method('getPort')->will($this->returnValue($port));
 
@@ -643,7 +644,7 @@ class UriTest extends TestCase
         $uri = (new Uri('urn:/mailto:foo'))->withScheme('');
         $this->assertSame('/mailto:foo', $uri->getPath());
 
-        $this->expectException('\InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         (new Uri('urn:mailto:foo'))->withScheme('');
     }
 
@@ -680,9 +681,20 @@ class UriTest extends TestCase
         // should not use late static binding to access private static members.
         // If they do, this will fatal.
         $this->assertInstanceOf(
-            'GuzzleHttp\Tests\Psr7\ExtendedUriTest',
+            ExtendedUriTest::class,
             new ExtendedUriTest('http://h:9/')
         );
+    }
+
+    public function testSpecialCharsOfUserInfo()
+    {
+        // The `userInfo` must always be URL-encoded.
+        $uri = (new Uri)->withUserInfo('foo@bar.com', 'pass#word');
+        $this->assertSame('foo%40bar.com:pass%23word', $uri->getUserInfo());
+
+        // The `userInfo` can already be URL-encoded: it should not be encoded twice.
+        $uri = (new Uri)->withUserInfo('foo%40bar.com', 'pass%23word');
+        $this->assertSame('foo%40bar.com:pass%23word', $uri->getUserInfo());
     }
 }
 

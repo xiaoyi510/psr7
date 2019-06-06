@@ -7,6 +7,7 @@ namespace GuzzleHttp\Tests\Psr7;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriNormalizer;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @covers GuzzleHttp\Psr7\UriNormalizer
@@ -23,7 +24,7 @@ class UriNormalizerTest extends TestCase
 
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::CAPITALIZE_PERCENT_ENCODING);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame("/$expectEncoding?$expectEncoding", (string) $normalizedUri);
     }
 
@@ -42,7 +43,7 @@ class UriNormalizerTest extends TestCase
 
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::DECODE_UNRESERVED_CHARACTERS);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame("/$char%2F%5B$char?$char%2F%5B$char", (string) $normalizedUri);
     }
 
@@ -62,7 +63,7 @@ class UriNormalizerTest extends TestCase
     {
         $normalizedUri = UriNormalizer::normalize(new Uri($uri), UriNormalizer::CONVERT_EMPTY_PATH);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame($expected, (string) $normalizedUri);
     }
 
@@ -80,20 +81,20 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('file://localhost/myfile');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DEFAULT_HOST);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame('file:///myfile', (string) $normalizedUri);
     }
 
     public function testRemoveDefaultPort()
     {
-        $uri = $this->getMockBuilder('Psr\Http\Message\UriInterface')->getMock();
+        $uri = $this->getMockBuilder(UriInterface::class)->getMock();
         $uri->expects($this->any())->method('getScheme')->will($this->returnValue('http'));
         $uri->expects($this->any())->method('getPort')->will($this->returnValue(80));
         $uri->expects($this->once())->method('withPort')->with(null)->will($this->returnValue(new Uri('http://example.org')));
 
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DEFAULT_PORT);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertNull($normalizedUri->getPort());
     }
 
@@ -102,7 +103,7 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('http://example.org/../a/b/../c/./d.html');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DOT_SEGMENTS);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame('http://example.org/a/c/d.html', (string) $normalizedUri);
     }
 
@@ -111,7 +112,7 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('/../a/b/../c/./d.html');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DOT_SEGMENTS);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame('/a/c/d.html', (string) $normalizedUri);
     }
 
@@ -120,7 +121,7 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('../c/./d.html');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DOT_SEGMENTS);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame('../c/./d.html', (string) $normalizedUri);
     }
 
@@ -129,7 +130,7 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('http://example.org//foo///bar/bam.html');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DUPLICATE_SLASHES);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame('http://example.org/foo/bar/bam.html', (string) $normalizedUri);
     }
 
@@ -138,7 +139,7 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('?lang=en&article=fred');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::SORT_QUERY_PARAMETERS);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame('?article=fred&lang=en', (string) $normalizedUri);
     }
 
@@ -147,7 +148,7 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('?a=b&b=c&a=a&a&b=a&b=b&a=d&a=c');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::SORT_QUERY_PARAMETERS);
 
-        $this->assertInstanceOf('Psr\Http\Message\UriInterface', $normalizedUri);
+        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
         $this->assertSame('?a&a=a&a=b&a=c&a=d&b=a&b=b&b=c', (string) $normalizedUri);
     }
 
