@@ -159,7 +159,7 @@ trait MessageTrait
         }
     }
 
-    private function normalizeHeaderValue($value)
+    private function normalizeHeaderValue($value): array
     {
         if (!is_array($value)) {
             return $this->trimHeaderValues([$value]);

@@ -62,12 +62,8 @@ class Uri implements UriInterface
     /** @var string Uri fragment. */
     private $fragment = '';
 
-    /**
-     * @param string $uri URI to parse
-     */
     public function __construct(string $uri = '')
     {
-        // weak type check to also accept null until we can add scalar type hints
         if ($uri !== '') {
             $parts = parse_url($uri);
             if ($parts === false) {
@@ -328,7 +324,7 @@ class Uri implements UriInterface
     {
         $result = self::getFilteredQueryString($uri, [$key]);
 
-        $result[] = self::generateQueryString($key, $value);
+        $result[] = self::generateQueryString($key, $value !== null ? (string) $value : null);
 
         return $uri->withQuery(implode('&', $result));
     }

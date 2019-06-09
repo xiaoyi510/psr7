@@ -21,7 +21,7 @@ class PumpStream implements StreamInterface
     /** @var callable|null */
     private $source;
 
-    /** @var int */
+    /** @var int|null */
     private $size;
 
     /** @var int */

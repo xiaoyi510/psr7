@@ -31,7 +31,7 @@ class UploadedFile implements UploadedFileInterface
     private $clientFilename;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $clientMediaType;
 
@@ -87,7 +87,6 @@ class UploadedFile implements UploadedFileInterface
     /**
      * Depending on the value set file or stream variable
      *
-     * @param mixed $streamOrFile
      * @throws InvalidArgumentException
      */
     private function setStreamOrFile($streamOrFile): void
@@ -119,21 +118,15 @@ class UploadedFile implements UploadedFileInterface
         $this->error = $error;
     }
 
-    /**
-     * @param mixed $param
-     * @return boolean
-     */
-    private function isStringNotEmpty($param)
+    private function isStringNotEmpty($param): bool
     {
         return is_string($param) && false === empty($param);
     }
 
     /**
      * Return true if there is no upload error
-     *
-     * @return boolean
      */
-    private function isOk()
+    private function isOk(): bool
     {
         return $this->error === UPLOAD_ERR_OK;
     }
@@ -160,10 +153,6 @@ class UploadedFile implements UploadedFileInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     * @throws RuntimeException if the upload was not successful.
-     */
     public function getStream()
     {
         $this->validateActive();
@@ -175,17 +164,6 @@ class UploadedFile implements UploadedFileInterface
         return new LazyOpenStream($this->file, 'r+');
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @see http://php.net/is_uploaded_file
-     * @see http://php.net/move_uploaded_file
-     * @param string $targetPath Path to which to move the uploaded file.
-     * @throws RuntimeException if the upload was not successful.
-     * @throws InvalidArgumentException if the $path specified is invalid.
-     * @throws RuntimeException on any error during the move operation, or on
-     *     the second or subsequent call to the method.
-     */
     public function moveTo($targetPath)
     {
         $this->validateActive();
@@ -221,31 +199,16 @@ class UploadedFile implements UploadedFileInterface
         return $this->size;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @see http://php.net/manual/en/features.file-upload.errors.php
-     * @return int One of PHP's UPLOAD_ERR_XXX constants.
-     */
     public function getError()
     {
         return $this->error;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return string|null The filename sent by the client or null if none
-     *     was provided.
-     */
     public function getClientFilename()
     {
         return $this->clientFilename;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getClientMediaType()
     {
         return $this->clientMediaType;
