@@ -134,7 +134,6 @@ class ServerRequest extends Request implements ServerRequestInterface
      * Loops through all nested files and returns a normalized array of
      * UploadedFileInterface instances.
      *
-     * @param array $files
      * @return UploadedFileInterface[]
      */
     private static function normalizeNestedFileSpec(array $files = [])
@@ -182,7 +181,7 @@ class ServerRequest extends Request implements ServerRequestInterface
             ->withUploadedFiles(self::normalizeFiles($_FILES));
     }
 
-    private static function extractHostAndPortFromAuthority($authority)
+    private static function extractHostAndPortFromAuthority(string $authority): array
     {
         $uri = 'http://'.$authority;
         $parts = parse_url($uri);
