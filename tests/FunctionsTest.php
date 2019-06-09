@@ -162,13 +162,11 @@ class FunctionsTest extends TestCase
         $this->assertEquals(md5('foobazbar'), Psr7\hash($s, 'md5'));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testCalculatesHashThrowsWhenSeekFails()
     {
         $s = new NoSeekStream(Psr7\stream_for('foobazbar'));
         $s->read(2);
+        $this->expectException(\RuntimeException::class);
         Psr7\hash($s, 'md5');
     }
 
@@ -183,16 +181,14 @@ class FunctionsTest extends TestCase
     public function testOpensFilesSuccessfully()
     {
         $r = Psr7\try_fopen(__FILE__, 'r');
-        $this->assertInternalType('resource', $r);
+        $this->assertIsResource($r);
         fclose($r);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to open /path/to/does/not/exist using mode r
-     */
     public function testThrowsExceptionNotWarning()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to open /path/to/does/not/exist using mode r');
         Psr7\try_fopen('/path/to/does/not/exist', 'r');
     }
 
@@ -349,12 +345,10 @@ class FunctionsTest extends TestCase
         $this->assertEquals('Bar Bam', $request->getHeaderLine('Foo'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid header syntax: Obsolete line folding
-     */
     public function testRequestParsingFailsWithFoldedHeadersOnHttp11()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid header syntax: Obsolete line folding');
         Psr7\parse_response("GET_DATA / HTTP/1.1\r\nFoo: Bar\r\n Biz: Bam\r\n\r\n");
     }
 
@@ -368,11 +362,9 @@ class FunctionsTest extends TestCase
         $this->assertEquals('Bam', $request->getHeaderLine('Baz'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidatesRequestMessages()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\parse_request("HTTP/1.1 200 OK\r\n\r\n");
     }
 
@@ -422,12 +414,9 @@ class FunctionsTest extends TestCase
         $this->assertSame('Test', (string)$response->getBody());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid header syntax: Obsolete line folding
-     */
     public function testResponseParsingFailsWithFoldedHeadersOnHttp11()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\parse_response("HTTP/1.1 200\r\nFoo: Bar\r\n Biz: Bam\r\nBaz: Qux\r\n\r\nTest");
     }
 
@@ -443,20 +432,15 @@ class FunctionsTest extends TestCase
         $this->assertSame("Test\n\nOtherTest", (string)$response->getBody());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid message: Missing header delimiter
-     */
     public function testResponseParsingFailsWithoutHeaderDelimiter()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\parse_response("HTTP/1.0 200\r\nFoo: Bar\r\n Baz: Bam\r\nBaz: Qux\r\n");
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidatesResponseMessages()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\parse_response("GET / HTTP/1.1\r\n\r\n");
     }
 
@@ -482,11 +466,9 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidatesUri()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\uri_for([]);
     }
 
@@ -541,11 +523,9 @@ class FunctionsTest extends TestCase
         $this->assertSame($s, Psr7\stream_for($s));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testThrowsExceptionForUnknown()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\stream_for(new \stdClass());
     }
 
@@ -673,9 +653,6 @@ class FunctionsTest extends TestCase
         $this->assertEquals(0, $body->tell());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testThrowsWhenBodyCannotBeRewound()
     {
         $body = Psr7\stream_for('abc');
@@ -686,6 +663,7 @@ class FunctionsTest extends TestCase
             },
         ]);
         $res = new Psr7\Response(200, [], $body);
+        $this->expectException(\RuntimeException::class);
         Psr7\rewind_body($res);
     }
 

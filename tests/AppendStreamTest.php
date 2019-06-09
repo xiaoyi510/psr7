@@ -11,10 +11,6 @@ use Psr\Http\Message\StreamInterface;
 
 class AppendStreamTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Each stream must be readable
-     */
     public function testValidatesStreamsAreReadable()
     {
         $a = new AppendStream();
@@ -24,23 +20,19 @@ class AppendStreamTest extends TestCase
         $s->expects($this->once())
             ->method('isReadable')
             ->will($this->returnValue(false));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Each stream must be readable');
         $a->addStream($s);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage The AppendStream can only seek with SEEK_SET
-     */
     public function testValidatesSeekType()
     {
         $a = new AppendStream();
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The AppendStream can only seek with SEEK_SET');
         $a->seek(100, SEEK_CUR);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to seek stream 0 of the AppendStream
-     */
     public function testTriesToRewindOnSeek()
     {
         $a = new AppendStream();
@@ -57,6 +49,8 @@ class AppendStreamTest extends TestCase
             ->method('rewind')
             ->will($this->throwException(new \RuntimeException()));
         $a->addStream($s);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to seek stream 0 of the AppendStream');
         $a->seek(10);
     }
 
@@ -108,7 +102,7 @@ class AppendStreamTest extends TestCase
         $this->assertFalse($a->isWritable());
 
         $this->assertNull($s1->detach());
-        $this->assertInternalType('resource', $handle, 'resource is not closed when detaching');
+        $this->assertIsResource($handle, 'resource is not closed when detaching');
         fclose($handle);
     }
 
@@ -132,16 +126,14 @@ class AppendStreamTest extends TestCase
         $this->assertFalse(is_resource($handle));
     }
 
-    /**
-     * @expectedExceptionMessage Cannot write to an AppendStream
-     * @expectedException \RuntimeException
-     */
     public function testIsNotWritable()
     {
         $a = new AppendStream([Psr7\stream_for('foo')]);
         $this->assertFalse($a->isWritable());
         $this->assertTrue($a->isSeekable());
         $this->assertTrue($a->isReadable());
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot write to an AppendStream');
         $a->write('foo');
     }
 

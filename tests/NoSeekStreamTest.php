@@ -15,10 +15,6 @@ use Psr\Http\Message\StreamInterface;
  */
 class NoSeekStreamTest extends TestCase
 {
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Cannot seek a NoSeekStream
-     */
     public function testCannotSeek()
     {
         $s = $this->getMockBuilder(StreamInterface::class)
@@ -28,6 +24,8 @@ class NoSeekStreamTest extends TestCase
         $s->expects($this->never())->method('isSeekable');
         $wrapped = new NoSeekStream($s);
         $this->assertFalse($wrapped->isSeekable());
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot seek a NoSeekStream');
         $wrapped->seek(2);
     }
 

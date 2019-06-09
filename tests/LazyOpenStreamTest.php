@@ -11,7 +11,7 @@ class LazyOpenStreamTest extends TestCase
 {
     private $fname;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fname = tempnam('/tmp', 'tfile');
 
@@ -20,7 +20,7 @@ class LazyOpenStreamTest extends TestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (file_exists($this->fname)) {
             unlink($this->fname);
@@ -31,7 +31,7 @@ class LazyOpenStreamTest extends TestCase
     {
         $l = new LazyOpenStream($this->fname, 'w+');
         $l->write('foo');
-        $this->assertInternalType('array', $l->getMetadata());
+        $this->assertIsArray($l->getMetadata());
         $this->assertFileExists($this->fname);
         $this->assertEquals('foo', file_get_contents($this->fname));
         $this->assertEquals('foo', (string) $l);
@@ -51,7 +51,7 @@ class LazyOpenStreamTest extends TestCase
         $this->assertEquals('oo', $l->getContents());
         $this->assertEquals('foo', (string) $l);
         $this->assertEquals(3, $l->getSize());
-        $this->assertInternalType('array', $l->getMetadata());
+        $this->assertIsArray($l->getMetadata());
         $l->close();
     }
 
@@ -60,7 +60,7 @@ class LazyOpenStreamTest extends TestCase
         file_put_contents($this->fname, 'foo');
         $l = new LazyOpenStream($this->fname, 'r');
         $r = $l->detach();
-        $this->assertInternalType('resource', $r);
+        $this->assertIsResource($r);
         fseek($r, 0);
         $this->assertEquals('foo', stream_get_contents($r));
         fclose($r);

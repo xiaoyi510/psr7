@@ -26,7 +26,7 @@ class StreamDecoratorTraitTest extends TestCase
     /** @var resource */
     private $c;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->c = fopen('php://temp', 'r+');
         fwrite($this->c, 'foo');
@@ -47,7 +47,7 @@ class StreamDecoratorTraitTest extends TestCase
         set_error_handler(function ($errNo, $str) use (&$msg) { $msg = $str; });
         echo new Str($s);
         restore_error_handler();
-        $this->assertContains('foo', $msg);
+        $this->assertStringContainsString('foo', $msg);
     }
 
     public function testToString()
@@ -118,19 +118,15 @@ class StreamDecoratorTraitTest extends TestCase
         $this->assertEquals('foofoo', (string) $this->a);
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testThrowsWithInvalidGetter()
     {
+        $this->expectException(\UnexpectedValueException::class);
         $this->b->foo;
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testThrowsWhenGetterNotImplemented()
     {
+        $this->expectException(\BadMethodCallException::class);
         $s = new BadStream();
         $s->stream;
     }

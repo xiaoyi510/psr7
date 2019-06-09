@@ -49,10 +49,10 @@ class UriNormalizerTest extends TestCase
 
     public function getUnreservedCharacters()
     {
-        $unreservedChars = array_merge(range('a', 'z'), range('A', 'Z'), range('0', '9'), ['-', '.', '_', '~']);
+        $unreservedChars = array_merge(range('a', 'z'), range('A', 'Z'), range(0, 9), ['-', '.', '_', '~']);
 
         return array_map(function ($char) {
-            return [$char];
+            return [(string) $char];
         }, $unreservedChars);
     }
 

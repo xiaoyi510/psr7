@@ -13,12 +13,10 @@ use PHPUnit\Framework\TestCase;
  */
 class FnStreamTest extends TestCase
 {
-    /**
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage seek() is not implemented in the FnStream
-     */
     public function testThrowsWhenNotImplemented()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('seek() is not implemented in the FnStream');
         (new FnStream([]))->seek(1);
     }
 
@@ -75,7 +73,7 @@ class FnStreamTest extends TestCase
         $b->seek(0, SEEK_END);
         $b->write('bar');
         $this->assertEquals('foobar', (string) $b);
-        $this->assertInternalType('resource', $b->detach());
+        $this->assertIsResource($b->detach());
         $b->close();
     }
 

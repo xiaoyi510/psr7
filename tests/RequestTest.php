@@ -29,11 +29,9 @@ class RequestTest extends TestCase
         $this->assertSame($uri, $r->getUri());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidateRequestUri()
     {
+        $this->expectException(\InvalidArgumentException::class);
         new Request('GET', '///');
     }
 
@@ -140,12 +138,10 @@ class RequestTest extends TestCase
         $this->assertEquals('/', $r1->getRequestTarget());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testRequestTargetDoesNotAllowSpaces()
     {
         $r1 = new Request('GET', '/');
+        $this->expectException(\InvalidArgumentException::class);
         $r1->withRequestTarget('/foo bar');
     }
 
