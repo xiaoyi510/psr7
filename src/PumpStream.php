@@ -18,10 +18,10 @@ use Psr\Http\Message\StreamInterface;
  */
 class PumpStream implements StreamInterface
 {
-    /** @var callable */
+    /** @var callable|null */
     private $source;
 
-    /** @var int */
+    /** @var int|null */
     private $size;
 
     /** @var int */
@@ -68,7 +68,7 @@ class PumpStream implements StreamInterface
 
     public function detach()
     {
-        $this->tellPos = false;
+        $this->tellPos = 0;
         $this->source = null;
     }
 
@@ -152,7 +152,7 @@ class PumpStream implements StreamInterface
         return isset($this->metadata[$key]) ? $this->metadata[$key] : null;
     }
 
-    private function pump($length)
+    private function pump(int $length): void
     {
         if ($this->source) {
             do {

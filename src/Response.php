@@ -90,14 +90,12 @@ class Response implements ResponseInterface
      * @param string|null                          $reason  Reason phrase (when empty a default will be used based on the status code)
      */
     public function __construct(
-        $status = 200,
+        int $status = 200,
         array $headers = [],
         $body = null,
-        $version = '1.1',
-        $reason = null
+        string $version = '1.1',
+        string $reason = null
     ) {
-        $this->assertStatusCodeIsInteger($status);
-        $status = (int) $status;
         $this->assertStatusCodeRange($status);
 
         $this->statusCode = $status;
@@ -148,7 +146,7 @@ class Response implements ResponseInterface
         }
     }
 
-    private function assertStatusCodeRange($statusCode)
+    private function assertStatusCodeRange(int $statusCode)
     {
         if ($statusCode < 100 || $statusCode >= 600) {
             throw new \InvalidArgumentException('Status code must be an integer value between 1xx and 5xx.');

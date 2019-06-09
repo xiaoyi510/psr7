@@ -131,7 +131,7 @@ class CachingStream implements StreamInterface
         $this->remoteStream->close() && $this->stream->close();
     }
 
-    private function cacheEntireStream()
+    private function cacheEntireStream(): int
     {
         $target = new FnStream(['write' => 'strlen']);
         copy_to_stream($this, $target);

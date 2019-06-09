@@ -28,7 +28,7 @@ class MultipartStream implements StreamInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(array $elements = [], $boundary = null)
+    public function __construct(array $elements = [], string $boundary = null)
     {
         $this->boundary = $boundary ?: sha1(uniqid('', true));
         $this->stream = $this->createStream($elements);
@@ -52,7 +52,7 @@ class MultipartStream implements StreamInterface
     /**
      * Get the headers needed before transferring the content of a POST file
      */
-    private function getHeaders(array $headers)
+    private function getHeaders(array $headers): string
     {
         $str = '';
         foreach ($headers as $key => $value) {
@@ -79,7 +79,7 @@ class MultipartStream implements StreamInterface
         return $stream;
     }
 
-    private function addElement(AppendStream $stream, array $element)
+    private function addElement(AppendStream $stream, array $element): void
     {
         foreach (['contents', 'name'] as $key) {
             if (!array_key_exists($key, $element)) {
@@ -108,10 +108,7 @@ class MultipartStream implements StreamInterface
         $stream->addStream(stream_for("\r\n"));
     }
 
-    /**
-     * @return array
-     */
-    private function createElement($name, StreamInterface $stream, $filename, array $headers)
+    private function createElement(string $name, StreamInterface $stream, ?string $filename, array $headers): array
     {
         // Set a default content-disposition header if one was no provided
         $disposition = $this->getHeader($headers, 'content-disposition');
@@ -142,7 +139,7 @@ class MultipartStream implements StreamInterface
         return [$stream, $headers];
     }
 
-    private function getHeader(array $headers, $key)
+    private function getHeader(array $headers, string $key)
     {
         $lowercaseHeader = strtolower($key);
         foreach ($headers as $k => $v) {

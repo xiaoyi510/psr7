@@ -50,12 +50,10 @@ class ResponseTest extends TestCase
 
     public function testStatusCanBeNumericString()
     {
-        $r = new Response('404');
-        $r2 = $r->withStatus('201');
-        $this->assertSame(404, $r->getStatusCode());
-        $this->assertSame('Not Found', $r->getReasonPhrase());
-        $this->assertSame(201, $r2->getStatusCode());
-        $this->assertSame('Created', $r2->getReasonPhrase());
+        $r = (new Response())->withStatus('201');
+
+        $this->assertSame(201, $r->getStatusCode());
+        $this->assertSame('Created', $r->getReasonPhrase());
     }
 
     public function testCanConstructWithHeaders()
@@ -307,8 +305,7 @@ class ResponseTest extends TestCase
      */
     public function testConstructResponseWithNonIntegerStatusCode($invalidValues)
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Status code must be an integer value.');
+        $this->expectException(\TypeError::class);
         new Response($invalidValues);
     }
 
