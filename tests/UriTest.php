@@ -313,6 +313,12 @@ class UriTest extends TestCase
         $this->assertSame('', $uri->getQuery());
     }
 
+    public function testNumericQueryValue()
+    {
+        $uri = Uri::withQueryValue(new Uri(), 'version', 1);
+        $this->assertSame('version=1', $uri->getQuery());
+    }
+
     public function testWithQueryValues()
     {
         $uri = new Uri();
