@@ -1,9 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7\BufferStream;
+use PHPUnit\Framework\TestCase;
 
-class BufferStreamTest extends BaseTest
+class BufferStreamTest extends TestCase
 {
     public function testHasMetadata()
     {
@@ -27,10 +31,6 @@ class BufferStreamTest extends BaseTest
         $this->assertEquals('', $b->read(10));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Cannot determine the position of a BufferStream
-     */
     public function testCanCastToStringOrGetContents()
     {
         $b = new BufferStream();
@@ -39,6 +39,8 @@ class BufferStreamTest extends BaseTest
         $this->assertEquals('foo', $b->read(3));
         $b->write('bar');
         $this->assertEquals('bazbar', (string) $b);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot determine the position of a BufferStream');
         $b->tell();
     }
 

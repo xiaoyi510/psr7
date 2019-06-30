@@ -1,20 +1,22 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\FnStream;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers GuzzleHttp\Psr7\FnStream
  */
-class FnStreamTest extends BaseTest
+class FnStreamTest extends TestCase
 {
-    /**
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage seek() is not implemented in the FnStream
-     */
     public function testThrowsWhenNotImplemented()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('seek() is not implemented in the FnStream');
         (new FnStream([]))->seek(1);
     }
 
@@ -71,7 +73,7 @@ class FnStreamTest extends BaseTest
         $b->seek(0, SEEK_END);
         $b->write('bar');
         $this->assertEquals('foobar', (string) $b);
-        $this->assertInternalType('resource', $b->detach());
+        $this->assertIsResource($b->detach());
         $b->close();
     }
 
@@ -93,7 +95,29 @@ class FnStreamTest extends BaseTest
     {
         $a = new FnStream([]);
         $b = serialize($a);
-        $this->expectException('\LogicException', 'FnStream should never be unserialized');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('FnStream should never be unserialized');
         unserialize($b);
+    }
+
+    public function testThatConvertingStreamToStringWillTriggerErrorAndWillReturnEmptyString()
+    {
+        $a = new FnStream([
+            '__toString' => function () {
+                throw new \Exception();
+            },
+        ]);
+
+        $errors = [];
+        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors){
+            $errors[] = ['number' => $errorNumber, 'message' => $errorMessage];
+        });
+        (string) $a;
+
+        restore_error_handler();
+
+        $this->assertCount(1, $errors);
+        $this->assertSame(E_USER_ERROR, $errors[0]['number']);
+        $this->assertStringStartsWith('GuzzleHttp\Psr7\FnStream::__toString exception:', $errors[0]['message']);
     }
 }

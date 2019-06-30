@@ -1,10 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\MultipartStream;
+use PHPUnit\Framework\TestCase;
 
-class MultipartStreamTest extends BaseTest
+class MultipartStreamTest extends TestCase
 {
     public function testCreatesDefaultBoundary()
     {
@@ -32,19 +36,15 @@ class MultipartStreamTest extends BaseTest
         $this->assertSame(strlen($boundary) + 6, $b->getSize());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidatesFilesArrayElement()
     {
+        $this->expectException(\InvalidArgumentException::class);
         new MultipartStream([['foo' => 'bar']]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testEnsuresFileHasName()
     {
+        $this->expectException(\InvalidArgumentException::class);
         new MultipartStream([['contents' => 'bar']]);
     }
 

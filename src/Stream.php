@@ -1,12 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
 
 /**
  * PHP stream implementation.
- *
- * @var $stream
  */
 class Stream implements StreamInterface
 {
@@ -43,7 +44,7 @@ class Stream implements StreamInterface
      *
      * @throws \InvalidArgumentException if the stream is not a stream resource
      */
-    public function __construct($stream, $options = [])
+    public function __construct($stream, array $options = [])
     {
         if (!is_resource($stream)) {
             throw new \InvalidArgumentException('Stream must be a resource');
@@ -78,7 +79,8 @@ class Stream implements StreamInterface
         try {
             $this->seek(0);
             return (string) stream_get_contents($this->stream);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            trigger_error(sprintf('%s::__toString exception: %s', self::class, (string) $e), E_USER_ERROR);
             return '';
         }
     }

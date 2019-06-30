@@ -1,11 +1,18 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\InflateStream;
 use GuzzleHttp\Psr7\NoSeekStream;
+use PHPUnit\Framework\TestCase;
 
-class InflateStreamTest extends BaseTest
+/**
+ * @requires extension zlib
+ */
+class InflateStreamTest extends TestCase
 {
     public function testInflatesStreams()
     {

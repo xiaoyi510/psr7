@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GuzzleHttp\Psr7;
 
 use InvalidArgumentException;
@@ -63,11 +65,11 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @param array                                $serverParams Typically the $_SERVER superglobal
      */
     public function __construct(
-        $method,
+        string $method,
         $uri,
         array $headers = [],
         $body = null,
-        $version = '1.1',
+        string $version = '1.1',
         array $serverParams = []
     ) {
         $this->serverParams = $serverParams;

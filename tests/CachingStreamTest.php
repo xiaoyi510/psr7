@@ -1,27 +1,31 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\CachingStream;
 use GuzzleHttp\Psr7\Stream;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers GuzzleHttp\Psr7\CachingStream
  */
-class CachingStreamTest extends BaseTest
+class CachingStreamTest extends TestCase
 {
     /** @var CachingStream */
     private $body;
     /** @var Stream */
     private $decorated;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->decorated = Psr7\stream_for('testing');
         $this->body = new CachingStream($this->decorated);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->decorated->close();
         $this->body->close();
@@ -76,7 +80,7 @@ class CachingStreamTest extends BaseTest
     public function testRewindUsesSeek()
     {
         $a = Psr7\stream_for('foo');
-        $d = $this->getMockBuilder('GuzzleHttp\Psr7\CachingStream')
+        $d = $this->getMockBuilder(CachingStream::class)
             ->setMethods(array('seek'))
             ->setConstructorArgs(array($a))
             ->getMock();
@@ -106,7 +110,7 @@ class CachingStreamTest extends BaseTest
         fwrite($stream, 'testing');
         fseek($stream, 0);
 
-        $this->decorated = $this->getMockBuilder('\GuzzleHttp\Psr7\Stream')
+        $this->decorated = $this->getMockBuilder(Stream::class)
             ->setConstructorArgs([$stream])
             ->setMethods(['read'])
             ->getMock();
@@ -139,7 +143,7 @@ class CachingStreamTest extends BaseTest
     {
         $decorated = Psr7\stream_for(
             implode("\n", array_map(function ($n) {
-                return str_pad($n, 4, '0', STR_PAD_LEFT);
+                return str_pad((string)$n, 4, '0', STR_PAD_LEFT);
             }, range(0, 25)))
         );
 
@@ -149,31 +153,27 @@ class CachingStreamTest extends BaseTest
         $this->assertEquals("0001\n", Psr7\readline($body));
         // Write over part of the body yet to be read, so skip some bytes
         $this->assertEquals(5, $body->write("TEST\n"));
-        $this->assertEquals(5, $this->readAttribute($body, 'skipReadBytes'));
         // Read, which skips bytes, then reads
         $this->assertEquals("0003\n", Psr7\readline($body));
-        $this->assertEquals(0, $this->readAttribute($body, 'skipReadBytes'));
         $this->assertEquals("0004\n", Psr7\readline($body));
         $this->assertEquals("0005\n", Psr7\readline($body));
 
         // Overwrite part of the cached body (so don't skip any bytes)
         $body->seek(5);
         $this->assertEquals(5, $body->write("ABCD\n"));
-        $this->assertEquals(0, $this->readAttribute($body, 'skipReadBytes'));
         $this->assertEquals("TEST\n", Psr7\readline($body));
         $this->assertEquals("0003\n", Psr7\readline($body));
         $this->assertEquals("0004\n", Psr7\readline($body));
         $this->assertEquals("0005\n", Psr7\readline($body));
         $this->assertEquals("0006\n", Psr7\readline($body));
         $this->assertEquals(5, $body->write("1234\n"));
-        $this->assertEquals(5, $this->readAttribute($body, 'skipReadBytes'));
 
         // Seek to 0 and ensure the overwritten bit is replaced
         $body->seek(0);
         $this->assertEquals("0000\nABCD\nTEST\n0003\n0004\n0005\n0006\n1234\n0008\n0009\n", $body->read(50));
 
         // Ensure that casting it to a string does not include the bit that was overwritten
-        $this->assertContains("0000\nABCD\nTEST\n0003\n0004\n0005\n0006\n1234\n0008\n0009\n", (string) $body);
+        $this->assertStringContainsString("0000\nABCD\nTEST\n0003\n0004\n0005\n0006\n1234\n0008\n0009\n", (string) $body);
     }
 
     public function testClosesBothStreams()
@@ -185,11 +185,10 @@ class CachingStreamTest extends BaseTest
         $this->assertFalse(is_resource($s));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testEnsuresValidWhence()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid whence');
         $this->body->seek(10, -123456);
     }
 }

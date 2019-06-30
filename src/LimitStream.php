@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -26,8 +29,8 @@ class LimitStream implements StreamInterface
      */
     public function __construct(
         StreamInterface $stream,
-        $limit = -1,
-        $offset = 0
+        int $limit = -1,
+        int $offset = 0
     ) {
         $this->stream = $stream;
         $this->setLimit($limit);

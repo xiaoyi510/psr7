@@ -1,15 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers GuzzleHttp\Psr7\MessageTrait
  * @covers GuzzleHttp\Psr7\Request
  */
-class RequestTest extends BaseTest
+class RequestTest extends TestCase
 {
     public function testRequestUriMayBeString()
     {
@@ -24,32 +29,30 @@ class RequestTest extends BaseTest
         $this->assertSame($uri, $r->getUri());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidateRequestUri()
     {
+        $this->expectException(\InvalidArgumentException::class);
         new Request('GET', '///');
     }
 
     public function testCanConstructWithBody()
     {
         $r = new Request('GET', '/', [], 'baz');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertEquals('baz', (string) $r->getBody());
     }
 
     public function testNullBody()
     {
         $r = new Request('GET', '/', [], null);
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('', (string) $r->getBody());
     }
 
     public function testFalseyBody()
     {
         $r = new Request('GET', '/', [], '0');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('0', (string) $r->getBody());
     }
 
@@ -96,7 +99,7 @@ class RequestTest extends BaseTest
      */
     public function testConstructWithInvalidMethods($method)
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(\TypeError::class);
         new Request($method, '/');
     }
 
@@ -106,7 +109,7 @@ class RequestTest extends BaseTest
     public function testWithInvalidMethods($method)
     {
         $r = new Request('get', '/');
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $r->withMethod($method);
     }
 
@@ -135,12 +138,10 @@ class RequestTest extends BaseTest
         $this->assertEquals('/', $r1->getRequestTarget());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testRequestTargetDoesNotAllowSpaces()
     {
         $r1 = new Request('GET', '/');
+        $this->expectException(\InvalidArgumentException::class);
         $r1->withRequestTarget('/foo bar');
     }
 

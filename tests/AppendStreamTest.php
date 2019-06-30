@@ -1,45 +1,42 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7\AppendStream;
 use GuzzleHttp\Psr7;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
-class AppendStreamTest extends BaseTest
+class AppendStreamTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Each stream must be readable
-     */
     public function testValidatesStreamsAreReadable()
     {
         $a = new AppendStream();
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isReadable'])
             ->getMockForAbstractClass();
         $s->expects($this->once())
             ->method('isReadable')
             ->will($this->returnValue(false));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Each stream must be readable');
         $a->addStream($s);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage The AppendStream can only seek with SEEK_SET
-     */
     public function testValidatesSeekType()
     {
         $a = new AppendStream();
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The AppendStream can only seek with SEEK_SET');
         $a->seek(100, SEEK_CUR);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to seek stream 0 of the AppendStream
-     */
     public function testTriesToRewindOnSeek()
     {
         $a = new AppendStream();
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isReadable', 'rewind', 'isSeekable'])
             ->getMockForAbstractClass();
         $s->expects($this->once())
@@ -52,6 +49,8 @@ class AppendStreamTest extends BaseTest
             ->method('rewind')
             ->will($this->throwException(new \RuntimeException()));
         $a->addStream($s);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to seek stream 0 of the AppendStream');
         $a->seek(10);
     }
 
@@ -103,7 +102,7 @@ class AppendStreamTest extends BaseTest
         $this->assertFalse($a->isWritable());
 
         $this->assertNull($s1->detach());
-        $this->assertInternalType('resource', $handle, 'resource is not closed when detaching');
+        $this->assertIsResource($handle, 'resource is not closed when detaching');
         fclose($handle);
     }
 
@@ -127,16 +126,14 @@ class AppendStreamTest extends BaseTest
         $this->assertFalse(is_resource($handle));
     }
 
-    /**
-     * @expectedExceptionMessage Cannot write to an AppendStream
-     * @expectedException \RuntimeException
-     */
     public function testIsNotWritable()
     {
         $a = new AppendStream([Psr7\stream_for('foo')]);
         $this->assertFalse($a->isWritable());
         $this->assertTrue($a->isSeekable());
         $this->assertTrue($a->isReadable());
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot write to an AppendStream');
         $a->write('foo');
     }
 
@@ -172,7 +169,7 @@ class AppendStreamTest extends BaseTest
         ]);
         $this->assertEquals(6, $a->getSize());
 
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isSeekable', 'isReadable'])
             ->getMockForAbstractClass();
         $s->expects($this->once())
@@ -187,7 +184,7 @@ class AppendStreamTest extends BaseTest
 
     public function testCatchesExceptionsWhenCastingToString()
     {
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isSeekable', 'read', 'isReadable', 'eof'])
             ->getMockForAbstractClass();
         $s->expects($this->once())
@@ -204,7 +201,18 @@ class AppendStreamTest extends BaseTest
             ->will($this->returnValue(false));
         $a = new AppendStream([$s]);
         $this->assertFalse($a->eof());
-        $this->assertSame('', (string) $a);
+
+        $errors = [];
+        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors){
+            $errors[] = ['number' => $errorNumber, 'message' => $errorMessage];
+        });
+        (string) $a;
+
+        restore_error_handler();
+
+        $this->assertCount(1, $errors);
+        $this->assertSame(E_USER_ERROR, $errors[0]['number']);
+        $this->assertStringStartsWith('GuzzleHttp\Psr7\AppendStream::__toString exception:', $errors[0]['message']);
     }
 
     public function testReturnsEmptyMetadata()

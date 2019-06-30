@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="tests/bootstrap.php"
-         colors="true">
-  <testsuites>
-    <testsuite>
-      <directory>tests</directory>
-    </testsuite>
-  </testsuites>
-  <filter>
-    <whitelist>
-      <directory suffix=".php">src</directory>
-    </whitelist>
-  </filter>
+<phpunit bootstrap="vendor/autoload.php" backupGlobals="true" colors="true">
+    <testsuites>
+        <testsuite name="Guzzle PSR-7 Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+        <testsuite name="PSR-7 Integration Test Suite">
+            <directory>./vendor/http-interop/http-factory-tests/test</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <const name="REQUEST_FACTORY" value="GuzzleHttp\Psr7\HttpFactory"/>
+        <const name="RESPONSE_FACTORY" value="GuzzleHttp\Psr7\HttpFactory"/>
+        <const name="SERVER_REQUEST_FACTORY" value="GuzzleHttp\Psr7\HttpFactory"/>
+        <const name="STREAM_FACTORY" value="GuzzleHttp\Psr7\HttpFactory"/>
+        <const name="UPLOADED_FILE_FACTORY" value="GuzzleHttp\Psr7\HttpFactory"/>
+        <const name="URI_FACTORY" value="GuzzleHttp\Psr7\HttpFactory"/>
+    </php>
 </phpunit>
