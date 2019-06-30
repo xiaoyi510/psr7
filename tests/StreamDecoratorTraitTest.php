@@ -1,9 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use Psr\Http\Message\StreamInterface;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\StreamDecoratorTrait;
+use PHPUnit\Framework\TestCase;
 
 class Str implements StreamInterface
 {
@@ -13,7 +17,7 @@ class Str implements StreamInterface
 /**
  * @covers GuzzleHttp\Psr7\StreamDecoratorTrait
  */
-class StreamDecoratorTraitTest extends BaseTest
+class StreamDecoratorTraitTest extends TestCase
 {
     /** @var StreamInterface */
     private $a;
@@ -22,7 +26,7 @@ class StreamDecoratorTraitTest extends BaseTest
     /** @var resource */
     private $c;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->c = fopen('php://temp', 'r+');
         fwrite($this->c, 'foo');
@@ -33,7 +37,7 @@ class StreamDecoratorTraitTest extends BaseTest
 
     public function testCatchesExceptionsWhenCastingToString()
     {
-        $s = $this->getMockBuilder('Psr\Http\Message\StreamInterface')
+        $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['read'])
             ->getMockForAbstractClass();
         $s->expects($this->once())
@@ -43,7 +47,7 @@ class StreamDecoratorTraitTest extends BaseTest
         set_error_handler(function ($errNo, $str) use (&$msg) { $msg = $str; });
         echo new Str($s);
         restore_error_handler();
-        $this->assertContains('foo', $msg);
+        $this->assertStringContainsString('foo', $msg);
     }
 
     public function testToString()
@@ -114,19 +118,15 @@ class StreamDecoratorTraitTest extends BaseTest
         $this->assertEquals('foofoo', (string) $this->a);
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testThrowsWithInvalidGetter()
     {
+        $this->expectException(\UnexpectedValueException::class);
         $this->b->foo;
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testThrowsWhenGetterNotImplemented()
     {
+        $this->expectException(\BadMethodCallException::class);
         $s = new BadStream();
         $s->stream;
     }

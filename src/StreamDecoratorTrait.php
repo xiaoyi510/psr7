@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -42,10 +45,9 @@ trait StreamDecoratorTrait
                 $this->seek(0);
             }
             return $this->getContents();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // Really, PHP? https://bugs.php.net/bug.php?id=53648
-            trigger_error('StreamDecorator::__toString exception: '
-                . (string) $e, E_USER_ERROR);
+            trigger_error('StreamDecorator::__toString exception: '.(string) $e, E_USER_ERROR);
             return '';
         }
     }

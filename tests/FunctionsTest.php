@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\FnStream;
 use GuzzleHttp\Psr7\NoSeekStream;
 use GuzzleHttp\Psr7\Stream;
+use Psr\Http\Message\ServerRequestInterface;
+use PHPUnit\Framework\TestCase;
 
-class FunctionsTest extends BaseTest
+class FunctionsTest extends TestCase
 {
     public function testCopiesToString()
     {
@@ -132,7 +136,7 @@ class FunctionsTest extends BaseTest
 
     public function testReadsLineUntilFalseReturnedFromRead()
     {
-        $s = $this->getMockBuilder('GuzzleHttp\Psr7\Stream')
+        $s = $this->getMockBuilder(Stream::class)
             ->setMethods(['read', 'eof'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -158,13 +162,11 @@ class FunctionsTest extends BaseTest
         $this->assertEquals(md5('foobazbar'), Psr7\hash($s, 'md5'));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testCalculatesHashThrowsWhenSeekFails()
     {
         $s = new NoSeekStream(Psr7\stream_for('foobazbar'));
         $s->read(2);
+        $this->expectException(\RuntimeException::class);
         Psr7\hash($s, 'md5');
     }
 
@@ -179,16 +181,14 @@ class FunctionsTest extends BaseTest
     public function testOpensFilesSuccessfully()
     {
         $r = Psr7\try_fopen(__FILE__, 'r');
-        $this->assertInternalType('resource', $r);
+        $this->assertIsResource($r);
         fclose($r);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to open /path/to/does/not/exist using mode r
-     */
     public function testThrowsExceptionNotWarning()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to open /path/to/does/not/exist using mode r');
         Psr7\try_fopen('/path/to/does/not/exist', 'r');
     }
 
@@ -345,12 +345,10 @@ class FunctionsTest extends BaseTest
         $this->assertEquals('Bar Bam', $request->getHeaderLine('Foo'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid header syntax: Obsolete line folding
-     */
     public function testRequestParsingFailsWithFoldedHeadersOnHttp11()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid header syntax: Obsolete line folding');
         Psr7\parse_response("GET_DATA / HTTP/1.1\r\nFoo: Bar\r\n Biz: Bam\r\n\r\n");
     }
 
@@ -364,11 +362,9 @@ class FunctionsTest extends BaseTest
         $this->assertEquals('Bam', $request->getHeaderLine('Baz'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidatesRequestMessages()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\parse_request("HTTP/1.1 200 OK\r\n\r\n");
     }
 
@@ -418,12 +414,9 @@ class FunctionsTest extends BaseTest
         $this->assertSame('Test', (string)$response->getBody());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid header syntax: Obsolete line folding
-     */
     public function testResponseParsingFailsWithFoldedHeadersOnHttp11()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\parse_response("HTTP/1.1 200\r\nFoo: Bar\r\n Biz: Bam\r\nBaz: Qux\r\n\r\nTest");
     }
 
@@ -439,20 +432,15 @@ class FunctionsTest extends BaseTest
         $this->assertSame("Test\n\nOtherTest", (string)$response->getBody());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid message: Missing header delimiter
-     */
     public function testResponseParsingFailsWithoutHeaderDelimiter()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\parse_response("HTTP/1.0 200\r\nFoo: Bar\r\n Baz: Bam\r\nBaz: Qux\r\n");
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidatesResponseMessages()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\parse_response("GET / HTTP/1.1\r\n\r\n");
     }
 
@@ -471,18 +459,16 @@ class FunctionsTest extends BaseTest
 
     public function testCreatesUriForValue()
     {
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Uri', Psr7\uri_for('/foo'));
+        $this->assertInstanceOf(Psr7\Uri::class, Psr7\uri_for('/foo'));
         $this->assertInstanceOf(
-            'GuzzleHttp\Psr7\Uri',
+            Psr7\Uri::class,
             Psr7\uri_for(new Psr7\Uri('/foo'))
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidatesUri()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\uri_for([]);
     }
 
@@ -498,7 +484,7 @@ class FunctionsTest extends BaseTest
     public function testCreatesWithFactory()
     {
         $stream = Psr7\stream_for('foo');
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Stream', $stream);
+        $this->assertInstanceOf(Stream::class, $stream);
         $this->assertEquals('foo', $stream->getContents());
         $stream->close();
     }
@@ -506,20 +492,20 @@ class FunctionsTest extends BaseTest
     public function testFactoryCreatesFromEmptyString()
     {
         $s = Psr7\stream_for();
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Stream', $s);
+        $this->assertInstanceOf(Stream::class, $s);
     }
 
     public function testFactoryCreatesFromNull()
     {
         $s = Psr7\stream_for(null);
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Stream', $s);
+        $this->assertInstanceOf(Stream::class, $s);
     }
 
     public function testFactoryCreatesFromResource()
     {
         $r = fopen(__FILE__, 'r');
         $s = Psr7\stream_for($r);
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Stream', $s);
+        $this->assertInstanceOf(Stream::class, $s);
         $this->assertSame(file_get_contents(__FILE__), (string)$s);
     }
 
@@ -527,7 +513,7 @@ class FunctionsTest extends BaseTest
     {
         $r = new HasToString();
         $s = Psr7\stream_for($r);
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Stream', $s);
+        $this->assertInstanceOf(Stream::class, $s);
         $this->assertEquals('foo', (string)$s);
     }
 
@@ -537,11 +523,9 @@ class FunctionsTest extends BaseTest
         $this->assertSame($s, Psr7\stream_for($s));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testThrowsExceptionForUnknown()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Psr7\stream_for(new \stdClass());
     }
 
@@ -562,7 +546,7 @@ class FunctionsTest extends BaseTest
     {
         $a = new \ArrayIterator(['foo', 'bar', '123']);
         $p = Psr7\stream_for($a);
-        $this->assertInstanceOf('GuzzleHttp\Psr7\PumpStream', $p);
+        $this->assertInstanceOf(Psr7\PumpStream::class, $p);
         $this->assertEquals('foo', $p->read(3));
         $this->assertFalse($p->eof());
         $this->assertEquals('b', $p->read(1));
@@ -669,9 +653,6 @@ class FunctionsTest extends BaseTest
         $this->assertEquals(0, $body->tell());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testThrowsWhenBodyCannotBeRewound()
     {
         $body = Psr7\stream_for('abc');
@@ -682,6 +663,7 @@ class FunctionsTest extends BaseTest
             },
         ]);
         $res = new Psr7\Response(200, [], $body);
+        $this->expectException(\RuntimeException::class);
         Psr7\rewind_body($res);
     }
 
@@ -717,11 +699,11 @@ class FunctionsTest extends BaseTest
     {
         $r1 = new Psr7\Request('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, []);
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Request', $r2);
+        $this->assertInstanceOf(Psr7\Request::class, $r2);
 
         $r1 = new Psr7\ServerRequest('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, []);
-        $this->assertInstanceOf('Psr\Http\Message\ServerRequestInterface', $r2);
+        $this->assertInstanceOf(ServerRequestInterface::class, $r2);
     }
 
     public function testReturnsUriAsIsWhenNoChanges()
@@ -752,11 +734,11 @@ class FunctionsTest extends BaseTest
     {
         $r1 = new Psr7\Request('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, ['remove_headers' => ['non-existent']]);
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Request', $r2);
+        $this->assertInstanceOf(Psr7\Request::class, $r2);
 
         $r1 = new Psr7\ServerRequest('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, ['remove_headers' => ['non-existent']]);
-        $this->assertInstanceOf('Psr\Http\Message\ServerRequestInterface', $r2);
+        $this->assertInstanceOf(ServerRequestInterface::class, $r2);
     }
 
     public function testMessageBodySummaryWithSmallBody()
@@ -794,7 +776,7 @@ class FunctionsTest extends BaseTest
         $this->assertCount(1, $modifiedRequest->getUploadedFiles());
 
         $files = $modifiedRequest->getUploadedFiles();
-        $this->assertInstanceOf('GuzzleHttp\Psr7\UploadedFile', $files[0]);
+        $this->assertInstanceOf(Psr7\UploadedFile::class, $files[0]);
     }
 
     public function testModifyServerRequestWithCookies()

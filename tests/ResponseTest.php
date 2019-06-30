@@ -1,14 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers GuzzleHttp\Psr7\MessageTrait
  * @covers GuzzleHttp\Psr7\Response
  */
-class ResponseTest extends BaseTest
+class ResponseTest extends TestCase
 {
     public function testDefaultConstructor()
     {
@@ -17,7 +22,7 @@ class ResponseTest extends BaseTest
         $this->assertSame('1.1', $r->getProtocolVersion());
         $this->assertSame('OK', $r->getReasonPhrase());
         $this->assertSame([], $r->getHeaders());
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('', (string) $r->getBody());
     }
 
@@ -45,12 +50,10 @@ class ResponseTest extends BaseTest
 
     public function testStatusCanBeNumericString()
     {
-        $r = new Response('404');
-        $r2 = $r->withStatus('201');
-        $this->assertSame(404, $r->getStatusCode());
-        $this->assertSame('Not Found', $r->getReasonPhrase());
-        $this->assertSame(201, $r2->getStatusCode());
-        $this->assertSame('Created', $r2->getReasonPhrase());
+        $r = (new Response())->withStatus('201');
+
+        $this->assertSame(201, $r->getStatusCode());
+        $this->assertSame('Created', $r->getReasonPhrase());
     }
 
     public function testCanConstructWithHeaders()
@@ -74,21 +77,21 @@ class ResponseTest extends BaseTest
     public function testCanConstructWithBody()
     {
         $r = new Response(200, [], 'baz');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('baz', (string) $r->getBody());
     }
 
     public function testNullBody()
     {
         $r = new Response(200, [], null);
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('', (string) $r->getBody());
     }
 
     public function testFalseyBody()
     {
         $r = new Response(200, [], '0');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('0', (string) $r->getBody());
     }
 
@@ -141,7 +144,7 @@ class ResponseTest extends BaseTest
     {
         $b = Psr7\stream_for('0');
         $r = (new Response())->withBody($b);
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('0', (string) $r->getBody());
     }
 
@@ -254,7 +257,8 @@ class ResponseTest extends BaseTest
      */
     public function testConstructResponseInvalidHeader($header, $headerValue, $expectedMessage)
     {
-        $this->expectException('InvalidArgumentException', $expectedMessage);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($expectedMessage);
         new Response(200, [$header => $headerValue]);
     }
 
@@ -274,7 +278,8 @@ class ResponseTest extends BaseTest
     public function testWithInvalidHeader($header, $headerValue, $expectedMessage)
     {
         $r = new Response();
-        $this->expectException('InvalidArgumentException', $expectedMessage);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($expectedMessage);
         $r->withHeader($header, $headerValue);
     }
 
@@ -306,7 +311,7 @@ class ResponseTest extends BaseTest
      */
     public function testConstructResponseWithNonIntegerStatusCode($invalidValues)
     {
-        $this->expectException('InvalidArgumentException', 'Status code must be an integer value.');
+        $this->expectException(\TypeError::class);
         new Response($invalidValues);
     }
 
@@ -317,7 +322,8 @@ class ResponseTest extends BaseTest
     public function testResponseChangeStatusCodeWithNonInteger($invalidValues)
     {
         $response = new Response();
-        $this->expectException('InvalidArgumentException', 'Status code must be an integer value.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Status code must be an integer value.');
         $response->withStatus($invalidValues);
     }
 
@@ -337,7 +343,8 @@ class ResponseTest extends BaseTest
      */
     public function testConstructResponseWithInvalidRangeStatusCode($invalidValues)
     {
-        $this->expectException('InvalidArgumentException', 'Status code must be an integer value between 1xx and 5xx.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Status code must be an integer value between 1xx and 5xx.');
         new Response($invalidValues);
     }
 
@@ -348,7 +355,8 @@ class ResponseTest extends BaseTest
     public function testResponseChangeStatusCodeWithWithInvalidRange($invalidValues)
     {
         $response = new Response();
-        $this->expectException('InvalidArgumentException', 'Status code must be an integer value between 1xx and 5xx.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Status code must be an integer value between 1xx and 5xx.');
         $response->withStatus($invalidValues);
     }
 

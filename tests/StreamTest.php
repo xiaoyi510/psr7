@@ -1,21 +1,22 @@
 <?php
+
+declare(strict_types=1);
+
 namespace GuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\NoSeekStream;
 use GuzzleHttp\Psr7\Stream;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers GuzzleHttp\Psr7\Stream
  */
-class StreamTest extends BaseTest
+class StreamTest extends TestCase
 {
     public static $isFReadError = false;
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConstructorThrowsExceptionOnInvalidArgument()
     {
+        $this->expectException(\InvalidArgumentException::class);
         new Stream(true);
     }
 
@@ -28,7 +29,7 @@ class StreamTest extends BaseTest
         $this->assertTrue($stream->isWritable());
         $this->assertTrue($stream->isSeekable());
         $this->assertEquals('php://temp', $stream->getMetadata('uri'));
-        $this->assertInternalType('array', $stream->getMetadata());
+        $this->assertIsArray($stream->getMetadata());
         $this->assertEquals(4, $stream->getSize());
         $this->assertFalse($stream->eof());
         $stream->close();
@@ -43,7 +44,7 @@ class StreamTest extends BaseTest
         $this->assertTrue($stream->isWritable());
         $this->assertTrue($stream->isSeekable());
         $this->assertEquals('php://temp', $stream->getMetadata('uri'));
-        $this->assertInternalType('array', $stream->getMetadata());
+        $this->assertIsArray($stream->getMetadata());
         $this->assertEquals(4, $stream->getSize());
         $this->assertFalse($stream->eof());
         $stream->close();
@@ -132,7 +133,7 @@ class StreamTest extends BaseTest
         $handle = fopen('php://temp', 'r');
         $stream = new Stream($handle);
         $this->assertSame($handle, $stream->detach());
-        $this->assertInternalType('resource', $handle, 'Stream is not closed');
+        $this->assertIsResource($handle, 'Stream is not closed');
         $this->assertNull($stream->detach());
 
         $this->assertStreamStateAfterClosedOrDetached($stream);
@@ -164,7 +165,7 @@ class StreamTest extends BaseTest
             try {
                 $fn();
             } catch (\Exception $e) {
-                $this->assertContains('Stream is detached', $e->getMessage());
+                $this->assertStringContainsString('Stream is detached', $e->getMessage());
 
                 return;
             }
@@ -178,7 +179,17 @@ class StreamTest extends BaseTest
         $throws(function () use ($stream) { $stream->tell(); });
         $throws(function () use ($stream) { $stream->eof(); });
         $throws(function () use ($stream) { $stream->getContents(); });
-        $this->assertSame('', (string) $stream);
+
+        $errors = [];
+        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors) {
+            $errors[] = ['message' => $errorMessage, 'number' => $errorNumber];
+        });
+        $this->assertSame('', (string)$stream);
+        restore_error_handler();
+
+        $this->assertCount(1, $errors);
+        $this->assertStringStartsWith('GuzzleHttp\Psr7\Stream::__toString exception', $errors[0]['message']);
+        $this->assertSame(E_USER_ERROR, $errors[0]['number']);
     }
 
     public function testStreamReadingWithZeroLength()
@@ -191,14 +202,12 @@ class StreamTest extends BaseTest
         $stream->close();
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Length parameter cannot be negative
-     */
     public function testStreamReadingWithNegativeLength()
     {
         $r = fopen('php://temp', 'r');
         $stream = new Stream($r);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Length parameter cannot be negative');
 
         try {
             $stream->read(-1);
@@ -210,15 +219,13 @@ class StreamTest extends BaseTest
         $stream->close();
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to read from stream
-     */
     public function testStreamReadingFreadError()
     {
         self::$isFReadError = true;
         $r = fopen('php://temp', 'r');
         $stream = new Stream($r);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to read from stream');
 
         try {
             $stream->read(1);
@@ -233,18 +240,12 @@ class StreamTest extends BaseTest
     }
 
     /**
-     * @dataProvider gzipModeProvider
+     * @requires extension zlib
      *
-     * @param string $mode
-     * @param bool   $readable
-     * @param bool   $writable
+     * @dataProvider gzipModeProvider
      */
-    public function testGzipStreamModes($mode, $readable, $writable)
+    public function testGzipStreamModes(string $mode, bool $readable, bool $writable)
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('This does not work on HHVM.');
-        }
-
         $r = gzopen('php://temp', $mode);
         $stream = new Stream($r);
 
@@ -264,10 +265,8 @@ class StreamTest extends BaseTest
 
     /**
      * @dataProvider readableModeProvider
-     *
-     * @param string $mode
      */
-    public function testReadableStream($mode)
+    public function testReadableStream(string $mode)
     {
         $r = fopen('php://temp', $mode);
         $stream = new Stream($r);
@@ -312,10 +311,8 @@ class StreamTest extends BaseTest
 
     /**
      * @dataProvider writableModeProvider
-     *
-     * @param string $mode
      */
-    public function testWritableStream($mode)
+    public function testWritableStream(string $mode)
     {
         $r = fopen('php://temp', $mode);
         $stream = new Stream($r);
