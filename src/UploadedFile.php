@@ -11,10 +11,7 @@ use RuntimeException;
 
 class UploadedFile implements UploadedFileInterface
 {
-    /**
-     * @var int[]
-     */
-    private static $errors = [
+    private const ERRORS = [
         UPLOAD_ERR_OK,
         UPLOAD_ERR_INI_SIZE,
         UPLOAD_ERR_FORM_SIZE,
@@ -109,7 +106,7 @@ class UploadedFile implements UploadedFileInterface
      */
     private function setError(int $error): void
     {
-        if (false === in_array($error, UploadedFile::$errors)) {
+        if (false === in_array($error, UploadedFile::ERRORS, true)) {
             throw new InvalidArgumentException(
                 'Invalid error status for UploadedFile'
             );

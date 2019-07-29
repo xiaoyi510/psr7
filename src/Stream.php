@@ -12,15 +12,11 @@ use Psr\Http\Message\StreamInterface;
 class Stream implements StreamInterface
 {
     /**
-     * Resource modes.
-     *
-     * @var string
-     *
      * @see http://php.net/manual/function.fopen.php
      * @see http://php.net/manual/en/function.gzopen.php
      */
-    const READABLE_MODES = '/r|a\+|ab\+|w\+|wb\+|x\+|xb\+|c\+|cb\+/';
-    const WRITABLE_MODES = '/a|w|r\+|rb\+|rw|x|c/';
+    private const READABLE_MODES = '/r|a\+|ab\+|w\+|wb\+|x\+|xb\+|c\+|cb\+/';
+    private const WRITABLE_MODES = '/a|w|r\+|rb\+|rw|x|c/';
 
     private $stream;
     private $size;

@@ -81,8 +81,8 @@ class CachingStreamTest extends TestCase
     {
         $a = Psr7\stream_for('foo');
         $d = $this->getMockBuilder(CachingStream::class)
-            ->setMethods(array('seek'))
-            ->setConstructorArgs(array($a))
+            ->setMethods(['seek'])
+            ->setConstructorArgs([$a])
             ->getMock();
         $d->expects($this->once())
             ->method('seek')

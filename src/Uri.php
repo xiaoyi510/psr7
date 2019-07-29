@@ -21,9 +21,9 @@ class Uri implements UriInterface
      * we apply this default host when no host is given yet to form a
      * valid URI.
      */
-    const HTTP_DEFAULT_HOST = 'localhost';
+    private const HTTP_DEFAULT_HOST = 'localhost';
 
-    private static $defaultPorts = [
+    private const DEFAULT_PORTS = [
         'http'  => 80,
         'https' => 443,
         'ftp' => 21,
@@ -37,9 +37,18 @@ class Uri implements UriInterface
         'ldap' => 389,
     ];
 
-    private static $charUnreserved = 'a-zA-Z0-9_\-\.~';
-    private static $charSubDelims = '!\$&\'\(\)\*\+,;=';
-    private static $replaceQuery = ['=' => '%3D', '&' => '%26'];
+    /**
+     * Unreserved characters for use in a regex.
+     * @link https://tools.ietf.org/html/rfc3986#section-2.3
+     */
+    private const CHAR_UNRESERVED = 'a-zA-Z0-9_\-\.~';
+
+    /**
+     * Sub-delims for use in a regex.
+     * @link https://tools.ietf.org/html/rfc3986#section-2.2
+     */
+    private const CHAR_SUB_DELIMS = '!\$&\'\(\)\*\+,;=';
+    private const QUERY_SEPARATORS_REPLACEMENT = ['=' => '%3D', '&' => '%26'];
 
     /** @var string Uri scheme. */
     private $scheme = '';
@@ -149,7 +158,7 @@ class Uri implements UriInterface
     public static function isDefaultPort(UriInterface $uri)
     {
         return $uri->getPort() === null
-            || (isset(self::$defaultPorts[$uri->getScheme()]) && $uri->getPort() === self::$defaultPorts[$uri->getScheme()]);
+            || (isset(self::DEFAULT_PORTS[$uri->getScheme()]) && $uri->getPort() === self::DEFAULT_PORTS[$uri->getScheme()]);
     }
 
     /**
@@ -591,7 +600,7 @@ class Uri implements UriInterface
         }
 
         return preg_replace_callback(
-            '/(?:[^%' . self::$charUnreserved . self::$charSubDelims . ']+|%(?![A-Fa-f0-9]{2}))/',
+            '/(?:[^%' . self::CHAR_UNRESERVED  . self::CHAR_SUB_DELIMS . ']+|%(?![A-Fa-f0-9]{2}))/',
             [$this, 'rawurlencodeMatchZero'],
             $component
         );
@@ -656,10 +665,10 @@ class Uri implements UriInterface
         // Query string separators ("=", "&") within the key or value need to be encoded
         // (while preventing double-encoding) before setting the query string. All other
         // chars that need percent-encoding will be encoded by withQuery().
-        $queryString = strtr($key, self::$replaceQuery);
+        $queryString = strtr($key, self::QUERY_SEPARATORS_REPLACEMENT);
 
         if ($value !== null) {
-            $queryString .= '=' . strtr($value, self::$replaceQuery);
+            $queryString .= '=' . strtr($value, self::QUERY_SEPARATORS_REPLACEMENT);
         }
 
         return $queryString;
@@ -688,7 +697,7 @@ class Uri implements UriInterface
         }
 
         return preg_replace_callback(
-            '/(?:[^' . self::$charUnreserved . self::$charSubDelims . '%:@\/]++|%(?![A-Fa-f0-9]{2}))/',
+            '/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/]++|%(?![A-Fa-f0-9]{2}))/',
             [$this, 'rawurlencodeMatchZero'],
             $path
         );
@@ -710,7 +719,7 @@ class Uri implements UriInterface
         }
 
         return preg_replace_callback(
-            '/(?:[^' . self::$charUnreserved . self::$charSubDelims . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
+            '/(?:[^' . self::CHAR_UNRESERVED  . self::CHAR_SUB_DELIMS . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
             [$this, 'rawurlencodeMatchZero'],
             $str
         );
