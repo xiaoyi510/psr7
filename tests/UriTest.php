@@ -589,12 +589,12 @@ class UriTest extends TestCase
         $this->assertSame('foo', (string) $uri);
     }
 
-    public function testRelativePathAndAuhorityIsAutomagicallyFixed()
+    public function testRelativePathAndAuthorityThrowsException()
     {
         // concatenating a relative path with a host doesn't work: "//example.comfoo" would be wrong
-        $uri = (new Uri)->withPath('foo')->withHost('example.com');
-        $this->assertSame('/foo', $uri->getPath());
-        $this->assertSame('//example.com/foo', (string) $uri);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The path of a URI with an authority must start with a slash "/" or be empty');
+        (new Uri)->withHost('example.com')->withPath('foo');
     }
 
     public function testPathStartingWithTwoSlashesAndNoAuthorityIsInvalid()
