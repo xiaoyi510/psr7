@@ -72,7 +72,7 @@ class Uri implements UriInterface
     private $fragment = '';
 
     /** @var string|null String representation */
-    private $toString = null;
+    private $composedComponents;
 
     public function __construct(string $uri = '')
     {
@@ -87,8 +87,8 @@ class Uri implements UriInterface
 
     public function __toString()
     {
-        if ($this->toString === null) {
-            $this->toString = self::composeComponents(
+        if ($this->composedComponents === null) {
+            $this->composedComponents = self::composeComponents(
                 $this->scheme,
                 $this->getAuthority(),
                 $this->path,
@@ -97,7 +97,7 @@ class Uri implements UriInterface
             );
         }
 
-        return $this->toString;
+        return $this->composedComponents;
     }
 
     /**
@@ -409,7 +409,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->scheme = $scheme;
-        $new->toString = null;
+        $new->composedComponents = null;
         $new->removeDefaultPort();
         $new->validateState();
 
@@ -429,7 +429,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->userInfo = $info;
-        $new->toString = null;
+        $new->composedComponents = null;
         $new->validateState();
 
         return $new;
@@ -445,7 +445,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->host = $host;
-        $new->toString = null;
+        $new->composedComponents = null;
         $new->validateState();
 
         return $new;
@@ -461,7 +461,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->port = $port;
-        $new->toString = null;
+        $new->composedComponents = null;
         $new->removeDefaultPort();
         $new->validateState();
 
@@ -478,7 +478,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->path = $path;
-        $new->toString = null;
+        $new->composedComponents = null;
         $new->validateState();
 
         return $new;
@@ -494,7 +494,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->query = $query;
-        $new->toString = null;
+        $new->composedComponents = null;
 
         return $new;
     }
@@ -509,7 +509,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->fragment = $fragment;
-        $new->toString = null;
+        $new->composedComponents = null;
 
         return $new;
     }
