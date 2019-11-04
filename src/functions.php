@@ -33,7 +33,7 @@ function str(MessageInterface $message)
     }
 
     foreach ($message->getHeaders() as $name => $values) {
-        if (strlower($name) === 'set-cookie') {
+        if (strtolower($name) === 'set-cookie') {
             foreach ($values as $value) {
                 $msg .= "\r\n{$name}: " . $value;
             }
