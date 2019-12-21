@@ -13,6 +13,11 @@
         {
             "name": "Tobias Schultze",
             "homepage": "https://github.com/Tobion"
+        },
+        {
+            "name": "Márk Sági-Kazár",
+            "email": "mark.sagikazar@gmail.com",
+            "homepage": "https://sagikazarmark.hu"
         }
     ],
     "require": {
