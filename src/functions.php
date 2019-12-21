@@ -49,6 +49,7 @@ function str(MessageInterface $message)
  * @param string|UriInterface $uri
  *
  * @return UriInterface
+ *
  * @throws \InvalidArgumentException
  */
 function uri_for($uri)
@@ -73,6 +74,7 @@ function uri_for($uri)
  * @param array                                                                  $options  Additional options
  *
  * @return StreamInterface
+ *
  * @throws \InvalidArgumentException if the $resource arg is not valid.
  */
 function stream_for($resource = '', array $options = [])
@@ -217,7 +219,7 @@ function modify_request(RequestInterface $request, array $changes)
                 $standardPorts = ['http' => 80, 'https' => 443];
                 $scheme = $changes['uri']->getScheme();
                 if (isset($standardPorts[$scheme]) && $port != $standardPorts[$scheme]) {
-                    $changes['set_headers']['Host'] .= ':'.$port;
+                    $changes['set_headers']['Host'] .= ':' . $port;
                 }
             }
         }
@@ -294,6 +296,7 @@ function rewind_body(MessageInterface $message)
  * @param string $mode     Mode used to open the file
  *
  * @return resource
+ *
  * @throws \RuntimeException if the file cannot be opened
  */
 function try_fopen($filename, $mode)
@@ -326,7 +329,9 @@ function try_fopen($filename, $mode)
  * @param StreamInterface $stream Stream to read
  * @param int             $maxLen Maximum number of bytes to read. Pass -1
  *                                to read the entire stream.
+ *
  * @return string
+ *
  * @throws \RuntimeException on error.
  */
 function copy_to_string(StreamInterface $stream, $maxLen = -1)
@@ -405,6 +410,7 @@ function copy_to_stream(
  * @param bool            $rawOutput Whether or not to use raw output
  *
  * @return string Returns the hash of the stream
+ *
  * @throws \RuntimeException on error.
  */
 function hash(
@@ -542,7 +548,9 @@ function parse_query($str, $urlEncoding = true)
     } elseif ($urlEncoding === PHP_QUERY_RFC1738) {
         $decoder = 'urldecode';
     } else {
-        $decoder = function ($str) { return $str; };
+        $decoder = function ($str) {
+            return $str;
+        };
     }
 
     foreach (explode('&', $str) as $kvp) {
@@ -573,6 +581,7 @@ function parse_query($str, $urlEncoding = true)
  * @param int|false $encoding Set to false to not encode, PHP_QUERY_RFC3986
  *                            to encode using RFC3986, or PHP_QUERY_RFC1738
  *                            to encode using RFC1738.
+ *
  * @return string
  */
 function build_query(array $params, $encoding = PHP_QUERY_RFC3986)
@@ -582,7 +591,9 @@ function build_query(array $params, $encoding = PHP_QUERY_RFC3986)
     }
 
     if ($encoding === false) {
-        $encoder = function ($str) { return $str; };
+        $encoder = function ($str) {
+            return $str;
+        };
     } elseif ($encoding === PHP_QUERY_RFC3986) {
         $encoder = 'rawurlencode';
     } elseif ($encoding === PHP_QUERY_RFC1738) {
@@ -632,6 +643,7 @@ function mimetype_from_filename($filename)
  * @param $extension string The file extension.
  *
  * @return string|null
+ *
  * @link http://svn.apache.org/repos/asf/httpd/httpd/branches/1.3.x/conf/mime.types
  */
 function mimetype_from_extension($extension)
@@ -757,6 +769,7 @@ function mimetype_from_extension($extension)
  * @param string $message HTTP request or response to parse.
  *
  * @return array
+ *
  * @internal
  */
 function _parse_message($message)
@@ -821,6 +834,7 @@ function _parse_message($message)
  * @param array  $headers Array of headers (each value an array).
  *
  * @return string
+ *
  * @internal
  */
 function _parse_request_uri($path, array $headers)

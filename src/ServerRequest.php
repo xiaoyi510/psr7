@@ -6,9 +6,9 @@ namespace GuzzleHttp\Psr7;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Server-side HTTP request
@@ -81,7 +81,9 @@ class ServerRequest extends Request implements ServerRequestInterface
      * Return an UploadedFile instance array.
      *
      * @param array $files A array which respect $_FILES structure
+     *
      * @throws InvalidArgumentException for unrecognized values
+     *
      * @return array
      */
     public static function normalizeFiles(array $files)
@@ -111,6 +113,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * delegate to normalizeNestedFileSpec() and return that return value.
      *
      * @param array $value $_FILES struct
+     *
      * @return array|UploadedFileInterface
      */
     private static function createUploadedFileFromSpec(array $value)
@@ -183,7 +186,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     private static function extractHostAndPortFromAuthority(string $authority): array
     {
-        $uri = 'http://'.$authority;
+        $uri = 'http://' . $authority;
         $parts = parse_url($uri);
         if (false === $parts) {
             return [null, null];
@@ -243,7 +246,6 @@ class ServerRequest extends Request implements ServerRequestInterface
 
         return $uri;
     }
-
 
     /**
      * {@inheritdoc}

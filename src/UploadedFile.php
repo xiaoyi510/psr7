@@ -59,10 +59,6 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * @param StreamInterface|string|resource $streamOrFile
-     * @param int $size
-     * @param int $errorStatus
-     * @param string|null $clientFilename
-     * @param string|null $clientMediaType
      */
     public function __construct(
         $streamOrFile,
@@ -129,7 +125,7 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isMoved()
     {
@@ -172,7 +168,7 @@ class UploadedFile implements UploadedFileInterface
         }
 
         if ($this->file) {
-            $this->moved = php_sapi_name() == 'cli'
+            $this->moved = PHP_SAPI == 'cli'
                 ? rename($this->file, $targetPath)
                 : move_uploaded_file($this->file, $targetPath);
         } else {

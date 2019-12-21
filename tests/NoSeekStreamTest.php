@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\NoSeekStream;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
@@ -20,10 +19,10 @@ class NoSeekStreamTest extends TestCase
         $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isSeekable', 'seek'])
             ->getMockForAbstractClass();
-        $s->expects($this->never())->method('seek');
-        $s->expects($this->never())->method('isSeekable');
+        $s->expects(self::never())->method('seek');
+        $s->expects(self::never())->method('isSeekable');
         $wrapped = new NoSeekStream($s);
-        $this->assertFalse($wrapped->isSeekable());
+        self::assertFalse($wrapped->isSeekable());
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot seek a NoSeekStream');
         $wrapped->seek(2);
@@ -34,7 +33,7 @@ class NoSeekStreamTest extends TestCase
         $s = \GuzzleHttp\Psr7\stream_for('foo');
         $s->seek(1);
         $wrapped = new NoSeekStream($s);
-        $this->assertEquals('oo', (string) $wrapped);
+        self::assertEquals('oo', (string) $wrapped);
 
         $wrapped->close();
     }

@@ -20,12 +20,12 @@ class UriNormalizerTest extends TestCase
         $expectEncoding = 'a%C2%7A%5Eb%25%FA%FA%FA';
         $uri = (new Uri())->withPath("/$actualEncoding")->withQuery($actualEncoding);
 
-        $this->assertSame("/$actualEncoding?$actualEncoding", (string) $uri, 'Not normalized automatically beforehand');
+        self::assertSame("/$actualEncoding?$actualEncoding", (string) $uri, 'Not normalized automatically beforehand');
 
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::CAPITALIZE_PERCENT_ENCODING);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame("/$expectEncoding?$expectEncoding", (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame("/$expectEncoding?$expectEncoding", (string) $normalizedUri);
     }
 
     /**
@@ -33,18 +33,18 @@ class UriNormalizerTest extends TestCase
      */
     public function testDecodeUnreservedCharacters(string $char)
     {
-        $percentEncoded = '%'.bin2hex($char);
+        $percentEncoded = '%' . bin2hex($char);
         // Add encoded reserved characters to test that those are not decoded and include the percent-encoded
         // unreserved character both in lower and upper case to test the decoding is case-insensitive.
-        $encodedChars = $percentEncoded.'%2F%5B'.strtoupper($percentEncoded);
+        $encodedChars = $percentEncoded . '%2F%5B' . strtoupper($percentEncoded);
         $uri = (new Uri())->withPath("/$encodedChars")->withQuery($encodedChars);
 
-        $this->assertSame("/$encodedChars?$encodedChars", (string) $uri, 'Not normalized automatically beforehand');
+        self::assertSame("/$encodedChars?$encodedChars", (string) $uri, 'Not normalized automatically beforehand');
 
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::DECODE_UNRESERVED_CHARACTERS);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame("/$char%2F%5B$char?$char%2F%5B$char", (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame("/$char%2F%5B$char?$char%2F%5B$char", (string) $normalizedUri);
     }
 
     public function getUnreservedCharacters()
@@ -63,8 +63,8 @@ class UriNormalizerTest extends TestCase
     {
         $normalizedUri = UriNormalizer::normalize(new Uri($uri), UriNormalizer::CONVERT_EMPTY_PATH);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame($expected, (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame($expected, (string) $normalizedUri);
     }
 
     public function getEmptyPathTestCases()
@@ -81,21 +81,21 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('file://localhost/myfile');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DEFAULT_HOST);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame('file:///myfile', (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame('file:///myfile', (string) $normalizedUri);
     }
 
     public function testRemoveDefaultPort()
     {
         $uri = $this->getMockBuilder(UriInterface::class)->getMock();
-        $uri->expects($this->any())->method('getScheme')->will($this->returnValue('http'));
-        $uri->expects($this->any())->method('getPort')->will($this->returnValue(80));
-        $uri->expects($this->once())->method('withPort')->with(null)->will($this->returnValue(new Uri('http://example.org')));
+        $uri->expects(self::any())->method('getScheme')->will(self::returnValue('http'));
+        $uri->expects(self::any())->method('getPort')->will(self::returnValue(80));
+        $uri->expects(self::once())->method('withPort')->with(null)->will(self::returnValue(new Uri('http://example.org')));
 
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DEFAULT_PORT);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertNull($normalizedUri->getPort());
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertNull($normalizedUri->getPort());
     }
 
     public function testRemoveDotSegments()
@@ -103,8 +103,8 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('http://example.org/../a/b/../c/./d.html');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DOT_SEGMENTS);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame('http://example.org/a/c/d.html', (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame('http://example.org/a/c/d.html', (string) $normalizedUri);
     }
 
     public function testRemoveDotSegmentsOfAbsolutePathReference()
@@ -112,8 +112,8 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('/../a/b/../c/./d.html');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DOT_SEGMENTS);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame('/a/c/d.html', (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame('/a/c/d.html', (string) $normalizedUri);
     }
 
     public function testRemoveDotSegmentsOfRelativePathReference()
@@ -121,8 +121,8 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('../c/./d.html');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DOT_SEGMENTS);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame('../c/./d.html', (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame('../c/./d.html', (string) $normalizedUri);
     }
 
     public function testRemoveDuplicateSlashes()
@@ -130,8 +130,8 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('http://example.org//foo///bar/bam.html');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DUPLICATE_SLASHES);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame('http://example.org/foo/bar/bam.html', (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame('http://example.org/foo/bar/bam.html', (string) $normalizedUri);
     }
 
     public function testSortQueryParameters()
@@ -139,8 +139,8 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('?lang=en&article=fred');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::SORT_QUERY_PARAMETERS);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame('?article=fred&lang=en', (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame('?article=fred&lang=en', (string) $normalizedUri);
     }
 
     public function testSortQueryParametersWithSameKeys()
@@ -148,8 +148,8 @@ class UriNormalizerTest extends TestCase
         $uri = new Uri('?a=b&b=c&a=a&a&b=a&b=b&a=d&a=c');
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::SORT_QUERY_PARAMETERS);
 
-        $this->assertInstanceOf(UriInterface::class, $normalizedUri);
-        $this->assertSame('?a&a=a&a=b&a=c&a=d&b=a&b=b&b=c', (string) $normalizedUri);
+        self::assertInstanceOf(UriInterface::class, $normalizedUri);
+        self::assertSame('?a&a=a&a=b&a=c&a=d&b=a&b=b&b=c', (string) $normalizedUri);
     }
 
     /**
@@ -159,7 +159,7 @@ class UriNormalizerTest extends TestCase
     {
         $equivalent = UriNormalizer::isEquivalent(new Uri($uri1), new Uri($uri2));
 
-        $this->assertSame($expected, $equivalent);
+        self::assertSame($expected, $equivalent);
     }
 
     public function getEquivalentTestCases()

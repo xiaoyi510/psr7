@@ -38,6 +38,7 @@ class FnStream implements StreamInterface
 
     /**
      * Lazily determine which methods are not implemented.
+     *
      * @throws \BadMethodCallException
      */
     public function __get($name)
@@ -58,6 +59,7 @@ class FnStream implements StreamInterface
 
     /**
      * An unserialize would allow the __destruct to run when the unserialized value goes out of scope.
+     *
      * @throws \LogicException
      */
     public function __wakeup()
@@ -89,7 +91,7 @@ class FnStream implements StreamInterface
     {
         try {
             return call_user_func($this->_fn___toString);
-        } catch (\Throwable $e){
+        } catch (\Throwable $e) {
             trigger_error(sprintf('%s::__toString exception: %s', self::class, (string) $e), E_USER_ERROR);
             return '';
         }
