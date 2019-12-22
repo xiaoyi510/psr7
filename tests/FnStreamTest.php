@@ -29,7 +29,7 @@ class FnStreamTest extends TestCase
             }
         ]);
 
-        $this->assertEquals('foo', $s->read(3));
+        self::assertEquals('foo', $s->read(3));
     }
 
     public function testCanCloseOnDestruct()
@@ -41,39 +41,39 @@ class FnStreamTest extends TestCase
             }
         ]);
         unset($s);
-        $this->assertTrue($called);
+        self::assertTrue($called);
     }
 
     public function testDoesNotRequireClose()
     {
         $s = new FnStream([]);
         unset($s);
-        $this->assertTrue(true); // strict mode requires an assertion
+        self::assertTrue(true); // strict mode requires an assertion
     }
 
     public function testDecoratesStream()
     {
         $a = Psr7\stream_for('foo');
         $b = FnStream::decorate($a, []);
-        $this->assertEquals(3, $b->getSize());
-        $this->assertEquals($b->isWritable(), true);
-        $this->assertEquals($b->isReadable(), true);
-        $this->assertEquals($b->isSeekable(), true);
-        $this->assertEquals($b->read(3), 'foo');
-        $this->assertEquals($b->tell(), 3);
-        $this->assertEquals($a->tell(), 3);
-        $this->assertSame('', $a->read(1));
-        $this->assertEquals($b->eof(), true);
-        $this->assertEquals($a->eof(), true);
+        self::assertEquals(3, $b->getSize());
+        self::assertEquals($b->isWritable(), true);
+        self::assertEquals($b->isReadable(), true);
+        self::assertEquals($b->isSeekable(), true);
+        self::assertEquals($b->read(3), 'foo');
+        self::assertEquals($b->tell(), 3);
+        self::assertEquals($a->tell(), 3);
+        self::assertSame('', $a->read(1));
+        self::assertEquals($b->eof(), true);
+        self::assertEquals($a->eof(), true);
         $b->seek(0);
-        $this->assertEquals('foo', (string) $b);
+        self::assertEquals('foo', (string) $b);
         $b->seek(0);
-        $this->assertEquals('foo', $b->getContents());
-        $this->assertEquals($a->getMetadata(), $b->getMetadata());
+        self::assertEquals('foo', $b->getContents());
+        self::assertEquals($a->getMetadata(), $b->getMetadata());
         $b->seek(0, SEEK_END);
         $b->write('bar');
-        $this->assertEquals('foobar', (string) $b);
-        $this->assertIsResource($b->detach());
+        self::assertEquals('foobar', (string) $b);
+        self::assertIsResource($b->detach());
         $b->close();
     }
 
@@ -87,8 +87,8 @@ class FnStreamTest extends TestCase
                 return $a->read($len);
             }
         ]);
-        $this->assertEquals('foo', $b->read(3));
-        $this->assertTrue($called);
+        self::assertEquals('foo', $b->read(3));
+        self::assertTrue($called);
     }
 
     public function testDoNotAllowUnserialization()
@@ -109,15 +109,15 @@ class FnStreamTest extends TestCase
         ]);
 
         $errors = [];
-        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors){
+        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors) {
             $errors[] = ['number' => $errorNumber, 'message' => $errorMessage];
         });
         (string) $a;
 
         restore_error_handler();
 
-        $this->assertCount(1, $errors);
-        $this->assertSame(E_USER_ERROR, $errors[0]['number']);
-        $this->assertStringStartsWith('GuzzleHttp\Psr7\FnStream::__toString exception:', $errors[0]['message']);
+        self::assertCount(1, $errors);
+        self::assertSame(E_USER_ERROR, $errors[0]['number']);
+        self::assertStringStartsWith('GuzzleHttp\Psr7\FnStream::__toString exception:', $errors[0]['message']);
     }
 }

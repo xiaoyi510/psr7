@@ -39,12 +39,14 @@ class Uri implements UriInterface
 
     /**
      * Unreserved characters for use in a regex.
+     *
      * @link https://tools.ietf.org/html/rfc3986#section-2.3
      */
     private const CHAR_UNRESERVED = 'a-zA-Z0-9_\-\.~';
 
     /**
      * Sub-delims for use in a regex.
+     *
      * @link https://tools.ietf.org/html/rfc3986#section-2.2
      */
     private const CHAR_SUB_DELIMS = '!\$&\'\(\)\*\+,;=';
@@ -158,8 +160,6 @@ class Uri implements UriInterface
      * `Psr\Http\Message\UriInterface::getPort` may return null or the standard port. This method can be used
      * independently of the implementation.
      *
-     * @param UriInterface $uri
-     *
      * @return bool
      */
     public static function isDefaultPort(UriInterface $uri)
@@ -178,9 +178,8 @@ class Uri implements UriInterface
      * - absolute-path references, e.g. '/path'
      * - relative-path references, e.g. 'subpath'
      *
-     * @param UriInterface $uri
-     *
      * @return bool
+     *
      * @see Uri::isNetworkPathReference
      * @see Uri::isAbsolutePathReference
      * @see Uri::isRelativePathReference
@@ -196,9 +195,8 @@ class Uri implements UriInterface
      *
      * A relative reference that begins with two slash characters is termed an network-path reference.
      *
-     * @param UriInterface $uri
-     *
      * @return bool
+     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.2
      */
     public static function isNetworkPathReference(UriInterface $uri)
@@ -211,9 +209,8 @@ class Uri implements UriInterface
      *
      * A relative reference that begins with a single slash character is termed an absolute-path reference.
      *
-     * @param UriInterface $uri
-     *
      * @return bool
+     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.2
      */
     public static function isAbsolutePathReference(UriInterface $uri)
@@ -229,9 +226,8 @@ class Uri implements UriInterface
      *
      * A relative reference that does not begin with a slash character is termed a relative-path reference.
      *
-     * @param UriInterface $uri
-     *
      * @return bool
+     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.2
      */
     public static function isRelativePathReference(UriInterface $uri)
@@ -252,6 +248,7 @@ class Uri implements UriInterface
      * @param UriInterface|null $base An optional base URI to compare against
      *
      * @return bool
+     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.4
      */
     public static function isSameDocumentReference(UriInterface $uri, UriInterface $base = null)
@@ -334,9 +331,8 @@ class Uri implements UriInterface
     /**
      * Creates a URI from a hash of `parse_url` components.
      *
-     * @param array $parts
-     *
      * @return UriInterface
+     *
      * @link http://php.net/manual/en/function.parse-url.php
      *
      * @throws \InvalidArgumentException If the components do not form a valid URI.
@@ -579,7 +575,7 @@ class Uri implements UriInterface
         }
 
         return preg_replace_callback(
-            '/(?:[^%' . self::CHAR_UNRESERVED  . self::CHAR_SUB_DELIMS . ']+|%(?![A-Fa-f0-9]{2}))/',
+            '/(?:[^%' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . ']+|%(?![A-Fa-f0-9]{2}))/',
             [$this, 'rawurlencodeMatchZero'],
             $component
         );
@@ -698,7 +694,7 @@ class Uri implements UriInterface
         }
 
         return preg_replace_callback(
-            '/(?:[^' . self::CHAR_UNRESERVED  . self::CHAR_SUB_DELIMS . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
+            '/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
             [$this, 'rawurlencodeMatchZero'],
             $str
         );

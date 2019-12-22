@@ -21,6 +21,7 @@ final class UriResolver
      * @param string $path
      *
      * @return string
+     *
      * @link http://tools.ietf.org/html/rfc3986#section-5.2.4
      */
     public static function removeDotSegments($path)
@@ -60,6 +61,7 @@ final class UriResolver
      * @param UriInterface $rel  Relative URI
      *
      * @return UriInterface
+     *
      * @link http://tools.ietf.org/html/rfc3986#section-5.2
      */
     public static function resolve(UriInterface $base, UriInterface $rel)

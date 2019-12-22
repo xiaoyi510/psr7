@@ -8,19 +8,19 @@ use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\FnStream;
 use GuzzleHttp\Psr7\NoSeekStream;
 use GuzzleHttp\Psr7\Stream;
-use Psr\Http\Message\ServerRequestInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
 
 class FunctionsTest extends TestCase
 {
     public function testCopiesToString()
     {
         $s = Psr7\stream_for('foobaz');
-        $this->assertEquals('foobaz', Psr7\copy_to_string($s));
+        self::assertEquals('foobaz', Psr7\copy_to_string($s));
         $s->seek(0);
-        $this->assertEquals('foo', Psr7\copy_to_string($s, 3));
-        $this->assertEquals('baz', Psr7\copy_to_string($s, 3));
-        $this->assertEquals('', Psr7\copy_to_string($s));
+        self::assertEquals('foo', Psr7\copy_to_string($s, 3));
+        self::assertEquals('baz', Psr7\copy_to_string($s, 3));
+        self::assertEquals('', Psr7\copy_to_string($s));
     }
 
     public function testCopiesToStringStopsWhenReadFails()
@@ -32,7 +32,7 @@ class FunctionsTest extends TestCase
             },
         ]);
         $result = Psr7\copy_to_string($s1);
-        $this->assertEquals('', $result);
+        self::assertEquals('', $result);
     }
 
     public function testCopiesToStream()
@@ -40,13 +40,13 @@ class FunctionsTest extends TestCase
         $s1 = Psr7\stream_for('foobaz');
         $s2 = Psr7\stream_for('');
         Psr7\copy_to_stream($s1, $s2);
-        $this->assertEquals('foobaz', (string)$s2);
+        self::assertEquals('foobaz', (string)$s2);
         $s2 = Psr7\stream_for('');
         $s1->seek(0);
         Psr7\copy_to_stream($s1, $s2, 3);
-        $this->assertEquals('foo', (string)$s2);
+        self::assertEquals('foo', (string)$s2);
         Psr7\copy_to_stream($s1, $s2, 3);
-        $this->assertEquals('foobaz', (string)$s2);
+        self::assertEquals('foobaz', (string)$s2);
     }
 
     public function testStopsCopyToStreamWhenWriteFails()
@@ -59,7 +59,7 @@ class FunctionsTest extends TestCase
             },
         ]);
         Psr7\copy_to_stream($s1, $s2);
-        $this->assertEquals('', (string)$s2);
+        self::assertEquals('', (string)$s2);
     }
 
     public function testStopsCopyToSteamWhenWriteFailsWithMaxLen()
@@ -72,7 +72,7 @@ class FunctionsTest extends TestCase
             },
         ]);
         Psr7\copy_to_stream($s1, $s2, 10);
-        $this->assertEquals('', (string)$s2);
+        self::assertEquals('', (string)$s2);
     }
 
     public function testCopyToStreamReadsInChunksInsteadOfAllInMemory()
@@ -90,10 +90,10 @@ class FunctionsTest extends TestCase
         $s2 = Psr7\stream_for('');
         Psr7\copy_to_stream($s1, $s2, 16394);
         $s2->seek(0);
-        $this->assertEquals(16394, strlen($s2->getContents()));
-        $this->assertEquals(8192, $sizes[0]);
-        $this->assertEquals(8192, $sizes[1]);
-        $this->assertEquals(10, $sizes[2]);
+        self::assertEquals(16394, strlen($s2->getContents()));
+        self::assertEquals(8192, $sizes[0]);
+        self::assertEquals(8192, $sizes[1]);
+        self::assertEquals(10, $sizes[2]);
     }
 
     public function testStopsCopyToSteamWhenReadFailsWithMaxLen()
@@ -106,22 +106,22 @@ class FunctionsTest extends TestCase
         ]);
         $s2 = Psr7\stream_for('');
         Psr7\copy_to_stream($s1, $s2, 10);
-        $this->assertEquals('', (string)$s2);
+        self::assertEquals('', (string)$s2);
     }
 
     public function testReadsLines()
     {
         $s = Psr7\stream_for("foo\nbaz\nbar");
-        $this->assertEquals("foo\n", Psr7\readline($s));
-        $this->assertEquals("baz\n", Psr7\readline($s));
-        $this->assertEquals('bar', Psr7\readline($s));
+        self::assertEquals("foo\n", Psr7\readline($s));
+        self::assertEquals("baz\n", Psr7\readline($s));
+        self::assertEquals('bar', Psr7\readline($s));
     }
 
     public function testReadsLinesUpToMaxLength()
     {
         $s = Psr7\stream_for("12345\n");
-        $this->assertEquals('123', Psr7\readline($s, 4));
-        $this->assertEquals("45\n", Psr7\readline($s));
+        self::assertEquals('123', Psr7\readline($s, 4));
+        self::assertEquals("45\n", Psr7\readline($s));
     }
 
     public function testReadLinesEof()
@@ -131,7 +131,7 @@ class FunctionsTest extends TestCase
         while (!$s->eof()) {
             Psr7\readline($s);
         }
-        $this->assertSame('', Psr7\readline($s));
+        self::assertSame('', Psr7\readline($s));
     }
 
     public function testReadsLineUntilFalseReturnedFromRead()
@@ -140,9 +140,9 @@ class FunctionsTest extends TestCase
             ->setMethods(['read', 'eof'])
             ->disableOriginalConstructor()
             ->getMock();
-        $s->expects($this->exactly(2))
+        $s->expects(self::exactly(2))
             ->method('read')
-            ->will($this->returnCallback(function () {
+            ->will(self::returnCallback(function () {
                 static $c = false;
                 if ($c) {
                     return false;
@@ -150,16 +150,16 @@ class FunctionsTest extends TestCase
                 $c = true;
                 return 'h';
             }));
-        $s->expects($this->exactly(2))
+        $s->expects(self::exactly(2))
             ->method('eof')
-            ->will($this->returnValue(false));
-        $this->assertEquals('h', Psr7\readline($s));
+            ->will(self::returnValue(false));
+        self::assertEquals('h', Psr7\readline($s));
     }
 
     public function testCalculatesHash()
     {
         $s = Psr7\stream_for('foobazbar');
-        $this->assertEquals(md5('foobazbar'), Psr7\hash($s, 'md5'));
+        self::assertEquals(md5('foobazbar'), Psr7\hash($s, 'md5'));
     }
 
     public function testCalculatesHashThrowsWhenSeekFails()
@@ -174,14 +174,14 @@ class FunctionsTest extends TestCase
     {
         $s = Psr7\stream_for('foobazbar');
         $s->seek(4);
-        $this->assertEquals(md5('foobazbar'), Psr7\hash($s, 'md5'));
-        $this->assertEquals(4, $s->tell());
+        self::assertEquals(md5('foobazbar'), Psr7\hash($s, 'md5'));
+        self::assertEquals(4, $s->tell());
     }
 
     public function testOpensFilesSuccessfully()
     {
         $r = Psr7\try_fopen(__FILE__, 'r');
-        $this->assertIsResource($r);
+        self::assertIsResource($r);
         fclose($r);
     }
 
@@ -237,14 +237,14 @@ class FunctionsTest extends TestCase
     public function testParsesQueries($input, $output)
     {
         $result = Psr7\parse_query($input);
-        $this->assertSame($output, $result);
+        self::assertSame($output, $result);
     }
 
     public function testDoesNotDecode()
     {
         $str = 'foo%20=bar';
         $data = Psr7\parse_query($str, false);
-        $this->assertEquals(['foo%20' => 'bar'], $data);
+        self::assertEquals(['foo%20' => 'bar'], $data);
     }
 
     /**
@@ -253,96 +253,96 @@ class FunctionsTest extends TestCase
     public function testParsesAndBuildsQueries($input)
     {
         $result = Psr7\parse_query($input, false);
-        $this->assertSame($input, Psr7\build_query($result, false));
+        self::assertSame($input, Psr7\build_query($result, false));
     }
 
     public function testEncodesWithRfc1738()
     {
         $str = Psr7\build_query(['foo bar' => 'baz+'], PHP_QUERY_RFC1738);
-        $this->assertEquals('foo+bar=baz%2B', $str);
+        self::assertEquals('foo+bar=baz%2B', $str);
     }
 
     public function testEncodesWithRfc3986()
     {
         $str = Psr7\build_query(['foo bar' => 'baz+'], PHP_QUERY_RFC3986);
-        $this->assertEquals('foo%20bar=baz%2B', $str);
+        self::assertEquals('foo%20bar=baz%2B', $str);
     }
 
     public function testDoesNotEncode()
     {
         $str = Psr7\build_query(['foo bar' => 'baz+'], false);
-        $this->assertEquals('foo bar=baz+', $str);
+        self::assertEquals('foo bar=baz+', $str);
     }
 
     public function testCanControlDecodingType()
     {
         $result = Psr7\parse_query('var=foo+bar', PHP_QUERY_RFC3986);
-        $this->assertEquals('foo+bar', $result['var']);
+        self::assertEquals('foo+bar', $result['var']);
         $result = Psr7\parse_query('var=foo+bar', PHP_QUERY_RFC1738);
-        $this->assertEquals('foo bar', $result['var']);
+        self::assertEquals('foo bar', $result['var']);
     }
 
     public function testParsesRequestMessages()
     {
         $req = "GET /abc HTTP/1.0\r\nHost: foo.com\r\nFoo: Bar\r\nBaz: Bam\r\nBaz: Qux\r\n\r\nTest";
         $request = Psr7\parse_request($req);
-        $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/abc', $request->getRequestTarget());
-        $this->assertEquals('1.0', $request->getProtocolVersion());
-        $this->assertEquals('foo.com', $request->getHeaderLine('Host'));
-        $this->assertEquals('Bar', $request->getHeaderLine('Foo'));
-        $this->assertEquals('Bam, Qux', $request->getHeaderLine('Baz'));
-        $this->assertEquals('Test', (string)$request->getBody());
-        $this->assertEquals('http://foo.com/abc', (string)$request->getUri());
+        self::assertEquals('GET', $request->getMethod());
+        self::assertEquals('/abc', $request->getRequestTarget());
+        self::assertEquals('1.0', $request->getProtocolVersion());
+        self::assertEquals('foo.com', $request->getHeaderLine('Host'));
+        self::assertEquals('Bar', $request->getHeaderLine('Foo'));
+        self::assertEquals('Bam, Qux', $request->getHeaderLine('Baz'));
+        self::assertEquals('Test', (string)$request->getBody());
+        self::assertEquals('http://foo.com/abc', (string)$request->getUri());
     }
 
     public function testParsesRequestMessagesWithHttpsScheme()
     {
         $req = "PUT /abc?baz=bar HTTP/1.1\r\nHost: foo.com:443\r\n\r\n";
         $request = Psr7\parse_request($req);
-        $this->assertEquals('PUT', $request->getMethod());
-        $this->assertEquals('/abc?baz=bar', $request->getRequestTarget());
-        $this->assertEquals('1.1', $request->getProtocolVersion());
-        $this->assertEquals('foo.com:443', $request->getHeaderLine('Host'));
-        $this->assertEquals('', (string)$request->getBody());
-        $this->assertEquals('https://foo.com/abc?baz=bar', (string)$request->getUri());
+        self::assertEquals('PUT', $request->getMethod());
+        self::assertEquals('/abc?baz=bar', $request->getRequestTarget());
+        self::assertEquals('1.1', $request->getProtocolVersion());
+        self::assertEquals('foo.com:443', $request->getHeaderLine('Host'));
+        self::assertEquals('', (string)$request->getBody());
+        self::assertEquals('https://foo.com/abc?baz=bar', (string)$request->getUri());
     }
 
     public function testParsesRequestMessagesWithUriWhenHostIsNotFirst()
     {
         $req = "PUT / HTTP/1.1\r\nFoo: Bar\r\nHost: foo.com\r\n\r\n";
         $request = Psr7\parse_request($req);
-        $this->assertEquals('PUT', $request->getMethod());
-        $this->assertEquals('/', $request->getRequestTarget());
-        $this->assertEquals('http://foo.com/', (string)$request->getUri());
+        self::assertEquals('PUT', $request->getMethod());
+        self::assertEquals('/', $request->getRequestTarget());
+        self::assertEquals('http://foo.com/', (string)$request->getUri());
     }
 
     public function testParsesRequestMessagesWithFullUri()
     {
         $req = "GET https://www.google.com:443/search?q=foobar HTTP/1.1\r\nHost: www.google.com\r\n\r\n";
         $request = Psr7\parse_request($req);
-        $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('https://www.google.com:443/search?q=foobar', $request->getRequestTarget());
-        $this->assertEquals('1.1', $request->getProtocolVersion());
-        $this->assertEquals('www.google.com', $request->getHeaderLine('Host'));
-        $this->assertEquals('', (string)$request->getBody());
-        $this->assertEquals('https://www.google.com/search?q=foobar', (string)$request->getUri());
+        self::assertEquals('GET', $request->getMethod());
+        self::assertEquals('https://www.google.com:443/search?q=foobar', $request->getRequestTarget());
+        self::assertEquals('1.1', $request->getProtocolVersion());
+        self::assertEquals('www.google.com', $request->getHeaderLine('Host'));
+        self::assertEquals('', (string)$request->getBody());
+        self::assertEquals('https://www.google.com/search?q=foobar', (string)$request->getUri());
     }
 
     public function testParsesRequestMessagesWithCustomMethod()
     {
         $req = "GET_DATA / HTTP/1.1\r\nFoo: Bar\r\nHost: foo.com\r\n\r\n";
         $request = Psr7\parse_request($req);
-        $this->assertEquals('GET_DATA', $request->getMethod());
+        self::assertEquals('GET_DATA', $request->getMethod());
     }
 
     public function testParsesRequestMessagesWithFoldedHeadersOnHttp10()
     {
         $req = "PUT / HTTP/1.0\r\nFoo: Bar\r\n Bam\r\n\r\n";
         $request = Psr7\parse_request($req);
-        $this->assertEquals('PUT', $request->getMethod());
-        $this->assertEquals('/', $request->getRequestTarget());
-        $this->assertEquals('Bar Bam', $request->getHeaderLine('Foo'));
+        self::assertEquals('PUT', $request->getMethod());
+        self::assertEquals('/', $request->getRequestTarget());
+        self::assertEquals('Bar Bam', $request->getHeaderLine('Foo'));
     }
 
     public function testRequestParsingFailsWithFoldedHeadersOnHttp11()
@@ -356,10 +356,10 @@ class FunctionsTest extends TestCase
     {
         $req = "PUT / HTTP/1.0\nFoo: Bar\nBaz: Bam\n\n";
         $request = Psr7\parse_request($req);
-        $this->assertEquals('PUT', $request->getMethod());
-        $this->assertEquals('/', $request->getRequestTarget());
-        $this->assertEquals('Bar', $request->getHeaderLine('Foo'));
-        $this->assertEquals('Bam', $request->getHeaderLine('Baz'));
+        self::assertEquals('PUT', $request->getMethod());
+        self::assertEquals('/', $request->getRequestTarget());
+        self::assertEquals('Bar', $request->getHeaderLine('Foo'));
+        self::assertEquals('Bam', $request->getHeaderLine('Baz'));
     }
 
     public function testValidatesRequestMessages()
@@ -372,46 +372,46 @@ class FunctionsTest extends TestCase
     {
         $res = "HTTP/1.0 200 OK\r\nFoo: Bar\r\nBaz: Bam\r\nBaz: Qux\r\n\r\nTest";
         $response = Psr7\parse_response($res);
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('OK', $response->getReasonPhrase());
-        $this->assertSame('1.0', $response->getProtocolVersion());
-        $this->assertSame('Bar', $response->getHeaderLine('Foo'));
-        $this->assertSame('Bam, Qux', $response->getHeaderLine('Baz'));
-        $this->assertSame('Test', (string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('OK', $response->getReasonPhrase());
+        self::assertSame('1.0', $response->getProtocolVersion());
+        self::assertSame('Bar', $response->getHeaderLine('Foo'));
+        self::assertSame('Bam, Qux', $response->getHeaderLine('Baz'));
+        self::assertSame('Test', (string)$response->getBody());
     }
 
     public function testParsesResponseWithoutReason()
     {
         $res = "HTTP/1.0 200\r\nFoo: Bar\r\nBaz: Bam\r\nBaz: Qux\r\n\r\nTest";
         $response = Psr7\parse_response($res);
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('OK', $response->getReasonPhrase());
-        $this->assertSame('1.0', $response->getProtocolVersion());
-        $this->assertSame('Bar', $response->getHeaderLine('Foo'));
-        $this->assertSame('Bam, Qux', $response->getHeaderLine('Baz'));
-        $this->assertSame('Test', (string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('OK', $response->getReasonPhrase());
+        self::assertSame('1.0', $response->getProtocolVersion());
+        self::assertSame('Bar', $response->getHeaderLine('Foo'));
+        self::assertSame('Bam, Qux', $response->getHeaderLine('Baz'));
+        self::assertSame('Test', (string)$response->getBody());
     }
 
     public function testParsesResponseWithLeadingDelimiter()
     {
         $res = "\r\nHTTP/1.0 200\r\nFoo: Bar\r\n\r\nTest";
         $response = Psr7\parse_response($res);
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('OK', $response->getReasonPhrase());
-        $this->assertSame('1.0', $response->getProtocolVersion());
-        $this->assertSame('Bar', $response->getHeaderLine('Foo'));
-        $this->assertSame('Test', (string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('OK', $response->getReasonPhrase());
+        self::assertSame('1.0', $response->getProtocolVersion());
+        self::assertSame('Bar', $response->getHeaderLine('Foo'));
+        self::assertSame('Test', (string)$response->getBody());
     }
 
     public function testParsesResponseWithFoldedHeadersOnHttp10()
     {
         $res = "HTTP/1.0 200\r\nFoo: Bar\r\n Bam\r\n\r\nTest";
         $response = Psr7\parse_response($res);
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('OK', $response->getReasonPhrase());
-        $this->assertSame('1.0', $response->getProtocolVersion());
-        $this->assertSame('Bar Bam', $response->getHeaderLine('Foo'));
-        $this->assertSame('Test', (string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('OK', $response->getReasonPhrase());
+        self::assertSame('1.0', $response->getProtocolVersion());
+        self::assertSame('Bar Bam', $response->getHeaderLine('Foo'));
+        self::assertSame('Test', (string)$response->getBody());
     }
 
     public function testResponseParsingFailsWithFoldedHeadersOnHttp11()
@@ -424,12 +424,12 @@ class FunctionsTest extends TestCase
     {
         $res = "HTTP/1.0 200\nFoo: Bar\nBaz: Bam\n\nTest\n\nOtherTest";
         $response = Psr7\parse_response($res);
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('OK', $response->getReasonPhrase());
-        $this->assertSame('1.0', $response->getProtocolVersion());
-        $this->assertSame('Bar', $response->getHeaderLine('Foo'));
-        $this->assertSame('Bam', $response->getHeaderLine('Baz'));
-        $this->assertSame("Test\n\nOtherTest", (string)$response->getBody());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('OK', $response->getReasonPhrase());
+        self::assertSame('1.0', $response->getProtocolVersion());
+        self::assertSame('Bar', $response->getHeaderLine('Foo'));
+        self::assertSame('Bam', $response->getHeaderLine('Baz'));
+        self::assertSame("Test\n\nOtherTest", (string)$response->getBody());
     }
 
     public function testResponseParsingFailsWithoutHeaderDelimiter()
@@ -446,12 +446,12 @@ class FunctionsTest extends TestCase
 
     public function testDetermineMimetype()
     {
-        $this->assertNull(Psr7\mimetype_from_extension('not-a-real-extension'));
-        $this->assertEquals(
+        self::assertNull(Psr7\mimetype_from_extension('not-a-real-extension'));
+        self::assertEquals(
             'application/json',
             Psr7\mimetype_from_extension('json')
         );
-        $this->assertEquals(
+        self::assertEquals(
             'image/jpeg',
             Psr7\mimetype_from_filename('/tmp/images/IMG034821.JPEG')
         );
@@ -459,8 +459,8 @@ class FunctionsTest extends TestCase
 
     public function testCreatesUriForValue()
     {
-        $this->assertInstanceOf(Psr7\Uri::class, Psr7\uri_for('/foo'));
-        $this->assertInstanceOf(
+        self::assertInstanceOf(Psr7\Uri::class, Psr7\uri_for('/foo'));
+        self::assertInstanceOf(
             Psr7\Uri::class,
             Psr7\uri_for(new Psr7\Uri('/foo'))
         );
@@ -477,50 +477,50 @@ class FunctionsTest extends TestCase
         $h = fopen(__FILE__, 'r');
         fseek($h, 10);
         $stream = Psr7\stream_for($h);
-        $this->assertEquals(10, $stream->tell());
+        self::assertEquals(10, $stream->tell());
         $stream->close();
     }
 
     public function testCreatesWithFactory()
     {
         $stream = Psr7\stream_for('foo');
-        $this->assertInstanceOf(Stream::class, $stream);
-        $this->assertEquals('foo', $stream->getContents());
+        self::assertInstanceOf(Stream::class, $stream);
+        self::assertEquals('foo', $stream->getContents());
         $stream->close();
     }
 
     public function testFactoryCreatesFromEmptyString()
     {
         $s = Psr7\stream_for();
-        $this->assertInstanceOf(Stream::class, $s);
+        self::assertInstanceOf(Stream::class, $s);
     }
 
     public function testFactoryCreatesFromNull()
     {
         $s = Psr7\stream_for(null);
-        $this->assertInstanceOf(Stream::class, $s);
+        self::assertInstanceOf(Stream::class, $s);
     }
 
     public function testFactoryCreatesFromResource()
     {
         $r = fopen(__FILE__, 'r');
         $s = Psr7\stream_for($r);
-        $this->assertInstanceOf(Stream::class, $s);
-        $this->assertSame(file_get_contents(__FILE__), (string)$s);
+        self::assertInstanceOf(Stream::class, $s);
+        self::assertSame(file_get_contents(__FILE__), (string)$s);
     }
 
     public function testFactoryCreatesFromObjectWithToString()
     {
         $r = new HasToString();
         $s = Psr7\stream_for($r);
-        $this->assertInstanceOf(Stream::class, $s);
-        $this->assertEquals('foo', (string)$s);
+        self::assertInstanceOf(Stream::class, $s);
+        self::assertEquals('foo', (string)$s);
     }
 
     public function testCreatePassesThrough()
     {
         $s = Psr7\stream_for('foo');
-        $this->assertSame($s, Psr7\stream_for($s));
+        self::assertSame($s, Psr7\stream_for($s));
     }
 
     public function testThrowsExceptionForUnknown()
@@ -532,30 +532,30 @@ class FunctionsTest extends TestCase
     public function testReturnsCustomMetadata()
     {
         $s = Psr7\stream_for('foo', ['metadata' => ['hwm' => 3]]);
-        $this->assertEquals(3, $s->getMetadata('hwm'));
-        $this->assertArrayHasKey('hwm', $s->getMetadata());
+        self::assertEquals(3, $s->getMetadata('hwm'));
+        self::assertArrayHasKey('hwm', $s->getMetadata());
     }
 
     public function testCanSetSize()
     {
         $s = Psr7\stream_for('', ['size' => 10]);
-        $this->assertEquals(10, $s->getSize());
+        self::assertEquals(10, $s->getSize());
     }
 
     public function testCanCreateIteratorBasedStream()
     {
         $a = new \ArrayIterator(['foo', 'bar', '123']);
         $p = Psr7\stream_for($a);
-        $this->assertInstanceOf(Psr7\PumpStream::class, $p);
-        $this->assertEquals('foo', $p->read(3));
-        $this->assertFalse($p->eof());
-        $this->assertEquals('b', $p->read(1));
-        $this->assertEquals('a', $p->read(1));
-        $this->assertEquals('r12', $p->read(3));
-        $this->assertFalse($p->eof());
-        $this->assertEquals('3', $p->getContents());
-        $this->assertTrue($p->eof());
-        $this->assertEquals(9, $p->tell());
+        self::assertInstanceOf(Psr7\PumpStream::class, $p);
+        self::assertEquals('foo', $p->read(3));
+        self::assertFalse($p->eof());
+        self::assertEquals('b', $p->read(1));
+        self::assertEquals('a', $p->read(1));
+        self::assertEquals('r12', $p->read(3));
+        self::assertFalse($p->eof());
+        self::assertEquals('3', $p->getContents());
+        self::assertTrue($p->eof());
+        self::assertEquals(9, $p->tell());
     }
 
     public function testConvertsRequestsToStrings()
@@ -564,7 +564,7 @@ class FunctionsTest extends TestCase
             'Baz' => 'bar',
             'Qux' => 'ipsum',
         ], 'hello', '1.0');
-        $this->assertEquals(
+        self::assertEquals(
             "PUT /hi?123 HTTP/1.0\r\nHost: foo.com\r\nBaz: bar\r\nQux: ipsum\r\n\r\nhello",
             Psr7\str($request)
         );
@@ -576,7 +576,7 @@ class FunctionsTest extends TestCase
             'Baz' => 'bar',
             'Qux' => 'ipsum',
         ], 'hello', '1.0', 'FOO');
-        $this->assertEquals(
+        self::assertEquals(
             "HTTP/1.0 200 FOO\r\nBaz: bar\r\nQux: ipsum\r\n\r\nhello",
             Psr7\str($response)
         );
@@ -633,13 +633,13 @@ class FunctionsTest extends TestCase
      */
     public function testParseParams($header, $result)
     {
-        $this->assertEquals($result, Psr7\parse_header($header));
+        self::assertEquals($result, Psr7\parse_header($header));
     }
 
     public function testParsesArrayHeaders()
     {
         $header = ['a, b', 'c', 'd, e'];
-        $this->assertEquals(['a', 'b', 'c', 'd', 'e'], Psr7\normalize_header($header));
+        self::assertEquals(['a', 'b', 'c', 'd', 'e'], Psr7\normalize_header($header));
     }
 
     public function testRewindsBody()
@@ -647,10 +647,10 @@ class FunctionsTest extends TestCase
         $body = Psr7\stream_for('abc');
         $res = new Psr7\Response(200, [], $body);
         Psr7\rewind_body($res);
-        $this->assertEquals(0, $body->tell());
+        self::assertEquals(0, $body->tell());
         $body->rewind();
         Psr7\rewind_body($res);
-        $this->assertEquals(0, $body->tell());
+        self::assertEquals(0, $body->tell());
     }
 
     public function testThrowsWhenBodyCannotBeRewound()
@@ -673,8 +673,8 @@ class FunctionsTest extends TestCase
         $r2 = Psr7\modify_request($r1, [
             'uri' => new Psr7\Uri('http://www.foo.com'),
         ]);
-        $this->assertEquals('http://www.foo.com', (string)$r2->getUri());
-        $this->assertEquals('www.foo.com', (string)$r2->getHeaderLine('host'));
+        self::assertEquals('http://www.foo.com', (string)$r2->getUri());
+        self::assertEquals('www.foo.com', (string)$r2->getHeaderLine('host'));
     }
 
     public function testCanModifyRequestWithUriAndPort()
@@ -683,85 +683,85 @@ class FunctionsTest extends TestCase
         $r2 = Psr7\modify_request($r1, [
             'uri' => new Psr7\Uri('http://www.foo.com:8000'),
         ]);
-        $this->assertEquals('http://www.foo.com:8000', (string)$r2->getUri());
-        $this->assertEquals('www.foo.com:8000', (string)$r2->getHeaderLine('host'));
+        self::assertEquals('http://www.foo.com:8000', (string)$r2->getUri());
+        self::assertEquals('www.foo.com:8000', (string)$r2->getHeaderLine('host'));
     }
 
     public function testCanModifyRequestWithCaseInsensitiveHeader()
     {
         $r1 = new Psr7\Request('GET', 'http://foo.com', ['User-Agent' => 'foo']);
         $r2 = Psr7\modify_request($r1, ['set_headers' => ['User-agent' => 'bar']]);
-        $this->assertEquals('bar', $r2->getHeaderLine('User-Agent'));
-        $this->assertEquals('bar', $r2->getHeaderLine('User-agent'));
+        self::assertEquals('bar', $r2->getHeaderLine('User-Agent'));
+        self::assertEquals('bar', $r2->getHeaderLine('User-agent'));
     }
 
     public function testReturnsAsIsWhenNoChanges()
     {
         $r1 = new Psr7\Request('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, []);
-        $this->assertInstanceOf(Psr7\Request::class, $r2);
+        self::assertInstanceOf(Psr7\Request::class, $r2);
 
         $r1 = new Psr7\ServerRequest('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, []);
-        $this->assertInstanceOf(ServerRequestInterface::class, $r2);
+        self::assertInstanceOf(ServerRequestInterface::class, $r2);
     }
 
     public function testReturnsUriAsIsWhenNoChanges()
     {
         $r1 = new Psr7\Request('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, ['set_headers' => ['foo' => 'bar']]);
-        $this->assertNotSame($r1, $r2);
-        $this->assertEquals('bar', $r2->getHeaderLine('foo'));
+        self::assertNotSame($r1, $r2);
+        self::assertEquals('bar', $r2->getHeaderLine('foo'));
     }
 
     public function testRemovesHeadersFromMessage()
     {
         $r1 = new Psr7\Request('GET', 'http://foo.com', ['foo' => 'bar']);
         $r2 = Psr7\modify_request($r1, ['remove_headers' => ['foo']]);
-        $this->assertNotSame($r1, $r2);
-        $this->assertFalse($r2->hasHeader('foo'));
+        self::assertNotSame($r1, $r2);
+        self::assertFalse($r2->hasHeader('foo'));
     }
 
     public function testAddsQueryToUri()
     {
         $r1 = new Psr7\Request('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, ['query' => 'foo=bar']);
-        $this->assertNotSame($r1, $r2);
-        $this->assertEquals('foo=bar', $r2->getUri()->getQuery());
+        self::assertNotSame($r1, $r2);
+        self::assertEquals('foo=bar', $r2->getUri()->getQuery());
     }
 
     public function testModifyRequestKeepInstanceOfRequest()
     {
         $r1 = new Psr7\Request('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, ['remove_headers' => ['non-existent']]);
-        $this->assertInstanceOf(Psr7\Request::class, $r2);
+        self::assertInstanceOf(Psr7\Request::class, $r2);
 
         $r1 = new Psr7\ServerRequest('GET', 'http://foo.com');
         $r2 = Psr7\modify_request($r1, ['remove_headers' => ['non-existent']]);
-        $this->assertInstanceOf(ServerRequestInterface::class, $r2);
+        self::assertInstanceOf(ServerRequestInterface::class, $r2);
     }
 
     public function testMessageBodySummaryWithSmallBody()
     {
         $message = new Psr7\Response(200, [], 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
-        $this->assertEquals('Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Psr7\get_message_body_summary($message));
+        self::assertEquals('Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Psr7\get_message_body_summary($message));
     }
 
     public function testMessageBodySummaryWithLargeBody()
     {
         $message = new Psr7\Response(200, [], 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
-        $this->assertEquals('Lorem ipsu (truncated...)', Psr7\get_message_body_summary($message, 10));
+        self::assertEquals('Lorem ipsu (truncated...)', Psr7\get_message_body_summary($message, 10));
     }
 
     public function testMessageBodySummaryWithEmptyBody()
     {
         $message = new Psr7\Response(200, [], '');
-        $this->assertNull(Psr7\get_message_body_summary($message));
+        self::assertNull(Psr7\get_message_body_summary($message));
     }
 
     public function testGetResponseBodySummaryOfNonReadableStream()
     {
-        $this->assertNull(Psr7\get_message_body_summary(new Psr7\Response(500, [], new ReadSeekOnlyStream())));
+        self::assertNull(Psr7\get_message_body_summary(new Psr7\Response(500, [], new ReadSeekOnlyStream())));
     }
 
     public function testModifyServerRequestWithUploadedFiles()
@@ -773,10 +773,10 @@ class FunctionsTest extends TestCase
         /** @var Psr7\ServerRequest $modifiedRequest */
         $modifiedRequest = Psr7\modify_request($request, ['set_headers' => ['foo' => 'bar']]);
 
-        $this->assertCount(1, $modifiedRequest->getUploadedFiles());
+        self::assertCount(1, $modifiedRequest->getUploadedFiles());
 
         $files = $modifiedRequest->getUploadedFiles();
-        $this->assertInstanceOf(Psr7\UploadedFile::class, $files[0]);
+        self::assertInstanceOf(Psr7\UploadedFile::class, $files[0]);
     }
 
     public function testModifyServerRequestWithCookies()
@@ -787,7 +787,7 @@ class FunctionsTest extends TestCase
         /** @var Psr7\ServerRequest $modifiedRequest */
         $modifiedRequest = Psr7\modify_request($request, ['set_headers' => ['foo' => 'bar']]);
 
-        $this->assertEquals(['name' => 'value'], $modifiedRequest->getCookieParams());
+        self::assertEquals(['name' => 'value'], $modifiedRequest->getCookieParams());
     }
 
     public function testModifyServerRequestParsedBody()
@@ -798,7 +798,7 @@ class FunctionsTest extends TestCase
         /** @var Psr7\ServerRequest $modifiedRequest */
         $modifiedRequest = Psr7\modify_request($request, ['set_headers' => ['foo' => 'bar']]);
 
-        $this->assertEquals(['name' => 'value'], $modifiedRequest->getParsedBody());
+        self::assertEquals(['name' => 'value'], $modifiedRequest->getParsedBody());
     }
 
     public function testModifyServerRequestQueryParams()
@@ -809,7 +809,7 @@ class FunctionsTest extends TestCase
         /** @var Psr7\ServerRequest $modifiedRequest */
         $modifiedRequest = Psr7\modify_request($request, ['set_headers' => ['foo' => 'bar']]);
 
-        $this->assertEquals(['name' => 'value'], $modifiedRequest->getQueryParams());
+        self::assertEquals(['name' => 'value'], $modifiedRequest->getQueryParams());
     }
 }
 

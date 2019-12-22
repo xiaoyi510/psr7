@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GuzzleHttp\Tests\Psr7;
 
-use GuzzleHttp\Psr7\StreamWrapper;
 use GuzzleHttp\Psr7;
+use GuzzleHttp\Psr7\StreamWrapper;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 
@@ -18,17 +18,17 @@ class StreamWrapperTest extends TestCase
     {
         $stream = Psr7\stream_for('foo');
         $handle = StreamWrapper::getResource($stream);
-        $this->assertSame('foo', fread($handle, 3));
-        $this->assertSame(3, ftell($handle));
-        $this->assertSame(3, fwrite($handle, 'bar'));
-        $this->assertSame(0, fseek($handle, 0));
-        $this->assertSame('foobar', fread($handle, 6));
-        $this->assertSame('', fread($handle, 1));
-        $this->assertTrue(feof($handle));
+        self::assertSame('foo', fread($handle, 3));
+        self::assertSame(3, ftell($handle));
+        self::assertSame(3, fwrite($handle, 'bar'));
+        self::assertSame(0, fseek($handle, 0));
+        self::assertSame('foobar', fread($handle, 6));
+        self::assertSame('', fread($handle, 1));
+        self::assertTrue(feof($handle));
 
         $stBlksize  = defined('PHP_WINDOWS_VERSION_BUILD') ? -1 : 0;
 
-        $this->assertEquals([
+        self::assertEquals([
             'dev'     => 0,
             'ino'     => 0,
             'mode'    => 33206,
@@ -57,15 +57,15 @@ class StreamWrapperTest extends TestCase
             12        => $stBlksize,
         ], fstat($handle));
 
-        $this->assertTrue(fclose($handle));
-        $this->assertSame('foobar', (string) $stream);
+        self::assertTrue(fclose($handle));
+        self::assertSame('foobar', (string) $stream);
     }
 
     public function testStreamContext()
     {
         $stream = Psr7\stream_for('foo');
 
-        $this->assertEquals('foo', file_get_contents('guzzle://stream', false, StreamWrapper::createStreamContext($stream)));
+        self::assertEquals('foo', file_get_contents('guzzle://stream', false, StreamWrapper::createStreamContext($stream)));
     }
 
     public function testStreamCast()
@@ -76,7 +76,7 @@ class StreamWrapperTest extends TestCase
         ];
         $write = null;
         $except = null;
-        $this->assertIsInt(stream_select($streams, $write, $except, 0));
+        self::assertIsInt(stream_select($streams, $write, $except, 0));
     }
 
     public function testValidatesStream()
@@ -84,12 +84,12 @@ class StreamWrapperTest extends TestCase
         $stream = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isReadable', 'isWritable'])
             ->getMockForAbstractClass();
-        $stream->expects($this->once())
+        $stream->expects(self::once())
             ->method('isReadable')
-            ->will($this->returnValue(false));
-        $stream->expects($this->once())
+            ->will(self::returnValue(false));
+        $stream->expects(self::once())
             ->method('isWritable')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
 
         $this->expectException(\InvalidArgumentException::class);
         StreamWrapper::getResource($stream);
@@ -106,14 +106,14 @@ class StreamWrapperTest extends TestCase
         $stream = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['isReadable', 'isWritable'])
             ->getMockForAbstractClass();
-        $stream->expects($this->once())
+        $stream->expects(self::once())
             ->method('isReadable')
-            ->will($this->returnValue(false));
-        $stream->expects($this->once())
+            ->will(self::returnValue(false));
+        $stream->expects(self::once())
             ->method('isWritable')
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
         $r = StreamWrapper::getResource($stream);
-        $this->assertIsResource($r);
+        self::assertIsResource($r);
         fclose($r);
     }
 
@@ -121,7 +121,7 @@ class StreamWrapperTest extends TestCase
     {
         StreamWrapper::register();
 
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'dev'     => 0,
                 'ino'     => 0,
@@ -165,9 +165,9 @@ class StreamWrapperTest extends TestCase
         libxml_set_streams_context(StreamWrapper::createStreamContext($stream));
         $reader = new \XMLReader();
 
-        $this->assertTrue($reader->open('guzzle://stream'));
-        $this->assertTrue($reader->read());
-        $this->assertEquals('foo', $reader->name);
+        self::assertTrue($reader->open('guzzle://stream'));
+        self::assertTrue($reader->read());
+        self::assertEquals('foo', $reader->name);
     }
 
     /**
@@ -181,12 +181,12 @@ class StreamWrapperTest extends TestCase
         libxml_set_streams_context(StreamWrapper::createStreamContext($stream));
         $writer = new \XMLWriter();
 
-        $this->assertTrue($writer->openURI('guzzle://stream'));
-        $this->assertTrue($writer->startDocument());
-        $this->assertTrue($writer->writeElement('foo'));
-        $this->assertTrue($writer->endDocument());
+        self::assertTrue($writer->openURI('guzzle://stream'));
+        self::assertTrue($writer->startDocument());
+        self::assertTrue($writer->writeElement('foo'));
+        self::assertTrue($writer->endDocument());
 
         $stream->rewind();
-        $this->assertXmlStringEqualsXmlString('<?xml version="1.0"?><foo />', (string) $stream);
+        self::assertXmlStringEqualsXmlString('<?xml version="1.0"?><foo />', (string) $stream);
     }
 }

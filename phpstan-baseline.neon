@@ -1,0 +1,1281 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\AppendStream\\:\\:\\$seekable has no typehint specified\\.$#"
+			count: 1
+			path: src/AppendStream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\AppendStream\\:\\:\\$current has no typehint specified\\.$#"
+			count: 1
+			path: src/AppendStream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\AppendStream\\:\\:\\$pos has no typehint specified\\.$#"
+			count: 1
+			path: src/AppendStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\AppendStream\\:\\:addStream\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/AppendStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\AppendStream\\:\\:detach\\(\\) should return resource\\|null but return statement is missing\\.$#"
+			count: 1
+			path: src/AppendStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\AppendStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/AppendStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\AppendStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/AppendStream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:\\$hwm has no typehint specified\\.$#"
+			count: 1
+			path: src/BufferStream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:\\$buffer has no typehint specified\\.$#"
+			count: 1
+			path: src/BufferStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:detach\\(\\) should return resource\\|null but return statement is missing\\.$#"
+			count: 1
+			path: src/BufferStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/BufferStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/BufferStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:read\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/BufferStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:read\\(\\) has parameter \\$length with no typehint specified\\.$#"
+			count: 1
+			path: src/BufferStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:write\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/BufferStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:write\\(\\) has parameter \\$string with no typehint specified\\.$#"
+			count: 1
+			path: src/BufferStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\CachingStream\\:\\:\\$stream\\.$#"
+			count: 26
+			path: src/CachingStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$stream of class GuzzleHttp\\\\Psr7\\\\Stream constructor expects resource, resource\\|false given\\.$#"
+			count: 1
+			path: src/CachingStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\CachingStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 2
+			path: src/CachingStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\CachingStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 2
+			path: src/CachingStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$length of method GuzzleHttp\\\\Psr7\\\\CachingStream\\:\\:read\\(\\) expects int, float\\|int\\<1, max\\> given\\.$#"
+			count: 1
+			path: src/CachingStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\CachingStream\\:\\:close\\(\\) has no return typehint specified\\.$#"
+			count: 2
+			path: src/CachingStream.php
+
+		-
+			message: "#^Left side of && is always false\\.$#"
+			count: 1
+			path: src/CachingStream.php
+
+		-
+			message: "#^Result of method Psr\\\\Http\\\\Message\\\\StreamInterface\\:\\:close\\(\\) \\(void\\) is used\\.$#"
+			count: 1
+			path: src/CachingStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\CachingStream\\:\\:__call\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CachingStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$function of function call_user_func_array expects callable\\(\\)\\: mixed, array\\(mixed, string\\) given\\.$#"
+			count: 1
+			path: src/CachingStream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\DroppingStream\\:\\:\\$maxLength has no typehint specified\\.$#"
+			count: 1
+			path: src/DroppingStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\DroppingStream\\:\\:\\$stream\\.$#"
+			count: 20
+			path: src/DroppingStream.php
+
+		-
+			message: "#^Parameter \\#3 \\$length of function substr expects int, float\\|int\\<1, max\\> given\\.$#"
+			count: 1
+			path: src/DroppingStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\DroppingStream\\:\\:__call\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DroppingStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$function of function call_user_func_array expects callable\\(\\)\\: mixed, array\\(mixed, string\\) given\\.$#"
+			count: 1
+			path: src/DroppingStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\DroppingStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/DroppingStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\DroppingStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/DroppingStream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$methods type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:__construct\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:__get\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:__get\\(\\) has parameter \\$name with no typehint specified\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:decorate\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn___toString\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_close\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:close\\(\\) with return type void returns mixed but should not return anything\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_detach\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_getSize\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_tell\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_eof\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_isSeekable\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_rewind\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_seek\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_isWritable\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_write\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_isReadable\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_read\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_getContents\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:\\$_fn_getMetadata\\.$#"
+			count: 1
+			path: src/FnStream.php
+
+		-
+			message: "#^Parameter \\#2 \\$size of class GuzzleHttp\\\\Psr7\\\\UploadedFile constructor expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/HttpFactory.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\HttpFactory\\:\\:createServerRequest\\(\\) has parameter \\$serverParams with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/HttpFactory.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\InflateStream\\:\\:\\$stream\\.$#"
+			count: 17
+			path: src/InflateStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\InflateStream\\:\\:__call\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InflateStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$function of function call_user_func_array expects callable\\(\\)\\: mixed, array\\(mixed, string\\) given\\.$#"
+			count: 1
+			path: src/InflateStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\InflateStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/InflateStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\InflateStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/InflateStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\LimitStream\\:\\:\\$stream\\.$#"
+			count: 29
+			path: src/LimitStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\LimitStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 2
+			path: src/LimitStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\LimitStream\\:\\:setOffset\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/LimitStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\LimitStream\\:\\:setLimit\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/LimitStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\LimitStream\\:\\:__call\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/LimitStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$function of function call_user_func_array expects callable\\(\\)\\: mixed, array\\(mixed, string\\) given\\.$#"
+			count: 1
+			path: src/LimitStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\LimitStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/LimitStream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Request\\:\\:\\$headers type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Request\\:\\:\\$headerNames type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:hasHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:getHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:getHeaderLine\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:withHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:withAddedHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:withoutHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:setHeaders\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:normalizeHeaderValue\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:normalizeHeaderValue\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:assertHeader\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:assertHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:__construct\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:updateHostFromUri\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:assertMethod\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:assertMethod\\(\\) has parameter \\$method with no typehint specified\\.$#"
+			count: 1
+			path: src/Request.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Response\\:\\:\\$headers type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Response\\:\\:\\$headerNames type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:hasHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:getHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:getHeaderLine\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:withHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:withAddedHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:withoutHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:setHeaders\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:normalizeHeaderValue\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:normalizeHeaderValue\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:assertHeader\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:assertHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:__construct\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:assertStatusCodeIsInteger\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:assertStatusCodeIsInteger\\(\\) has parameter \\$statusCode with no typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:assertStatusCodeRange\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Response.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:\\$boundary has no typehint specified\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:__construct\\(\\) has parameter \\$elements with no value type specified in iterable type array\\.$#"
+			count: 2
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:\\$stream\\.$#"
+			count: 17
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:getHeaders\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:createStream\\(\\) has no return typehint specified\\.$#"
+			count: 2
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:createStream\\(\\) has parameter \\$elements with no value type specified in iterable type array\\.$#"
+			count: 2
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:addElement\\(\\) has parameter \\$element with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:createElement\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:createElement\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$path of function basename expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:getHeader\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:getHeader\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:createStream\\(\\) invoked with 0 parameters, 1 required\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:__call\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$function of function call_user_func_array expects callable\\(\\)\\: mixed, array\\(mixed, string\\) given\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/MultipartStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\NoSeekStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 2
+			path: src/NoSeekStream.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\NoSeekStream\\:\\:\\$stream\\.$#"
+			count: 16
+			path: src/NoSeekStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\NoSeekStream\\:\\:__call\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NoSeekStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$function of function call_user_func_array expects callable\\(\\)\\: mixed, array\\(mixed, string\\) given\\.$#"
+			count: 1
+			path: src/NoSeekStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\NoSeekStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/NoSeekStream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\PumpStream\\:\\:\\$metadata type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PumpStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\PumpStream\\:\\:__construct\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PumpStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\PumpStream\\:\\:detach\\(\\) should return resource\\|null but return statement is missing\\.$#"
+			count: 1
+			path: src/PumpStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\PumpStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/PumpStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\PumpStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/PumpStream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:\\$attributes type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:\\$cookieParams type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:\\$parsedBody type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:\\$queryParams type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:\\$serverParams type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:\\$uploadedFiles type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:__construct\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:__construct\\(\\) has parameter \\$serverParams with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:normalizeFiles\\(\\) has parameter \\$files with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:normalizeFiles\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:createUploadedFileFromSpec\\(\\) has parameter \\$value with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:createUploadedFileFromSpec\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:normalizeNestedFileSpec\\(\\) has parameter \\$files with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:normalizeNestedFileSpec\\(\\) should return array\\<Psr\\\\Http\\\\Message\\\\UploadedFileInterface\\> but returns array\\<int\\|string, array\\|Psr\\\\Http\\\\Message\\\\UploadedFileInterface\\>\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:extractHostAndPortFromAuthority\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:getServerParams\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:getUploadedFiles\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:withUploadedFiles\\(\\) has parameter \\$uploadedFiles with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:getCookieParams\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:withCookieParams\\(\\) has parameter \\$cookies with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:getQueryParams\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:withQueryParams\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:getParsedBody\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:withParsedBody\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:getAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:getAttribute\\(\\) has parameter \\$attribute with no typehint specified\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:withAttribute\\(\\) has parameter \\$attribute with no typehint specified\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:withoutAttribute\\(\\) has parameter \\$attribute with no typehint specified\\.$#"
+			count: 1
+			path: src/ServerRequest.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Stream\\:\\:\\$stream has no typehint specified\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Stream\\:\\:\\$size has no typehint specified\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Stream\\:\\:\\$seekable has no typehint specified\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Stream\\:\\:\\$readable has no typehint specified\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Stream\\:\\:\\$writable has no typehint specified\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Stream\\:\\:\\$uri has no typehint specified\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Property GuzzleHttp\\\\Psr7\\\\Stream\\:\\:\\$customMetadata has no typehint specified\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Stream\\:\\:__construct\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Cannot assign offset 'size' to array\\<int\\|string, int\\>\\|false\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Stream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Stream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Stream.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(StreamInterface stream\\)\\: Unexpected token \"stream\", expected variable at offset 62$#"
+			count: 1
+			path: src/StreamDecoratorTrait.php
+
+		-
+			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\LazyOpenStream\\:\\:\\$stream\\.$#"
+			count: 16
+			path: src/LazyOpenStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\LazyOpenStream\\:\\:__call\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/LazyOpenStream.php
+
+		-
+			message: "#^Parameter \\#1 \\$function of function call_user_func_array expects callable\\(\\)\\: mixed, array\\(mixed, string\\) given\\.$#"
+			count: 1
+			path: src/LazyOpenStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\LazyOpenStream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/LazyOpenStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\LazyOpenStream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/LazyOpenStream.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:getResource\\(\\) should return resource but returns resource\\|false\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:register\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has parameter \\$mode with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has parameter \\$opened_path with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has parameter \\$options with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has parameter \\$path with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_read\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_read\\(\\) has parameter \\$count with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_write\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_write\\(\\) has parameter \\$data with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_tell\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_eof\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_seek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_seek\\(\\) has parameter \\$offset with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_seek\\(\\) has parameter \\$whence with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_cast\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_cast\\(\\) has parameter \\$cast_as with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_stat\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:url_stat\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:url_stat\\(\\) has parameter \\$flags with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:url_stat\\(\\) has parameter \\$path with no typehint specified\\.$#"
+			count: 1
+			path: src/StreamWrapper.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\UploadedFile\\:\\:setStreamOrFile\\(\\) has parameter \\$streamOrFile with no typehint specified\\.$#"
+			count: 1
+			path: src/UploadedFile.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\UploadedFile\\:\\:isStringNotEmpty\\(\\) has parameter \\$param with no typehint specified\\.$#"
+			count: 1
+			path: src/UploadedFile.php
+
+		-
+			message: "#^Parameter \\#1 \\$filename of class GuzzleHttp\\\\Psr7\\\\LazyOpenStream constructor expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/UploadedFile.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\UploadedFile\\:\\:moveTo\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/UploadedFile.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:withQueryValues\\(\\) has parameter \\$keyValueArray with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:fromParts\\(\\) has parameter \\$parts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:applyParts\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:applyParts\\(\\) has parameter \\$parts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:filterUserInfoComponent\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:getFilteredQueryString\\(\\) has parameter \\$keys with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:getFilteredQueryString\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:filterPath\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:filterQueryAndFragment\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Method GuzzleHttp\\\\Psr7\\\\Uri\\:\\:rawurlencodeMatchZero\\(\\) has parameter \\$match with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Uri.php
+
+		-
+			message: "#^Parameter \\#1 \\$path of method Psr\\\\Http\\\\Message\\\\UriInterface\\:\\:withPath\\(\\) expects string, string\\|null given\\.$#"
+			count: 3
+			path: src/UriNormalizer.php
+
+		-
+			message: "#^Parameter \\#1 \\$query of method Psr\\\\Http\\\\Message\\\\UriInterface\\:\\:withQuery\\(\\) expects string, string\\|null given\\.$#"
+			count: 2
+			path: src/UriNormalizer.php
+
+		-
+			message: "#^Variable \\$segment might not be defined\\.$#"
+			count: 1
+			path: src/UriResolver.php
+
+		-
+			message: "#^Parameter \\#1 \\$path of method Psr\\\\Http\\\\Message\\\\UriInterface\\:\\:withPath\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/UriResolver.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\stream_for\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\stream_for\\(\\) has parameter \\$resource with no value type specified in iterable type Iterator\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#1 \\$fp of function fwrite expects resource, resource\\|false given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#2 \\$str of function fwrite expects string, bool\\|float\\|int\\|string given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#1 \\$fp of function fseek expects resource, resource\\|false given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#1 \\$stream of class GuzzleHttp\\\\Psr7\\\\Stream constructor expects resource, resource\\|false given\\.$#"
+			count: 2
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#1 \\$stream of class GuzzleHttp\\\\Psr7\\\\Stream constructor expects resource, \\(callable\\)\\|Iterator\\|Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|null given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#1 \\$object of function method_exists expects object\\|string, \\(callable\\)\\|resource\\|null given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\parse_header\\(\\) has parameter \\$header with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\parse_header\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Argument of an invalid type array\\<int, string\\>\\|false supplied for foreach, only iterables are supported\\.$#"
+			count: 2
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\normalize_header\\(\\) has parameter \\$header with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\normalize_header\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\modify_request\\(\\) has parameter \\$changes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\rewind_body\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\try_fopen\\(\\) should return resource but returns resource\\|false\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\copy_to_stream\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#1 \\$status of class GuzzleHttp\\\\Psr7\\\\Response constructor expects int, string given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\parse_query\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\build_query\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#1 \\$str of callable 'rawurlencode'\\|'urlencode'\\|\\(Closure\\(mixed\\)\\: mixed\\) expects string, int\\|string given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\mimetype_from_filename\\(\\) has parameter \\$filename with no typehint specified\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(\\$filename\\)\\: Unexpected token \"\\$filename\", expected type at offset 83$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\mimetype_from_extension\\(\\) has parameter \\$extension with no typehint specified\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(\\$extension string The file extension\\.\\)\\: Unexpected token \"\\$extension\", expected type at offset 58$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\_parse_message\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#2 \\$subject of function preg_match_all expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Variable \\$headerLines in PHPDoc tag @var does not match assigned variable \\$count\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#1 \\$haystack of function substr_count expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Parameter \\#2 \\$subject of function preg_match expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\_parse_request_uri\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\_caseless_remove\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\_caseless_remove\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/functions.php
+
+		-
+			message: "#^Function GuzzleHttp\\\\Psr7\\\\_caseless_remove\\(\\) has parameter \\$keys with no typehint specified\\.$#"
+			count: 1
+			path: src/functions.php

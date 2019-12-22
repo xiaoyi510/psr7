@@ -26,6 +26,7 @@ class StreamWrapper
      * @param StreamInterface $stream The stream to get a resource for
      *
      * @return resource
+     *
      * @throws \InvalidArgumentException if stream is not readable or writable
      */
     public static function getResource(StreamInterface $stream)
@@ -46,8 +47,6 @@ class StreamWrapper
 
     /**
      * Creates a stream context that can be used to open a stream as a php stream resource.
-     *
-     * @param StreamInterface $stream
      *
      * @return resource
      */

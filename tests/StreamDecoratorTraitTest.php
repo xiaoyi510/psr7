@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace GuzzleHttp\Tests\Psr7;
 
-use Psr\Http\Message\StreamInterface;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\StreamDecoratorTrait;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 class Str implements StreamInterface
 {
@@ -40,82 +40,84 @@ class StreamDecoratorTraitTest extends TestCase
         $s = $this->getMockBuilder(StreamInterface::class)
             ->setMethods(['read'])
             ->getMockForAbstractClass();
-        $s->expects($this->once())
+        $s->expects(self::once())
             ->method('read')
-            ->will($this->throwException(new \Exception('foo')));
+            ->will(self::throwException(new \Exception('foo')));
         $msg = '';
-        set_error_handler(function ($errNo, $str) use (&$msg) { $msg = $str; });
+        set_error_handler(function ($errNo, $str) use (&$msg) {
+            $msg = $str;
+        });
         echo new Str($s);
         restore_error_handler();
-        $this->assertStringContainsString('foo', $msg);
+        self::assertStringContainsString('foo', $msg);
     }
 
     public function testToString()
     {
-        $this->assertEquals('foo', (string) $this->b);
+        self::assertEquals('foo', (string) $this->b);
     }
 
     public function testHasSize()
     {
-        $this->assertEquals(3, $this->b->getSize());
+        self::assertEquals(3, $this->b->getSize());
     }
 
     public function testReads()
     {
-        $this->assertEquals('foo', $this->b->read(10));
+        self::assertEquals('foo', $this->b->read(10));
     }
 
     public function testCheckMethods()
     {
-        $this->assertEquals($this->a->isReadable(), $this->b->isReadable());
-        $this->assertEquals($this->a->isWritable(), $this->b->isWritable());
-        $this->assertEquals($this->a->isSeekable(), $this->b->isSeekable());
+        self::assertEquals($this->a->isReadable(), $this->b->isReadable());
+        self::assertEquals($this->a->isWritable(), $this->b->isWritable());
+        self::assertEquals($this->a->isSeekable(), $this->b->isSeekable());
     }
 
     public function testSeeksAndTells()
     {
         $this->b->seek(1);
-        $this->assertEquals(1, $this->a->tell());
-        $this->assertEquals(1, $this->b->tell());
+        self::assertEquals(1, $this->a->tell());
+        self::assertEquals(1, $this->b->tell());
         $this->b->seek(0);
-        $this->assertEquals(0, $this->a->tell());
-        $this->assertEquals(0, $this->b->tell());
+        self::assertEquals(0, $this->a->tell());
+        self::assertEquals(0, $this->b->tell());
         $this->b->seek(0, SEEK_END);
-        $this->assertEquals(3, $this->a->tell());
-        $this->assertEquals(3, $this->b->tell());
+        self::assertEquals(3, $this->a->tell());
+        self::assertEquals(3, $this->b->tell());
     }
 
     public function testGetsContents()
     {
-        $this->assertEquals('foo', $this->b->getContents());
-        $this->assertEquals('', $this->b->getContents());
+        self::assertEquals('foo', $this->b->getContents());
+        self::assertEquals('', $this->b->getContents());
         $this->b->seek(1);
-        $this->assertEquals('oo', $this->b->getContents());
+        self::assertEquals('oo', $this->b->getContents());
     }
 
     public function testCloses()
     {
         $this->b->close();
-        $this->assertFalse(is_resource($this->c));
+        self::assertFalse(is_resource($this->c));
     }
 
     public function testDetaches()
     {
         $this->b->detach();
-        $this->assertFalse($this->b->isReadable());
+        self::assertFalse($this->b->isReadable());
     }
 
     public function testWrapsMetadata()
     {
-        $this->assertSame($this->b->getMetadata(), $this->a->getMetadata());
-        $this->assertSame($this->b->getMetadata('uri'), $this->a->getMetadata('uri'));
+        self::assertSame($this->b->getMetadata(), $this->a->getMetadata());
+        self::assertSame($this->b->getMetadata('uri'), $this->a->getMetadata('uri'));
     }
 
     public function testWrapsWrites()
     {
         $this->b->seek(0, SEEK_END);
         $this->b->write('foo');
-        $this->assertEquals('foofoo', (string) $this->a);
+        self::assertEquals('foofoo', (string) $this->a);
     }
 
     public function testThrowsWithInvalidGetter()
@@ -136,5 +138,7 @@ class BadStream
 {
     use StreamDecoratorTrait;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 }

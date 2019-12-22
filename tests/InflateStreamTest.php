@@ -19,7 +19,7 @@ class InflateStreamTest extends TestCase
         $content = gzencode('test');
         $a = Psr7\stream_for($content);
         $b = new InflateStream($a);
-        $this->assertEquals('test', (string) $b);
+        self::assertEquals('test', (string) $b);
     }
 
     public function testInflatesStreamsWithFilename()
@@ -27,7 +27,7 @@ class InflateStreamTest extends TestCase
         $content = $this->getGzipStringWithFilename('test');
         $a = Psr7\stream_for($content);
         $b = new InflateStream($a);
-        $this->assertEquals('test', (string) $b);
+        self::assertEquals('test', (string) $b);
     }
 
     public function testInflatesStreamsPreserveSeekable()
@@ -36,8 +36,8 @@ class InflateStreamTest extends TestCase
         $seekable = Psr7\stream_for($content);
         $nonSeekable = new NoSeekStream(Psr7\stream_for($content));
 
-        $this->assertTrue((new InflateStream($seekable))->isSeekable());
-        $this->assertFalse((new InflateStream($nonSeekable))->isSeekable());
+        self::assertTrue((new InflateStream($seekable))->isSeekable());
+        self::assertFalse((new InflateStream($nonSeekable))->isSeekable());
     }
 
     private function getGzipStringWithFilename($original_string)

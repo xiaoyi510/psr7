@@ -13,14 +13,15 @@ class PumpStreamTest extends TestCase
 {
     public function testHasMetadataAndSize()
     {
-        $p = new PumpStream(function () {}, [
+        $p = new PumpStream(function () {
+        }, [
             'metadata' => ['foo' => 'bar'],
             'size'     => 100
         ]);
 
-        $this->assertEquals('bar', $p->getMetadata('foo'));
-        $this->assertEquals(['foo' => 'bar'], $p->getMetadata());
-        $this->assertEquals(100, $p->getSize());
+        self::assertEquals('bar', $p->getMetadata('foo'));
+        self::assertEquals(['foo' => 'bar'], $p->getMetadata());
+        self::assertEquals(100, $p->getSize());
     }
 
     public function testCanReadFromCallable()
@@ -28,10 +29,10 @@ class PumpStreamTest extends TestCase
         $p = Psr7\stream_for(function ($size) {
             return 'a';
         });
-        $this->assertEquals('a', $p->read(1));
-        $this->assertEquals(1, $p->tell());
-        $this->assertEquals('aaaaa', $p->read(5));
-        $this->assertEquals(6, $p->tell());
+        self::assertEquals('a', $p->read(1));
+        self::assertEquals(1, $p->tell());
+        self::assertEquals('aaaaa', $p->read(5));
+        self::assertEquals(6, $p->tell());
     }
 
     public function testStoresExcessDataInBuffer()
@@ -41,37 +42,41 @@ class PumpStreamTest extends TestCase
             $called[] = $size;
             return 'abcdef';
         });
-        $this->assertEquals('a', $p->read(1));
-        $this->assertEquals('b', $p->read(1));
-        $this->assertEquals('cdef', $p->read(4));
-        $this->assertEquals('abcdefabc', $p->read(9));
-        $this->assertEquals([1, 9, 3], $called);
+        self::assertEquals('a', $p->read(1));
+        self::assertEquals('b', $p->read(1));
+        self::assertEquals('cdef', $p->read(4));
+        self::assertEquals('abcdefabc', $p->read(9));
+        self::assertEquals([1, 9, 3], $called);
     }
 
     public function testInifiniteStreamWrappedInLimitStream()
     {
-        $p = Psr7\stream_for(function () { return 'a'; });
+        $p = Psr7\stream_for(function () {
+            return 'a';
+        });
         $s = new LimitStream($p, 5);
-        $this->assertEquals('aaaaa', (string) $s);
+        self::assertEquals('aaaaa', (string) $s);
     }
 
     public function testDescribesCapabilities()
     {
-        $p = Psr7\stream_for(function () {});
-        $this->assertTrue($p->isReadable());
-        $this->assertFalse($p->isSeekable());
-        $this->assertFalse($p->isWritable());
-        $this->assertNull($p->getSize());
-        $this->assertEquals('', $p->getContents());
-        $this->assertEquals('', (string) $p);
+        $p = Psr7\stream_for(function () {
+        });
+        self::assertTrue($p->isReadable());
+        self::assertFalse($p->isSeekable());
+        self::assertFalse($p->isWritable());
+        self::assertNull($p->getSize());
+        self::assertEquals('', $p->getContents());
+        self::assertEquals('', (string) $p);
         $p->close();
-        $this->assertEquals('', $p->read(10));
-        $this->assertTrue($p->eof());
+        self::assertEquals('', $p->read(10));
+        self::assertTrue($p->eof());
 
         try {
-            $this->assertFalse($p->write('aa'));
-            $this->fail();
-        } catch (\RuntimeException $e) {}
+            self::assertFalse($p->write('aa'));
+            self::fail();
+        } catch (\RuntimeException $e) {
+        }
     }
 
     public function testThatConvertingStreamToStringWillTriggerErrorAndWillReturnEmptyString()
@@ -79,18 +84,18 @@ class PumpStreamTest extends TestCase
         $p = Psr7\stream_for(function ($size) {
             throw new \Exception();
         });
-        $this->assertInstanceOf(PumpStream::class, $p);
+        self::assertInstanceOf(PumpStream::class, $p);
 
         $errors = [];
-        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors){
+        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors) {
             $errors[] = ['number' => $errorNumber, 'message' => $errorMessage];
         });
         (string) $p;
 
         restore_error_handler();
 
-        $this->assertCount(1, $errors);
-        $this->assertSame(E_USER_ERROR, $errors[0]['number']);
-        $this->assertStringStartsWith('GuzzleHttp\Psr7\PumpStream::__toString exception:', $errors[0]['message']);
+        self::assertCount(1, $errors);
+        self::assertSame(E_USER_ERROR, $errors[0]['number']);
+        self::assertStringStartsWith('GuzzleHttp\Psr7\PumpStream::__toString exception:', $errors[0]['message']);
     }
 }
