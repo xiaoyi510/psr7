@@ -13,11 +13,11 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@1.5.8
+        uses: shivammathur/setup-php@1.6.2
         with:
           php-version: '7.2'
           coverage: xdebug
-          extension-csv: mbstring
+          extensions: mbstring
 
       - name: Checkout code
         uses: actions/checkout@v1
@@ -38,11 +38,11 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@1.5.8
+        uses: shivammathur/setup-php@1.6.2
         with:
           php-version: ${{ matrix.php }}
           coverage: xdebug
-          extension-csv: mbstring
+          extensions: mbstring
 
       - name: Checkout code
         uses: actions/checkout@v1
