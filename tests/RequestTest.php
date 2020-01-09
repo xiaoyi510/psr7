@@ -185,6 +185,68 @@ class RequestTest extends TestCase
         self::assertEquals('', $r->getHeaderLine('Bar'));
     }
 
+    /**
+     * @dataProvider provideHeadersContainingNotAllowedChars
+     */
+    public function testContainsNotAllowedCharsOnHeaderField($header)
+    {
+        $this->expectExceptionMessage(
+            sprintf(
+                '"%s" is not valid header name',
+                $header
+            )
+        );
+        $r = new Request(
+            'GET',
+            'http://foo.com/baz?bar=bam',
+            [
+                $header => 'value'
+            ]
+        );
+    }
+
+    public function provideHeadersContainingNotAllowedChars()
+    {
+        return [[' key '], ['key '], [' key'], ['key/'], ['key('], ['key\\'], [' ']];
+    }
+
+    /**
+     * @dataProvider provideHeadersContainsAllowedChar
+     */
+    public function testContainsAllowedCharsOnHeaderField($header)
+    {
+        $r = new Request(
+            'GET',
+            'http://foo.com/baz?bar=bam',
+            [
+                $header => 'value'
+            ]
+        );
+        self::assertArrayHasKey($header, $r->getHeaders());
+    }
+
+    public function provideHeadersContainsAllowedChar()
+    {
+        return [
+            ['key'],
+            ['key#'],
+            ['key$'],
+            ['key%'],
+            ['key&'],
+            ['key*'],
+            ['key+'],
+            ['key.'],
+            ['key^'],
+            ['key_'],
+            ['key|'],
+            ['key~'],
+            ['key!'],
+            ['key-'],
+            ["key'"],
+            ['key`']
+        ];
+    }
+
     public function testHostIsNotOverwrittenWhenPreservingHost()
     {
         $r = new Request('GET', 'http://foo.com/baz?bar=bam', ['Host' => 'a.com']);

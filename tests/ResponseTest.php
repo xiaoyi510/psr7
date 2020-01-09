@@ -266,7 +266,7 @@ class ResponseTest extends TestCase
     {
         return [
             ['foo', [], 'Header value can not be an empty array.'],
-            ['', '', 'Header name can not be empty.'],
+            ['', '', '"" is not valid header name'],
             ['foo', false, 'Header value must be a string or numeric but boolean provided'],
             ['foo', new \stdClass(),  'Header value must be a string or numeric but stdClass provided.'],
         ];
