@@ -361,36 +361,6 @@ parameters:
 			path: src/Request.php
 
 		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:hasHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Request.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:getHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Request.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:getHeaderLine\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Request.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:withHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Request.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:withAddedHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Request.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Request\\:\\:withoutHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Request.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/Request.php
@@ -457,36 +427,6 @@ parameters:
 
 		-
 			message: "#^Property GuzzleHttp\\\\Psr7\\\\Response\\:\\:\\$headerNames type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Response.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:hasHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Response.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:getHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Response.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:getHeaderLine\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Response.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:withHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Response.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:withAddedHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
-			count: 1
-			path: src/Response.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\Response\\:\\:withoutHeader\\(\\) has parameter \\$header with no typehint specified\\.$#"
 			count: 1
 			path: src/Response.php
 
@@ -807,21 +747,6 @@ parameters:
 
 		-
 			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:getAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ServerRequest.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:getAttribute\\(\\) has parameter \\$attribute with no typehint specified\\.$#"
-			count: 1
-			path: src/ServerRequest.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:withAttribute\\(\\) has parameter \\$attribute with no typehint specified\\.$#"
-			count: 1
-			path: src/ServerRequest.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\ServerRequest\\:\\:withoutAttribute\\(\\) has parameter \\$attribute with no typehint specified\\.$#"
 			count: 1
 			path: src/ServerRequest.php
 
@@ -1279,3 +1204,4 @@ parameters:
 			message: "#^Function GuzzleHttp\\\\Psr7\\\\_caseless_remove\\(\\) has parameter \\$keys with no typehint specified\\.$#"
 			count: 1
 			path: src/functions.php
+
