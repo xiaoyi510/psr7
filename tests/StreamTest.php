@@ -68,6 +68,24 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
+    public function testConvertsToStringNonSeekableStream()
+    {
+        $handle = popen('echo foo', 'r');
+        $stream = new Stream($handle);
+        self::assertFalse($stream->isSeekable());
+        self::assertSame('foo', trim((string) $stream));
+    }
+
+    public function testConvertsToStringNonSeekablePartiallyReadStream()
+    {
+        $handle = popen('echo bar', 'r');
+        $stream = new Stream($handle);
+        $firstLetter = $stream->read(1);
+        self::assertFalse($stream->isSeekable());
+        self::assertSame('b', $firstLetter);
+        self::assertSame('ar', trim((string) $stream));
+    }
+
     public function testGetsContents()
     {
         $handle = fopen('php://temp', 'w+');
