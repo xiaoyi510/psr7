@@ -130,10 +130,9 @@ $fnStream->rewind();
 
 `GuzzleHttp\Psr7\InflateStream`
 
-Uses PHP's zlib.inflate filter to inflate deflate or gzipped content.
+Uses PHP's zlib.inflate filter to inflate zlib (HTTP deflate, RFC1950) or gzipped (RFC1952) content.
 
-This stream decorator skips the first 10 bytes of the given stream to remove
-the gzip header, converts the provided stream to a PHP stream resource,
+This stream decorator converts the provided stream to a PHP stream resource,
 then appends the zlib.inflate filter. The stream is then converted back
 to a Guzzle stream resource to be used as a Guzzle stream.
 

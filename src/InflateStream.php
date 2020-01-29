@@ -7,7 +7,7 @@ namespace GuzzleHttp\Psr7;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * Uses PHP's zlib.inflate filter to inflate deflate or gzipped content.
+ * Uses PHP's zlib.inflate filter to inflate zlib (HTTP deflate, RFC1950) or gzipped (RFC1952) content.
  *
  * This stream decorator converts the provided stream to a PHP stream resource,
  * then appends the zlib.inflate filter. The stream is then converted back
