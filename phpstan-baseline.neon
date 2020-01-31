@@ -791,7 +791,7 @@ parameters:
 			path: src/Stream.php
 
 		-
-			message: "#^Cannot assign offset 'size' to array\\<int\\|string, int\\>\\|false\\.$#"
+			message: "#^Cannot access offset 'size' on array\\((\\d => int,\\s)+...\\)\\|false\\.$#"
 			count: 1
 			path: src/Stream.php
 
