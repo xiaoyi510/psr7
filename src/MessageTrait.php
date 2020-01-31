@@ -200,6 +200,9 @@ trait MessageTrait
         }, $values);
     }
 
+    /**
+     * @see https://tools.ietf.org/html/rfc7230#section-3.2
+     */
     private function assertHeader($header)
     {
         if (!is_string($header)) {
@@ -209,8 +212,13 @@ trait MessageTrait
             ));
         }
 
-        if ($header === '') {
-            throw new \InvalidArgumentException('Header name can not be empty.');
+        if (! preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/', $header)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '"%s" is not valid header name',
+                    $header
+                )
+            );
         }
     }
 }
