@@ -182,6 +182,9 @@ class AppendStreamTest extends TestCase
         self::assertNull($a->getSize());
     }
 
+    /**
+     * @requires PHP < 7.4
+     */
     public function testCatchesExceptionsWhenCastingToString()
     {
         $s = $this->getMockBuilder(StreamInterface::class)
