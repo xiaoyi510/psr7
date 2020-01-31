@@ -587,7 +587,7 @@ class FunctionsTest extends TestCase
         $response = new Psr7\Response(200, [
             'Set-Cookie' => ['bar','baz','qux']
         ], 'hello', '1.0', 'FOO');
-        $this->assertEquals(
+        self::assertEquals(
             "HTTP/1.0 200 FOO\r\nSet-Cookie: bar\r\nSet-Cookie: baz\r\nSet-Cookie: qux\r\n\r\nhello",
             Psr7\str($response)
         );
