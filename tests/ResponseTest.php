@@ -311,7 +311,7 @@ class ResponseTest extends TestCase
         $message = $message->withAddedHeader('list', ['foo' => 'two', 'bar' => 'three']);
 
         $headerLine = $message->getHeaderLine('list');
-        $this->assertSame('one, two, three', $headerLine);
+        self::assertSame('one, two, three', $headerLine);
     }
 
     /**
