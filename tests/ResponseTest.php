@@ -267,8 +267,7 @@ class ResponseTest extends TestCase
         return [
             ['foo', [], 'Header value can not be an empty array.'],
             ['', '', '"" is not valid header name'],
-            ['foo', false, 'Header value must be a string or numeric but boolean provided'],
-            ['foo', new \stdClass(),  'Header value must be a string or numeric but stdClass provided.'],
+            ['foo', new \stdClass(),  'Header value must be scalar or null but stdClass provided.'],
         ];
     }
 
@@ -304,6 +303,15 @@ class ResponseTest extends TestCase
             self::assertSame('Foo', $r->getHeaderLine('OWS'));
             self::assertSame(['Foo'], $r->getHeader('OWS'));
         }
+    }
+
+    public function testWithAddedHeaderArrayValueAndKeys()
+    {
+        $message = (new Response())->withAddedHeader('list', ['foo' => 'one']);
+        $message = $message->withAddedHeader('list', ['foo' => 'two', 'bar' => 'three']);
+
+        $headerLine = $message->getHeaderLine('list');
+        $this->assertSame('one, two, three', $headerLine);
     }
 
     /**
