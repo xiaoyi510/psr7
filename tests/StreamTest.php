@@ -210,16 +210,22 @@ class StreamTest extends TestCase
             $stream->getContents();
         });
 
-        $errors = [];
-        set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors) {
-            $errors[] = ['message' => $errorMessage, 'number' => $errorNumber];
-        });
-        self::assertSame('', (string)$stream);
-        restore_error_handler();
+        if (\PHP_VERSION_ID >= 70400) {
+            $throws(function () use ($stream) {
+                (string) $stream;
+            });
+        } else {
+            $errors = [];
+            set_error_handler(function (int $errorNumber, string $errorMessage) use (&$errors) {
+                $errors[] = ['message' => $errorMessage, 'number' => $errorNumber];
+            });
+            self::assertSame('', (string) $stream);
+            restore_error_handler();
 
-        self::assertCount(1, $errors);
-        self::assertStringStartsWith('GuzzleHttp\Psr7\Stream::__toString exception', $errors[0]['message']);
-        self::assertSame(E_USER_ERROR, $errors[0]['number']);
+            self::assertCount(1, $errors);
+            self::assertStringStartsWith('GuzzleHttp\Psr7\Stream::__toString exception', $errors[0]['message']);
+            self::assertSame(E_USER_ERROR, $errors[0]['number']);
+        }
     }
 
     public function testStreamReadingWithZeroLength()

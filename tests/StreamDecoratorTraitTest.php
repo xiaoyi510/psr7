@@ -35,6 +35,9 @@ class StreamDecoratorTraitTest extends TestCase
         $this->b = new Str($this->a);
     }
 
+    /**
+     * @requires PHP < 7.4
+     */
     public function testCatchesExceptionsWhenCastingToString()
     {
         $s = $this->getMockBuilder(StreamInterface::class)

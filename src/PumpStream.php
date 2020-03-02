@@ -56,6 +56,9 @@ class PumpStream implements StreamInterface
         try {
             return copy_to_string($this);
         } catch (\Throwable $e) {
+            if (\PHP_VERSION_ID >= 70400) {
+                throw $e;
+            }
             trigger_error(sprintf('%s::__toString exception: %s', self::class, (string) $e), E_USER_ERROR);
             return '';
         }

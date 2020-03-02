@@ -47,8 +47,10 @@ trait StreamDecoratorTrait
             }
             return $this->getContents();
         } catch (\Throwable $e) {
-            // Really, PHP? https://bugs.php.net/bug.php?id=53648
-            trigger_error('StreamDecorator::__toString exception: ' . (string) $e, E_USER_ERROR);
+            if (\PHP_VERSION_ID >= 70400) {
+                throw $e;
+            }
+            trigger_error(sprintf('%s::__toString exception: %s', self::class, (string) $e), E_USER_ERROR);
             return '';
         }
     }

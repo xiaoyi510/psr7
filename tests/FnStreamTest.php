@@ -100,6 +100,9 @@ class FnStreamTest extends TestCase
         unserialize($b);
     }
 
+    /**
+     * @requires PHP < 7.4
+     */
     public function testThatConvertingStreamToStringWillTriggerErrorAndWillReturnEmptyString()
     {
         $a = new FnStream([

@@ -79,6 +79,9 @@ class PumpStreamTest extends TestCase
         }
     }
 
+    /**
+     * @requires PHP < 7.4
+     */
     public function testThatConvertingStreamToStringWillTriggerErrorAndWillReturnEmptyString()
     {
         $p = Psr7\stream_for(function ($size) {
