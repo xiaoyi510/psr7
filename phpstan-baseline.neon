@@ -61,26 +61,6 @@ parameters:
 			path: src/BufferStream.php
 
 		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:read\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/BufferStream.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:read\\(\\) has parameter \\$length with no typehint specified\\.$#"
-			count: 1
-			path: src/BufferStream.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:write\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/BufferStream.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\BufferStream\\:\\:write\\(\\) has parameter \\$string with no typehint specified\\.$#"
-			count: 1
-			path: src/BufferStream.php
-
-		-
 			message: "#^Access to an undefined property GuzzleHttp\\\\Psr7\\\\CachingStream\\:\\:\\$stream\\.$#"
 			count: 26
 			path: src/CachingStream.php
@@ -103,11 +83,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$length of method GuzzleHttp\\\\Psr7\\\\CachingStream\\:\\:read\\(\\) expects int, float\\|int\\<1, max\\> given\\.$#"
 			count: 1
-			path: src/CachingStream.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\CachingStream\\:\\:close\\(\\) has no return typehint specified\\.$#"
-			count: 2
 			path: src/CachingStream.php
 
 		-
