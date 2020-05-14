@@ -9,7 +9,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Stream decorator trait
  *
- * @property StreamInterface stream
+ * @property StreamInterface $stream
  */
 trait StreamDecoratorTrait
 {
@@ -25,11 +25,9 @@ trait StreamDecoratorTrait
      * Magic method used to create a new stream if streams are not added in
      * the constructor of a decorator (e.g., LazyOpenStream).
      *
-     * @param string $name Name of the property (allows "stream" only).
-     *
      * @return StreamInterface
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if ($name == 'stream') {
             $this->stream = $this->createStream();
@@ -63,14 +61,13 @@ trait StreamDecoratorTrait
     /**
      * Allow decorators to implement custom methods
      *
-     * @param string $method Missing method name
-     * @param array  $args   Method arguments
-     *
      * @return mixed
      */
-    public function __call($method, array $args)
+    public function __call(string $method, array $args)
     {
-        $result = call_user_func_array([$this->stream, $method], $args);
+        /** @var callable $callable */
+        $callable = [$this->stream, $method];
+        $result = call_user_func_array($callable, $args);
 
         // Always return the wrapped object if the result is a return $this
         return $result === $this->stream ? $this : $result;

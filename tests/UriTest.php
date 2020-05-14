@@ -313,10 +313,17 @@ class UriTest extends TestCase
         self::assertSame('', $uri->getQuery());
     }
 
-    public function testNumericQueryValue()
+    public function testScalarQueryValues()
     {
-        $uri = Uri::withQueryValue(new Uri(), 'version', 1);
-        self::assertSame('version=1', $uri->getQuery());
+        $uri = new Uri();
+        $uri = Uri::withQueryValues($uri, [
+            2 => 2,
+            1 => true,
+            'false' => false,
+            'float' => 3.1
+        ]);
+
+        self::assertSame('2=2&1=1&false=&float=3.1', $uri->getQuery());
     }
 
     public function testWithQueryValues()

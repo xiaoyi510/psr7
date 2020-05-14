@@ -16,7 +16,10 @@ use Psr\Http\Message\StreamInterface;
  */
 class BufferStream implements StreamInterface
 {
+    /** @var int */
     private $hwm;
+
+    /** @var string */
     private $buffer = '';
 
     /**
@@ -52,6 +55,8 @@ class BufferStream implements StreamInterface
     public function detach()
     {
         $this->close();
+
+        return null;
     }
 
     public function getSize()

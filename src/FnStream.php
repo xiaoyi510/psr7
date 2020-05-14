@@ -20,11 +20,11 @@ class FnStream implements StreamInterface
         'isReadable', 'read', 'getContents', 'getMetadata'
     ];
 
-    /** @var array */
+    /** @var array<string, callable> */
     private $methods;
 
     /**
-     * @param array $methods Hash of method name to a callable.
+     * @param array<string, callable> $methods Hash of method name to a callable.
      */
     public function __construct(array $methods)
     {
@@ -41,7 +41,7 @@ class FnStream implements StreamInterface
      *
      * @throws \BadMethodCallException
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         throw new \BadMethodCallException(str_replace('_fn_', '', $name)
             . '() is not implemented in the FnStream');
@@ -62,7 +62,7 @@ class FnStream implements StreamInterface
      *
      * @throws \LogicException
      */
-    public function __wakeup()
+    public function __wakeup(): void
     {
         throw new \LogicException('FnStream should never be unserialized');
     }
@@ -71,8 +71,8 @@ class FnStream implements StreamInterface
      * Adds custom functionality to an underlying stream by intercepting
      * specific method calls.
      *
-     * @param StreamInterface $stream  Stream to decorate
-     * @param array           $methods Hash of method name to a closure
+     * @param StreamInterface         $stream  Stream to decorate
+     * @param array<string, callable> $methods Hash of method name to a closure
      *
      * @return FnStream
      */
@@ -81,7 +81,9 @@ class FnStream implements StreamInterface
         // If any of the required methods were not provided, then simply
         // proxy to the decorated stream.
         foreach (array_diff(self::SLOTS, array_keys($methods)) as $diff) {
-            $methods[$diff] = [$stream, $diff];
+            /** @var callable $callable */
+            $callable = [$stream, $diff];
+            $methods[$diff] = $callable;
         }
 
         return new self($methods);
@@ -102,7 +104,7 @@ class FnStream implements StreamInterface
 
     public function close()
     {
-        return call_user_func($this->_fn_close);
+        call_user_func($this->_fn_close);
     }
 
     public function detach()

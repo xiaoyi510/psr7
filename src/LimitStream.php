@@ -53,7 +53,6 @@ class LimitStream implements StreamInterface
 
     /**
      * Returns the size of the limited subset of data
-     * {@inheritdoc}
      */
     public function getSize()
     {
@@ -68,7 +67,6 @@ class LimitStream implements StreamInterface
 
     /**
      * Allow for a bounded seek on the read limited stream
-     * {@inheritdoc}
      */
     public function seek($offset, $whence = SEEK_SET)
     {
@@ -93,7 +91,6 @@ class LimitStream implements StreamInterface
 
     /**
      * Give a relative tell()
-     * {@inheritdoc}
      */
     public function tell()
     {
@@ -107,7 +104,7 @@ class LimitStream implements StreamInterface
      *
      * @throws \RuntimeException if the stream cannot be seeked.
      */
-    public function setOffset($offset)
+    public function setOffset(int $offset): void
     {
         $current = $this->stream->tell();
 
@@ -132,7 +129,7 @@ class LimitStream implements StreamInterface
      * @param int $limit Number of bytes to allow to be read from the stream.
      *                   Use -1 for no limit.
      */
-    public function setLimit($limit)
+    public function setLimit(int $limit): void
     {
         $this->limit = $limit;
     }

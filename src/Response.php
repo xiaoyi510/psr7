@@ -85,7 +85,7 @@ class Response implements ResponseInterface
 
     /**
      * @param int                                  $status  Status code
-     * @param array                                $headers Response headers
+     * @param array<string, string|string[]>       $headers Response headers
      * @param string|null|resource|StreamInterface $body    Response body
      * @param string                               $version Protocol version
      * @param string|null                          $reason  Reason phrase (when empty a default will be used based on the status code)
@@ -140,14 +140,17 @@ class Response implements ResponseInterface
         return $new;
     }
 
-    private function assertStatusCodeIsInteger($statusCode)
+    /**
+     * @param mixed $statusCode
+     */
+    private function assertStatusCodeIsInteger($statusCode): void
     {
         if (filter_var($statusCode, FILTER_VALIDATE_INT) === false) {
             throw new \InvalidArgumentException('Status code must be an integer value.');
         }
     }
 
-    private function assertStatusCodeRange(int $statusCode)
+    private function assertStatusCodeRange(int $statusCode): void
     {
         if ($statusCode < 100 || $statusCode >= 600) {
             throw new \InvalidArgumentException('Status code must be an integer value between 1xx and 5xx.');

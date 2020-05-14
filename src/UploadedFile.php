@@ -80,6 +80,8 @@ class UploadedFile implements UploadedFileInterface
     /**
      * Depending on the value set file or stream variable
      *
+     * @param StreamInterface|string|resource $streamOrFile
+     *
      * @throws InvalidArgumentException
      */
     private function setStreamOrFile($streamOrFile): void
@@ -124,10 +126,7 @@ class UploadedFile implements UploadedFileInterface
         return $this->error === UPLOAD_ERR_OK;
     }
 
-    /**
-     * @return bool
-     */
-    public function isMoved()
+    public function isMoved(): bool
     {
         return $this->moved;
     }
@@ -154,7 +153,10 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        return new LazyOpenStream($this->file, 'r+');
+        /** @var string $file */
+        $file = $this->file;
+
+        return new LazyOpenStream($file, 'r+');
     }
 
     public function moveTo($targetPath)

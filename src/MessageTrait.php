@@ -11,16 +11,16 @@ use Psr\Http\Message\StreamInterface;
  */
 trait MessageTrait
 {
-    /** @var array Map of all registered headers, as original name => array of values */
+    /** @var array<string, string[]> Map of all registered headers, as original name => array of values */
     private $headers = [];
 
-    /** @var array Map of lowercase header name => original name at registration */
+    /** @var array<string, string> Map of lowercase header name => original name at registration */
     private $headerNames  = [];
 
     /** @var string */
     private $protocol = '1.1';
 
-    /** @var StreamInterface */
+    /** @var StreamInterface|null */
     private $stream;
 
     public function getProtocolVersion()
@@ -137,6 +137,9 @@ trait MessageTrait
         return $new;
     }
 
+    /**
+     * @param array<string|int, string|string[]> $headers
+     */
     private function setHeaders(array $headers): void
     {
         $this->headerNames = $this->headers = [];
@@ -159,6 +162,11 @@ trait MessageTrait
         }
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return string[]
+     */
     private function normalizeHeaderValue($value): array
     {
         if (!is_array($value)) {
@@ -180,7 +188,7 @@ trait MessageTrait
      * header-field = field-name ":" OWS field-value OWS
      * OWS          = *( SP / HTAB )
      *
-     * @param string[] $values Header values
+     * @param mixed[] $values Header values
      *
      * @return string[] Trimmed header values
      *
@@ -202,8 +210,10 @@ trait MessageTrait
 
     /**
      * @see https://tools.ietf.org/html/rfc7230#section-3.2
+     *
+     * @param mixed $header
      */
-    private function assertHeader($header)
+    private function assertHeader($header): void
     {
         if (!is_string($header)) {
             throw new \InvalidArgumentException(sprintf(

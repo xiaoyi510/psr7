@@ -18,12 +18,19 @@ class Stream implements StreamInterface
     private const READABLE_MODES = '/r|a\+|ab\+|w\+|wb\+|x\+|xb\+|c\+|cb\+/';
     private const WRITABLE_MODES = '/a|w|r\+|rb\+|rw|x|c/';
 
+    /** @var resource */
     private $stream;
+    /** @var int|null */
     private $size;
+    /** @var bool */
     private $seekable;
+    /** @var bool */
     private $readable;
+    /** @var bool */
     private $writable;
+    /** @var string|null */
     private $uri;
+    /** @var mixed[] */
     private $customMetadata;
 
     /**
@@ -35,8 +42,8 @@ class Stream implements StreamInterface
      * - metadata: (array) Any additional metadata to return when the metadata
      *   of the stream is accessed.
      *
-     * @param resource $stream  Stream resource to wrap.
-     * @param array    $options Associative array of options.
+     * @param resource                            $stream  Stream resource to wrap.
+     * @param array{size?: int, metadata?: array} $options Associative array of options.
      *
      * @throws \InvalidArgumentException if the stream is not a stream resource
      */
@@ -50,10 +57,7 @@ class Stream implements StreamInterface
             $this->size = $options['size'];
         }
 
-        $this->customMetadata = isset($options['metadata'])
-            ? $options['metadata']
-            : [];
-
+        $this->customMetadata = $options['metadata'] ?? [];
         $this->stream = $stream;
         $meta = stream_get_meta_data($this->stream);
         $this->seekable = $meta['seekable'];
@@ -141,7 +145,7 @@ class Stream implements StreamInterface
         }
 
         $stats = fstat($this->stream);
-        if (isset($stats['size'])) {
+        if (is_array($stats) && isset($stats['size'])) {
             $this->size = $stats['size'];
             return $this->size;
         }

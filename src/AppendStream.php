@@ -16,8 +16,13 @@ class AppendStream implements StreamInterface
     /** @var StreamInterface[] Streams being decorated */
     private $streams = [];
 
+    /** @var bool */
     private $seekable = true;
+
+    /** @var int */
     private $current = 0;
+
+    /** @var int */
     private $pos = 0;
 
     /**
@@ -73,8 +78,6 @@ class AppendStream implements StreamInterface
 
     /**
      * Closes each attached stream.
-     *
-     * {@inheritdoc}
      */
     public function close()
     {
@@ -92,8 +95,6 @@ class AppendStream implements StreamInterface
      * Detaches each attached stream.
      *
      * Returns null as it's not clear which underlying stream resource to return.
-     *
-     * {@inheritdoc}
      */
     public function detach()
     {
@@ -105,6 +106,8 @@ class AppendStream implements StreamInterface
         }
 
         $this->streams = [];
+
+        return null;
     }
 
     public function tell()
@@ -117,8 +120,6 @@ class AppendStream implements StreamInterface
      *
      * If any of the streams do not return a valid number, then the size of the
      * append stream cannot be determined and null is returned.
-     *
-     * {@inheritdoc}
      */
     public function getSize()
     {
@@ -149,8 +150,6 @@ class AppendStream implements StreamInterface
 
     /**
      * Attempts to seek to the given position. Only supports SEEK_SET.
-     *
-     * {@inheritdoc}
      */
     public function seek($offset, $whence = SEEK_SET)
     {
@@ -183,8 +182,6 @@ class AppendStream implements StreamInterface
 
     /**
      * Reads from all of the appended streams until the length is met or EOF.
-     *
-     * {@inheritdoc}
      */
     public function read($length)
     {

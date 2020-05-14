@@ -14,6 +14,7 @@ class MultipartStream implements StreamInterface
 {
     use StreamDecoratorTrait;
 
+    /** @var string */
     private $boundary;
 
     /**
@@ -34,12 +35,7 @@ class MultipartStream implements StreamInterface
         $this->stream = $this->createStream($elements);
     }
 
-    /**
-     * Get the boundary
-     *
-     * @return string
-     */
-    public function getBoundary()
+    public function getBoundary(): string
     {
         return $this->boundary;
     }
@@ -51,6 +47,8 @@ class MultipartStream implements StreamInterface
 
     /**
      * Get the headers needed before transferring the content of a POST file
+     *
+     * @param array<string, string> $headers
      */
     private function getHeaders(array $headers): string
     {
@@ -64,6 +62,8 @@ class MultipartStream implements StreamInterface
 
     /**
      * Create the aggregate stream that will be used to upload the POST data
+     *
+     * @return StreamInterface
      */
     protected function createStream(array $elements)
     {
@@ -99,8 +99,8 @@ class MultipartStream implements StreamInterface
         list($body, $headers) = $this->createElement(
             $element['name'],
             $element['contents'],
-            isset($element['filename']) ? $element['filename'] : null,
-            isset($element['headers']) ? $element['headers'] : []
+            $element['filename'] ?? null,
+            $element['headers'] ?? []
         );
 
         $stream->addStream(stream_for($this->getHeaders($headers)));

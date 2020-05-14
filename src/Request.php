@@ -28,7 +28,7 @@ class Request implements RequestInterface
     /**
      * @param string                               $method  HTTP method
      * @param string|UriInterface                  $uri     URI
-     * @param array                                $headers Request headers
+     * @param array<string, string|string[]>       $headers Request headers
      * @param string|null|resource|StreamInterface $body    Request body
      * @param string                               $version Protocol version
      */
@@ -122,7 +122,7 @@ class Request implements RequestInterface
         return $new;
     }
 
-    private function updateHostFromUri()
+    private function updateHostFromUri(): void
     {
         $host = $this->uri->getHost();
 
@@ -145,7 +145,10 @@ class Request implements RequestInterface
         $this->headers = [$header => [$host]] + $this->headers;
     }
 
-    private function assertMethod($method)
+    /**
+     * @param mixed $method
+     */
+    private function assertMethod($method): void
     {
         if (!is_string($method) || $method === '') {
             throw new \InvalidArgumentException('Method must be a non-empty string.');
