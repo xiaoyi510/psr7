@@ -4,8 +4,8 @@ This repository contains a full [PSR-7](http://www.php-fig.org/psr/psr-7/)
 message implementation, several stream decorators, and some helpful
 functionality like query string parsing.
 
-
-[![Build Status](https://travis-ci.org/guzzle/psr7.svg?branch=master)](https://travis-ci.org/guzzle/psr7)
+![CI](https://github.com/guzzle/psr7/workflows/CI/badge.svg)
+![Static analysis](https://github.com/guzzle/psr7/workflows/Static%20analysis/badge.svg)
 
 
 # Stream implementation
