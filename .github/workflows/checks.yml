@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Install
         uses: docker://composer
@@ -24,14 +24,3 @@ jobs:
         uses: docker://composer
         with:
           args: composer normalize --dry-run
-
-  # roave-bc-check:
-  #   name: Roave BC Check
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v1
-
-  #     - name: Roave BC Check
-  #       uses: docker://nyholm/roave-bc-check-ga
