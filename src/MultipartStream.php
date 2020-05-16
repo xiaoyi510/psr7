@@ -40,7 +40,7 @@ class MultipartStream implements StreamInterface
         return $this->boundary;
     }
 
-    public function isWritable()
+    public function isWritable(): bool
     {
         return false;
     }

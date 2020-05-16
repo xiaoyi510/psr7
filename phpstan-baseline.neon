@@ -1,9 +1,6 @@
 parameters:
 	checkMissingIterableValueType: false
 	ignoreErrors:
-		- "#Stream\\:\\:seek\\(\\) has no return typehint specified\\.$#"
-		- "#Stream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
-
 		-
 			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:__get\\(\\) has no return typehint specified\\.$#"
 			count: 1
@@ -41,11 +38,6 @@ parameters:
 
 		-
 			message: "#^Method GuzzleHttp\\\\Psr7\\\\UploadedFile\\:\\:isStringNotEmpty\\(\\) has parameter \\$param with no typehint specified\\.$#"
-			count: 1
-			path: src/UploadedFile.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\UploadedFile\\:\\:moveTo\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/UploadedFile.php
 

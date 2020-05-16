@@ -89,7 +89,7 @@ class FnStream implements StreamInterface
         return new self($methods);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         try {
             return call_user_func($this->_fn___toString);
@@ -102,7 +102,7 @@ class FnStream implements StreamInterface
         }
     }
 
-    public function close()
+    public function close(): void
     {
         call_user_func($this->_fn_close);
     }
@@ -112,57 +112,57 @@ class FnStream implements StreamInterface
         return call_user_func($this->_fn_detach);
     }
 
-    public function getSize()
+    public function getSize(): ?int
     {
         return call_user_func($this->_fn_getSize);
     }
 
-    public function tell()
+    public function tell(): int
     {
         return call_user_func($this->_fn_tell);
     }
 
-    public function eof()
+    public function eof(): bool
     {
         return call_user_func($this->_fn_eof);
     }
 
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         return call_user_func($this->_fn_isSeekable);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         call_user_func($this->_fn_rewind);
     }
 
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         call_user_func($this->_fn_seek, $offset, $whence);
     }
 
-    public function isWritable()
+    public function isWritable(): bool
     {
         return call_user_func($this->_fn_isWritable);
     }
 
-    public function write($string)
+    public function write($string): int
     {
         return call_user_func($this->_fn_write, $string);
     }
 
-    public function isReadable()
+    public function isReadable(): bool
     {
         return call_user_func($this->_fn_isReadable);
     }
 
-    public function read($length)
+    public function read($length): string
     {
         return call_user_func($this->_fn_read, $length);
     }
 
-    public function getContents()
+    public function getContents(): string
     {
         return call_user_func($this->_fn_getContents);
     }

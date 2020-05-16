@@ -40,7 +40,7 @@ class StreamDecoratorTraitTest extends TestCase
      */
     public function testCatchesExceptionsWhenCastingToString()
     {
-        $s = $this->createMock(StreamInterface::class);
+        $s = $this->createMock(Str::class);
         $s->expects(self::once())
             ->method('read')
             ->willThrowException(new \RuntimeException('foo'));
