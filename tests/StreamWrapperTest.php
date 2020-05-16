@@ -81,15 +81,13 @@ class StreamWrapperTest extends TestCase
 
     public function testValidatesStream()
     {
-        $stream = $this->getMockBuilder(StreamInterface::class)
-            ->setMethods(['isReadable', 'isWritable'])
-            ->getMockForAbstractClass();
+        $stream = $this->createMock(StreamInterface::class);
         $stream->expects(self::once())
             ->method('isReadable')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $stream->expects(self::once())
             ->method('isWritable')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
 
         $this->expectException(\InvalidArgumentException::class);
         StreamWrapper::getResource($stream);
@@ -103,15 +101,13 @@ class StreamWrapperTest extends TestCase
 
     public function testCanOpenReadonlyStream()
     {
-        $stream = $this->getMockBuilder(StreamInterface::class)
-            ->setMethods(['isReadable', 'isWritable'])
-            ->getMockForAbstractClass();
+        $stream = $this->createMock(StreamInterface::class);
         $stream->expects(self::once())
             ->method('isReadable')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $stream->expects(self::once())
             ->method('isWritable')
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $r = StreamWrapper::getResource($stream);
         self::assertIsResource($r);
         fclose($r);

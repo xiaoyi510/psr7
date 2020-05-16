@@ -87,10 +87,10 @@ class UriNormalizerTest extends TestCase
 
     public function testRemoveDefaultPort()
     {
-        $uri = $this->getMockBuilder(UriInterface::class)->getMock();
-        $uri->expects(self::any())->method('getScheme')->will(self::returnValue('http'));
-        $uri->expects(self::any())->method('getPort')->will(self::returnValue(80));
-        $uri->expects(self::once())->method('withPort')->with(null)->will(self::returnValue(new Uri('http://example.org')));
+        $uri = $this->createMock(UriInterface::class);
+        $uri->expects(self::any())->method('getScheme')->willReturn('http');
+        $uri->expects(self::any())->method('getPort')->willReturn(80);
+        $uri->expects(self::once())->method('withPort')->with(null)->willReturn(new Uri('http://example.org'));
 
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DEFAULT_PORT);
 

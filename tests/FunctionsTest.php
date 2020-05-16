@@ -10,6 +10,7 @@ use GuzzleHttp\Psr7\NoSeekStream;
 use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 
 class FunctionsTest extends TestCase
 {
@@ -134,25 +135,23 @@ class FunctionsTest extends TestCase
         self::assertSame('', Psr7\readline($s));
     }
 
-    public function testReadsLineUntilFalseReturnedFromRead()
+    public function testReadsLineUntilEmptyStringReturnedFromRead()
     {
-        $s = $this->getMockBuilder(Stream::class)
-            ->setMethods(['read', 'eof'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $s = $this->createMock(StreamInterface::class);
         $s->expects(self::exactly(2))
             ->method('read')
-            ->will(self::returnCallback(function () {
-                static $c = false;
-                if ($c) {
-                    return false;
+            ->willReturnCallback(function () {
+                static $called = false;
+                if ($called) {
+                    return '';
                 }
-                $c = true;
+                $called = true;
+
                 return 'h';
-            }));
+            });
         $s->expects(self::exactly(2))
             ->method('eof')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         self::assertEquals('h', Psr7\readline($s));
     }
 

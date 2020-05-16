@@ -83,14 +83,13 @@ class CachingStreamTest extends TestCase
     {
         $a = Psr7\stream_for('foo');
         $d = $this->getMockBuilder(CachingStream::class)
-            ->setMethods(['seek'])
+            ->onlyMethods(['seek'])
             ->setConstructorArgs([$a])
             ->getMock();
         $d->expects(self::once())
             ->method('seek')
-            ->with(0)
-            ->will(self::returnValue(true));
-        $d->seek(0);
+            ->with(0);
+        $d->rewind();
     }
 
     public function testCanSeekToReadBytes()
@@ -114,12 +113,12 @@ class CachingStreamTest extends TestCase
 
         $this->decorated = $this->getMockBuilder(Stream::class)
             ->setConstructorArgs([$stream])
-            ->setMethods(['read'])
+            ->onlyMethods(['read'])
             ->getMock();
 
         $this->decorated->expects(self::exactly(2))
             ->method('read')
-            ->willReturnCallback(function ($length) use ($stream) {
+            ->willReturnCallback(function (int $length) use ($stream) {
                 return fread($stream, 2);
             });
 

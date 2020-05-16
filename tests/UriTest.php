@@ -208,9 +208,9 @@ class UriTest extends TestCase
      */
     public function testIsDefaultPort($scheme, $port, $isDefaultPort)
     {
-        $uri = $this->getMockBuilder(UriInterface::class)->getMock();
-        $uri->expects(self::any())->method('getScheme')->will(self::returnValue($scheme));
-        $uri->expects(self::any())->method('getPort')->will(self::returnValue($port));
+        $uri = $this->createMock(UriInterface::class);
+        $uri->expects(self::any())->method('getScheme')->willReturn($scheme);
+        $uri->expects(self::any())->method('getPort')->willReturn($port);
 
         self::assertSame($isDefaultPort, Uri::isDefaultPort($uri));
     }
