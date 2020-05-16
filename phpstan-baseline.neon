@@ -5,11 +5,6 @@ parameters:
 		- "#Stream\\:\\:rewind\\(\\) has no return typehint specified\\.$#"
 
 		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\AppendStream\\:\\:addStream\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/AppendStream.php
-
-		-
 			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:__get\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/FnStream.php
@@ -30,11 +25,6 @@ parameters:
 			path: src/MultipartStream.php
 
 		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\MultipartStream\\:\\:createStream\\(\\) invoked with 0 parameters, 1 required\\.$#"
-			count: 1
-			path: src/MultipartStream.php
-
-		-
 			message: "#^Parameter \\#1 \\$filename of function GuzzleHttp\\\\Psr7\\\\mimetype_from_filename expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/MultipartStream.php
@@ -46,111 +36,6 @@ parameters:
 
 		-
 			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:getResource\\(\\) should return resource but returns resource\\|false\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:register\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has parameter \\$mode with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has parameter \\$opened_path with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has parameter \\$options with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_open\\(\\) has parameter \\$path with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_read\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_read\\(\\) has parameter \\$count with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_write\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_write\\(\\) has parameter \\$data with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_tell\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_eof\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_seek\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_seek\\(\\) has parameter \\$offset with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_seek\\(\\) has parameter \\$whence with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_cast\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_cast\\(\\) has parameter \\$cast_as with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:stream_stat\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:url_stat\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:url_stat\\(\\) has parameter \\$flags with no typehint specified\\.$#"
-			count: 1
-			path: src/StreamWrapper.php
-
-		-
-			message: "#^Method GuzzleHttp\\\\Psr7\\\\StreamWrapper\\:\\:url_stat\\(\\) has parameter \\$path with no typehint specified\\.$#"
 			count: 1
 			path: src/StreamWrapper.php
 

@@ -57,7 +57,7 @@ class AppendStream implements StreamInterface
      *
      * @throws \InvalidArgumentException if the stream is not readable
      */
-    public function addStream(StreamInterface $stream)
+    public function addStream(StreamInterface $stream): void
     {
         if (!$stream->isReadable()) {
             throw new \InvalidArgumentException('Each stream must be readable');
