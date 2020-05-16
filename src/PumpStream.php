@@ -34,10 +34,10 @@ class PumpStream implements StreamInterface
     private $buffer;
 
     /**
-     * @param callable                            $source  Source of the stream data. The callable MAY
+     * @param callable(int): (string|null|false)  $source  Source of the stream data. The callable MAY
      *                                                     accept an integer argument used to control the
      *                                                     amount of data to return. The callable MUST
-     *                                                     return a string when called, or false on error
+     *                                                     return a string when called, or false|null on error
      *                                                     or EOF.
      * @param array{size?: int, metadata?: array} $options Stream options:
      *                                                     - metadata: Hash of metadata to use with stream.
@@ -89,7 +89,7 @@ class PumpStream implements StreamInterface
 
     public function eof()
     {
-        return !$this->source;
+        return $this->source === null;
     }
 
     public function isSeekable()
