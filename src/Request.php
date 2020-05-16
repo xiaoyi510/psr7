@@ -65,7 +65,7 @@ class Request implements RequestInterface
         }
 
         $target = $this->uri->getPath();
-        if ($target == '') {
+        if ($target === '') {
             $target = '/';
         }
         if ($this->uri->getQuery() != '') {

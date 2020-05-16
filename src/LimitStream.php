@@ -44,7 +44,7 @@ class LimitStream implements StreamInterface
         }
 
         // No limit and the underlying stream is not at EOF
-        if ($this->limit == -1) {
+        if ($this->limit === -1) {
             return false;
         }
 
@@ -58,7 +58,7 @@ class LimitStream implements StreamInterface
     {
         if (null === ($length = $this->stream->getSize())) {
             return null;
-        } elseif ($this->limit == -1) {
+        } elseif ($this->limit === -1) {
             return $length - $this->offset;
         } else {
             return min($this->limit, $length - $this->offset);
@@ -136,7 +136,7 @@ class LimitStream implements StreamInterface
 
     public function read($length)
     {
-        if ($this->limit == -1) {
+        if ($this->limit === -1) {
             return $this->stream->read($length);
         }
 

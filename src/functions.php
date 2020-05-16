@@ -334,8 +334,7 @@ function copy_to_string(StreamInterface $stream, int $maxLen = -1): string
     if ($maxLen === -1) {
         while (!$stream->eof()) {
             $buf = $stream->read(1048576);
-            // Using a loose equality here to match on '' and false.
-            if ($buf == null) {
+            if ($buf === '') {
                 break;
             }
             $buffer .= $buf;
@@ -346,8 +345,7 @@ function copy_to_string(StreamInterface $stream, int $maxLen = -1): string
     $len = 0;
     while (!$stream->eof() && $len < $maxLen) {
         $buf = $stream->read($maxLen - $len);
-        // Using a loose equality here to match on '' and false.
-        if ($buf == null) {
+        if ($buf === '') {
             break;
         }
         $buffer .= $buf;
@@ -438,8 +436,7 @@ function readline(StreamInterface $stream, ?int $maxLength = null): string
     $size = 0;
 
     while (!$stream->eof()) {
-        // Using a loose equality here to match on '' and false.
-        if (null == ($byte = $stream->read(1))) {
+        if ('' === ($byte = $stream->read(1))) {
             return $buffer;
         }
         $buffer .= $byte;
