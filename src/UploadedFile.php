@@ -48,7 +48,7 @@ class UploadedFile implements UploadedFileInterface
     private $moved = false;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $size;
 
@@ -62,7 +62,7 @@ class UploadedFile implements UploadedFileInterface
      */
     public function __construct(
         $streamOrFile,
-        int $size,
+        ?int $size,
         int $errorStatus,
         string $clientFilename = null,
         string $clientMediaType = null
