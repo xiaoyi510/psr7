@@ -191,7 +191,7 @@ class FunctionsTest extends TestCase
         Psr7\try_fopen('/path/to/does/not/exist', 'r');
     }
 
-    public function parseQueryProvider()
+    public function parseQueryProvider(): iterable
     {
         return [
             // Does not need to parse when the string is empty
@@ -592,7 +592,7 @@ class FunctionsTest extends TestCase
         );
     }
 
-    public function parseParamsProvider()
+    public function parseParamsProvider(): iterable
     {
         $res1 = [
             [

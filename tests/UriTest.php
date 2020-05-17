@@ -53,7 +53,7 @@ class UriTest extends TestCase
     /**
      * @dataProvider getValidUris
      */
-    public function testValidUrisStayValid($input)
+    public function testValidUrisStayValid(string $input)
     {
         $uri = new Uri($input);
 
@@ -63,14 +63,14 @@ class UriTest extends TestCase
     /**
      * @dataProvider getValidUris
      */
-    public function testFromParts($input)
+    public function testFromParts(string $input)
     {
         $uri = Uri::fromParts(parse_url($input));
 
         self::assertSame($input, (string) $uri);
     }
 
-    public function getValidUris()
+    public function getValidUris(): iterable
     {
         return [
             ['urn:path-rootless'],
@@ -102,14 +102,14 @@ class UriTest extends TestCase
     /**
      * @dataProvider getInvalidUris
      */
-    public function testInvalidUrisThrowException($invalidUri)
+    public function testInvalidUrisThrowException(string $invalidUri)
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unable to parse URI');
         new Uri($invalidUri);
     }
 
-    public function getInvalidUris()
+    public function getInvalidUris(): iterable
     {
         return [
             // parse_url() requires the host component which makes sense for http(s)
@@ -206,7 +206,7 @@ class UriTest extends TestCase
     /**
      * @dataProvider getPortTestCases
      */
-    public function testIsDefaultPort($scheme, $port, $isDefaultPort)
+    public function testIsDefaultPort(string $scheme, ?int $port, bool $isDefaultPort)
     {
         $uri = $this->createMock(UriInterface::class);
         $uri->expects(self::any())->method('getScheme')->willReturn($scheme);
@@ -215,7 +215,7 @@ class UriTest extends TestCase
         self::assertSame($isDefaultPort, Uri::isDefaultPort($uri));
     }
 
-    public function getPortTestCases()
+    public function getPortTestCases(): iterable
     {
         return [
             ['http', null, true],
@@ -529,7 +529,7 @@ class UriTest extends TestCase
         self::assertSame('file:///tmp/filename.ext', (string) $uri);
     }
 
-    public function uriComponentsEncodingProvider()
+    public function uriComponentsEncodingProvider(): iterable
     {
         $unreserved = 'a-zA-Z0-9.-_~!$&\'()*+,;=:@';
 
@@ -554,7 +554,7 @@ class UriTest extends TestCase
     /**
      * @dataProvider uriComponentsEncodingProvider
      */
-    public function testUriComponentsGetEncodedProperly($input, $path, $query, $fragment, $output)
+    public function testUriComponentsGetEncodedProperly(string $input, string $path, string $query, string $fragment, string $output)
     {
         $uri = new Uri($input);
         self::assertSame($path, $uri->getPath());

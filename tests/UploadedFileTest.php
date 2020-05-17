@@ -96,7 +96,7 @@ class UploadedFileTest extends TestCase
         self::assertEquals($stream->__toString(), file_get_contents($to));
     }
 
-    public function invalidMovePaths()
+    public function invalidMovePaths(): iterable
     {
         return [
             'null'   => [null],
@@ -151,7 +151,7 @@ class UploadedFileTest extends TestCase
         $upload->getStream();
     }
 
-    public function nonOkErrorStatus()
+    public function nonOkErrorStatus(): iterable
     {
         return [
             'UPLOAD_ERR_INI_SIZE'   => [ UPLOAD_ERR_INI_SIZE ],

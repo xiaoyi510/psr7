@@ -113,7 +113,7 @@ class RequestTest extends TestCase
         $r->withMethod($method);
     }
 
-    public function invalidMethodsProvider()
+    public function invalidMethodsProvider(): iterable
     {
         return [
             [null],
@@ -205,7 +205,7 @@ class RequestTest extends TestCase
         );
     }
 
-    public function provideHeadersContainingNotAllowedChars()
+    public function provideHeadersContainingNotAllowedChars(): iterable
     {
         return [[' key '], ['key '], [' key'], ['key/'], ['key('], ['key\\'], [' ']];
     }
@@ -225,7 +225,7 @@ class RequestTest extends TestCase
         self::assertArrayHasKey($header, $r->getHeaders());
     }
 
-    public function provideHeadersContainsAllowedChar()
+    public function provideHeadersContainsAllowedChar(): iterable
     {
         return [
             ['key'],

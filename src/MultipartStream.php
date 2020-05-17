@@ -62,10 +62,8 @@ class MultipartStream implements StreamInterface
 
     /**
      * Create the aggregate stream that will be used to upload the POST data
-     *
-     * @return StreamInterface
      */
-    protected function createStream(array $elements = [])
+    protected function createStream(array $elements = []): StreamInterface
     {
         $stream = new AppendStream();
 

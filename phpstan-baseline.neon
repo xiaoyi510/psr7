@@ -1,5 +1,4 @@
 parameters:
-	checkMissingIterableValueType: false
 	ignoreErrors:
 		-
 			message: "#^Method GuzzleHttp\\\\Psr7\\\\FnStream\\:\\:__get\\(\\) has no return typehint specified\\.$#"
@@ -72,43 +71,8 @@ parameters:
 			path: src/UriResolver.php
 
 		-
-			message: "#^Parameter \\#1 \\$fp of function fwrite expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/functions.php
-
-		-
-			message: "#^Parameter \\#2 \\$str of function fwrite expects string, bool\\|float\\|int\\|string given\\.$#"
-			count: 1
-			path: src/functions.php
-
-		-
-			message: "#^Parameter \\#1 \\$fp of function fseek expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/functions.php
-
-		-
-			message: "#^Parameter \\#1 \\$stream of class GuzzleHttp\\\\Psr7\\\\Stream constructor expects resource, resource\\|false given\\.$#"
-			count: 2
-			path: src/functions.php
-
-		-
-			message: "#^Parameter \\#1 \\$stream of class GuzzleHttp\\\\Psr7\\\\Stream constructor expects resource, \\(callable\\)\\|Iterator\\|Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|null given\\.$#"
-			count: 1
-			path: src/functions.php
-
-		-
-			message: "#^Parameter \\#1 \\$object of function method_exists expects object\\|string, \\(callable\\)\\|resource\\|null given\\.$#"
-			count: 1
-			path: src/functions.php
-
-		-
 			message: "#^Argument of an invalid type array\\<int, string\\>\\|false supplied for foreach, only iterables are supported\\.$#"
 			count: 2
-			path: src/functions.php
-
-		-
-			message: "#^Parameter \\#1 \\$str of callable 'rawurlencode'\\|'urlencode'\\|\\(Closure\\(mixed\\)\\: mixed\\) expects string, int\\|string given\\.$#"
-			count: 1
 			path: src/functions.php
 
 		-

@@ -141,11 +141,9 @@ trait StreamDecoratorTrait
     /**
      * Implement in subclasses to dynamically create streams when requested.
      *
-     * @return StreamInterface
-     *
      * @throws \BadMethodCallException
      */
-    protected function createStream()
+    protected function createStream(): StreamInterface
     {
         throw new \BadMethodCallException('Not implemented');
     }

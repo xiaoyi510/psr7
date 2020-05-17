@@ -46,7 +46,7 @@ function str(MessageInterface $message): string
 /**
  * Returns a UriInterface for the given value.
  *
- * This function accepts a string or {@see Psr\Http\Message\UriInterface} and
+ * This function accepts a string or {@see \Psr\Http\Message\UriInterface} and
  * returns a UriInterface for the given value. If the value is already a
  * `UriInterface`, it is returned as-is.
  *
@@ -80,9 +80,9 @@ function uri_for($uri): UriInterface
 function stream_for($resource = '', array $options = []): StreamInterface
 {
     if (is_scalar($resource)) {
-        $stream = fopen('php://temp', 'r+');
+        $stream = try_fopen('php://temp', 'r+');
         if ($resource !== '') {
-            fwrite($stream, $resource);
+            fwrite($stream, (string) $resource);
             fseek($stream, 0);
         }
         return new Stream($stream, $options);
@@ -90,8 +90,10 @@ function stream_for($resource = '', array $options = []): StreamInterface
 
     switch (gettype($resource)) {
         case 'resource':
+            /** @var resource $resource */
             return new Stream($resource, $options);
         case 'object':
+            /** @var object $resource */
             if ($resource instanceof StreamInterface) {
                 return $resource;
             } elseif ($resource instanceof \Iterator) {
@@ -108,7 +110,7 @@ function stream_for($resource = '', array $options = []): StreamInterface
             }
             break;
         case 'NULL':
-            return new Stream(fopen('php://temp', 'r+'), $options);
+            return new Stream(try_fopen('php://temp', 'r+'), $options);
     }
 
     if (is_callable($resource)) {
@@ -565,7 +567,7 @@ function build_query(array $params, $encoding = PHP_QUERY_RFC3986): string
     }
 
     if ($encoding === false) {
-        $encoder = function ($str) {
+        $encoder = function (string $str): string {
             return $str;
         };
     } elseif ($encoding === PHP_QUERY_RFC3986) {
@@ -578,18 +580,18 @@ function build_query(array $params, $encoding = PHP_QUERY_RFC3986): string
 
     $qs = '';
     foreach ($params as $k => $v) {
-        $k = $encoder($k);
+        $k = $encoder((string) $k);
         if (!is_array($v)) {
             $qs .= $k;
             if ($v !== null) {
-                $qs .= '=' . $encoder($v);
+                $qs .= '=' . $encoder((string) $v);
             }
             $qs .= '&';
         } else {
             foreach ($v as $vv) {
                 $qs .= $k;
                 if ($vv !== null) {
-                    $qs .= '=' . $encoder($vv);
+                    $qs .= '=' . $encoder((string) $vv);
                 }
                 $qs .= '&';
             }
