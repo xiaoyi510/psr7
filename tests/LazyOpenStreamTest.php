@@ -13,7 +13,7 @@ class LazyOpenStreamTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->fname = tempnam('/tmp', 'tfile');
+        $this->fname = tempnam(sys_get_temp_dir(), 'tfile');
 
         if (file_exists($this->fname)) {
             unlink($this->fname);
