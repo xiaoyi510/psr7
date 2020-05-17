@@ -58,7 +58,7 @@ class BufferStreamTest extends TestCase
     {
         $b = new BufferStream(5);
         self::assertEquals(3, $b->write('hi '));
-        self::assertFalse($b->write('hello'));
+        self::assertSame(0, $b->write('hello'));
         self::assertEquals('hi hello', (string) $b);
         self::assertEquals(4, $b->write('test'));
     }

@@ -47,7 +47,7 @@ class UriNormalizerTest extends TestCase
         self::assertSame("/$char%2F%5B$char?$char%2F%5B$char", (string) $normalizedUri);
     }
 
-    public function getUnreservedCharacters()
+    public function getUnreservedCharacters(): iterable
     {
         $unreservedChars = array_merge(range('a', 'z'), range('A', 'Z'), range(0, 9), ['-', '.', '_', '~']);
 
@@ -67,7 +67,7 @@ class UriNormalizerTest extends TestCase
         self::assertSame($expected, (string) $normalizedUri);
     }
 
-    public function getEmptyPathTestCases()
+    public function getEmptyPathTestCases(): iterable
     {
         return [
             ['http://example.org', 'http://example.org/'],
@@ -87,10 +87,10 @@ class UriNormalizerTest extends TestCase
 
     public function testRemoveDefaultPort()
     {
-        $uri = $this->getMockBuilder(UriInterface::class)->getMock();
-        $uri->expects(self::any())->method('getScheme')->will(self::returnValue('http'));
-        $uri->expects(self::any())->method('getPort')->will(self::returnValue(80));
-        $uri->expects(self::once())->method('withPort')->with(null)->will(self::returnValue(new Uri('http://example.org')));
+        $uri = $this->createMock(UriInterface::class);
+        $uri->expects(self::any())->method('getScheme')->willReturn('http');
+        $uri->expects(self::any())->method('getPort')->willReturn(80);
+        $uri->expects(self::once())->method('withPort')->with(null)->willReturn(new Uri('http://example.org'));
 
         $normalizedUri = UriNormalizer::normalize($uri, UriNormalizer::REMOVE_DEFAULT_PORT);
 
@@ -155,14 +155,14 @@ class UriNormalizerTest extends TestCase
     /**
      * @dataProvider getEquivalentTestCases
      */
-    public function testIsEquivalent($uri1, $uri2, $expected)
+    public function testIsEquivalent(string $uri1, string $uri2, bool $expected)
     {
         $equivalent = UriNormalizer::isEquivalent(new Uri($uri1), new Uri($uri2));
 
         self::assertSame($expected, $equivalent);
     }
 
-    public function getEquivalentTestCases()
+    public function getEquivalentTestCases(): iterable
     {
         return [
             ['http://example.org', 'http://example.org', true],

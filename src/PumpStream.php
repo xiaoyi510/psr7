@@ -34,24 +34,24 @@ class PumpStream implements StreamInterface
     private $buffer;
 
     /**
-     * @param callable $source  Source of the stream data. The callable MAY
-     *                          accept an integer argument used to control the
-     *                          amount of data to return. The callable MUST
-     *                          return a string when called, or false on error
-     *                          or EOF.
-     * @param array    $options Stream options:
-     *                          - metadata: Hash of metadata to use with stream.
-     *                          - size: Size of the stream, if known.
+     * @param callable(int): (string|null|false)  $source  Source of the stream data. The callable MAY
+     *                                                     accept an integer argument used to control the
+     *                                                     amount of data to return. The callable MUST
+     *                                                     return a string when called, or false|null on error
+     *                                                     or EOF.
+     * @param array{size?: int, metadata?: array} $options Stream options:
+     *                                                     - metadata: Hash of metadata to use with stream.
+     *                                                     - size: Size of the stream, if known.
      */
     public function __construct(callable $source, array $options = [])
     {
         $this->source = $source;
-        $this->size = isset($options['size']) ? $options['size'] : null;
-        $this->metadata = isset($options['metadata']) ? $options['metadata'] : [];
+        $this->size = $options['size'] ?? null;
+        $this->metadata = $options['metadata'] ?? [];
         $this->buffer = new BufferStream();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         try {
             return copy_to_string($this);
@@ -64,7 +64,7 @@ class PumpStream implements StreamInterface
         }
     }
 
-    public function close()
+    public function close(): void
     {
         $this->detach();
     }
@@ -73,54 +73,56 @@ class PumpStream implements StreamInterface
     {
         $this->tellPos = 0;
         $this->source = null;
+
+        return null;
     }
 
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    public function tell()
+    public function tell(): int
     {
         return $this->tellPos;
     }
 
-    public function eof()
+    public function eof(): bool
     {
-        return !$this->source;
+        return $this->source === null;
     }
 
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         return false;
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->seek(0);
     }
 
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         throw new \RuntimeException('Cannot seek a PumpStream');
     }
 
-    public function isWritable()
+    public function isWritable(): bool
     {
         return false;
     }
 
-    public function write($string)
+    public function write($string): int
     {
         throw new \RuntimeException('Cannot write to a PumpStream');
     }
 
-    public function isReadable()
+    public function isReadable(): bool
     {
         return true;
     }
 
-    public function read($length)
+    public function read($length): string
     {
         $data = $this->buffer->read($length);
         $readLen = strlen($data);
@@ -136,7 +138,7 @@ class PumpStream implements StreamInterface
         return $data;
     }
 
-    public function getContents()
+    public function getContents(): string
     {
         $result = '';
         while (!$this->eof()) {
@@ -152,7 +154,7 @@ class PumpStream implements StreamInterface
             return $this->metadata;
         }
 
-        return isset($this->metadata[$key]) ? $this->metadata[$key] : null;
+        return $this->metadata[$key] ?? null;
     }
 
     private function pump(int $length): void

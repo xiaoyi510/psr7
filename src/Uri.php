@@ -87,7 +87,7 @@ class Uri implements UriInterface
         }
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->composedComponents === null) {
             $this->composedComponents = self::composeComponents(
@@ -118,17 +118,9 @@ class Uri implements UriInterface
      * `file:///` is the more common syntax for the file scheme anyway (Chrome for example redirects to
      * that format).
      *
-     * @param string $scheme
-     * @param string $authority
-     * @param string $path
-     * @param string $query
-     * @param string $fragment
-     *
-     * @return string
-     *
      * @link https://tools.ietf.org/html/rfc3986#section-5.3
      */
-    public static function composeComponents($scheme, $authority, $path, $query, $fragment)
+    public static function composeComponents(?string $scheme, ?string $authority, string $path, ?string $query, ?string $fragment): string
     {
         $uri = '';
 
@@ -159,10 +151,8 @@ class Uri implements UriInterface
      *
      * `Psr\Http\Message\UriInterface::getPort` may return null or the standard port. This method can be used
      * independently of the implementation.
-     *
-     * @return bool
      */
-    public static function isDefaultPort(UriInterface $uri)
+    public static function isDefaultPort(UriInterface $uri): bool
     {
         return $uri->getPort() === null
             || (isset(self::DEFAULT_PORTS[$uri->getScheme()]) && $uri->getPort() === self::DEFAULT_PORTS[$uri->getScheme()]);
@@ -178,14 +168,12 @@ class Uri implements UriInterface
      * - absolute-path references, e.g. '/path'
      * - relative-path references, e.g. 'subpath'
      *
-     * @return bool
-     *
      * @see Uri::isNetworkPathReference
      * @see Uri::isAbsolutePathReference
      * @see Uri::isRelativePathReference
      * @link https://tools.ietf.org/html/rfc3986#section-4
      */
-    public static function isAbsolute(UriInterface $uri)
+    public static function isAbsolute(UriInterface $uri): bool
     {
         return $uri->getScheme() !== '';
     }
@@ -195,11 +183,9 @@ class Uri implements UriInterface
      *
      * A relative reference that begins with two slash characters is termed an network-path reference.
      *
-     * @return bool
-     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.2
      */
-    public static function isNetworkPathReference(UriInterface $uri)
+    public static function isNetworkPathReference(UriInterface $uri): bool
     {
         return $uri->getScheme() === '' && $uri->getAuthority() !== '';
     }
@@ -209,11 +195,9 @@ class Uri implements UriInterface
      *
      * A relative reference that begins with a single slash character is termed an absolute-path reference.
      *
-     * @return bool
-     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.2
      */
-    public static function isAbsolutePathReference(UriInterface $uri)
+    public static function isAbsolutePathReference(UriInterface $uri): bool
     {
         return $uri->getScheme() === ''
             && $uri->getAuthority() === ''
@@ -226,11 +210,9 @@ class Uri implements UriInterface
      *
      * A relative reference that does not begin with a slash character is termed a relative-path reference.
      *
-     * @return bool
-     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.2
      */
-    public static function isRelativePathReference(UriInterface $uri)
+    public static function isRelativePathReference(UriInterface $uri): bool
     {
         return $uri->getScheme() === ''
             && $uri->getAuthority() === ''
@@ -247,11 +229,9 @@ class Uri implements UriInterface
      * @param UriInterface      $uri  The URI to check
      * @param UriInterface|null $base An optional base URI to compare against
      *
-     * @return bool
-     *
      * @link https://tools.ietf.org/html/rfc3986#section-4.4
      */
-    public static function isSameDocumentReference(UriInterface $uri, UriInterface $base = null)
+    public static function isSameDocumentReference(UriInterface $uri, UriInterface $base = null): bool
     {
         if ($base !== null) {
             $uri = UriResolver::resolve($base, $uri);
@@ -273,10 +253,8 @@ class Uri implements UriInterface
      *
      * @param UriInterface $uri URI to use as a base.
      * @param string       $key Query string key to remove.
-     *
-     * @return UriInterface
      */
-    public static function withoutQueryValue(UriInterface $uri, $key)
+    public static function withoutQueryValue(UriInterface $uri, string $key): UriInterface
     {
         $result = self::getFilteredQueryString($uri, [$key]);
 
@@ -295,14 +273,12 @@ class Uri implements UriInterface
      * @param UriInterface $uri   URI to use as a base.
      * @param string       $key   Key to set.
      * @param string|null  $value Value to set
-     *
-     * @return UriInterface
      */
-    public static function withQueryValue(UriInterface $uri, $key, $value)
+    public static function withQueryValue(UriInterface $uri, string $key, ?string $value): UriInterface
     {
         $result = self::getFilteredQueryString($uri, [$key]);
 
-        $result[] = self::generateQueryString($key, $value !== null ? (string) $value : null);
+        $result[] = self::generateQueryString($key, $value);
 
         return $uri->withQuery(implode('&', $result));
     }
@@ -312,17 +288,15 @@ class Uri implements UriInterface
      *
      * It has the same behavior as withQueryValue() but for an associative array of key => value.
      *
-     * @param UriInterface $uri           URI to use as a base.
-     * @param array        $keyValueArray Associative array of key and values
-     *
-     * @return UriInterface
+     * @param UriInterface               $uri           URI to use as a base.
+     * @param array<string, string|null> $keyValueArray Associative array of key and values
      */
-    public static function withQueryValues(UriInterface $uri, array $keyValueArray)
+    public static function withQueryValues(UriInterface $uri, array $keyValueArray): UriInterface
     {
         $result = self::getFilteredQueryString($uri, array_keys($keyValueArray));
 
         foreach ($keyValueArray as $key => $value) {
-            $result[] = self::generateQueryString((string)$key, $value !== null ? (string) $value : null);
+            $result[] = self::generateQueryString((string) $key, $value !== null ? (string) $value : null);
         }
 
         return $uri->withQuery(implode('&', $result));
@@ -331,13 +305,11 @@ class Uri implements UriInterface
     /**
      * Creates a URI from a hash of `parse_url` components.
      *
-     * @return UriInterface
-     *
      * @link http://php.net/manual/en/function.parse-url.php
      *
      * @throws \InvalidArgumentException If the components do not form a valid URI.
      */
-    public static function fromParts(array $parts)
+    public static function fromParts(array $parts): UriInterface
     {
         $uri = new self();
         $uri->applyParts($parts);
@@ -346,12 +318,12 @@ class Uri implements UriInterface
         return $uri;
     }
 
-    public function getScheme()
+    public function getScheme(): string
     {
         return $this->scheme;
     }
 
-    public function getAuthority()
+    public function getAuthority(): string
     {
         $authority = $this->host;
         if ($this->userInfo !== '') {
@@ -365,37 +337,37 @@ class Uri implements UriInterface
         return $authority;
     }
 
-    public function getUserInfo()
+    public function getUserInfo(): string
     {
         return $this->userInfo;
     }
 
-    public function getHost()
+    public function getHost(): string
     {
         return $this->host;
     }
 
-    public function getPort()
+    public function getPort(): ?int
     {
         return $this->port;
     }
 
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function getQuery()
+    public function getQuery(): string
     {
         return $this->query;
     }
 
-    public function getFragment()
+    public function getFragment(): string
     {
         return $this->fragment;
     }
 
-    public function withScheme($scheme)
+    public function withScheme($scheme): UriInterface
     {
         $scheme = $this->filterScheme($scheme);
 
@@ -412,7 +384,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withUserInfo($user, $password = null)
+    public function withUserInfo($user, $password = null): UriInterface
     {
         $info = $this->filterUserInfoComponent($user);
         if ($password !== null) {
@@ -431,7 +403,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withHost($host)
+    public function withHost($host): UriInterface
     {
         $host = $this->filterHost($host);
 
@@ -447,7 +419,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withPort($port)
+    public function withPort($port): UriInterface
     {
         $port = $this->filterPort($port);
 
@@ -464,7 +436,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withPath($path)
+    public function withPath($path): UriInterface
     {
         $path = $this->filterPath($path);
 
@@ -480,7 +452,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withQuery($query)
+    public function withQuery($query): UriInterface
     {
         $query = $this->filterQueryAndFragment($query);
 
@@ -495,7 +467,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withFragment($fragment)
+    public function withFragment($fragment): UriInterface
     {
         $fragment = $this->filterQueryAndFragment($fragment);
 
@@ -515,7 +487,7 @@ class Uri implements UriInterface
      *
      * @param array $parts Array of parse_url parts to apply.
      */
-    private function applyParts(array $parts)
+    private function applyParts(array $parts): void
     {
         $this->scheme = isset($parts['scheme'])
             ? $this->filterScheme($parts['scheme'])
@@ -546,13 +518,11 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param string $scheme
-     *
-     * @return string
+     * @param mixed $scheme
      *
      * @throws \InvalidArgumentException If the scheme is invalid.
      */
-    private function filterScheme($scheme)
+    private function filterScheme($scheme): string
     {
         if (!is_string($scheme)) {
             throw new \InvalidArgumentException('Scheme must be a string');
@@ -562,13 +532,11 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param string $component
-     *
-     * @return string
+     * @param mixed $component
      *
      * @throws \InvalidArgumentException If the user info is invalid.
      */
-    private function filterUserInfoComponent($component)
+    private function filterUserInfoComponent($component): string
     {
         if (!is_string($component)) {
             throw new \InvalidArgumentException('User info must be a string');
@@ -582,13 +550,11 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param string $host
-     *
-     * @return string
+     * @param mixed $host
      *
      * @throws \InvalidArgumentException If the host is invalid.
      */
-    private function filterHost($host)
+    private function filterHost($host): string
     {
         if (!is_string($host)) {
             throw new \InvalidArgumentException('Host must be a string');
@@ -598,13 +564,11 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param int|null $port
-     *
-     * @return int|null
+     * @param mixed $port
      *
      * @throws \InvalidArgumentException If the port is invalid.
      */
-    private function filterPort($port)
+    private function filterPort($port): ?int
     {
         if ($port === null) {
             return null;
@@ -620,6 +584,11 @@ class Uri implements UriInterface
         return $port;
     }
 
+    /**
+     * @param string[] $keys
+     *
+     * @return string[]
+     */
     private static function getFilteredQueryString(UriInterface $uri, array $keys): array
     {
         $current = $uri->getQuery();
@@ -659,13 +628,11 @@ class Uri implements UriInterface
     /**
      * Filters the path of a URI
      *
-     * @param string $path
-     *
-     * @return string
+     * @param mixed $path
      *
      * @throws \InvalidArgumentException If the path is invalid.
      */
-    private function filterPath($path)
+    private function filterPath($path): string
     {
         if (!is_string($path)) {
             throw new \InvalidArgumentException('Path must be a string');
@@ -681,13 +648,11 @@ class Uri implements UriInterface
     /**
      * Filters the query string or fragment of a URI.
      *
-     * @param string $str
-     *
-     * @return string
+     * @param mixed $str
      *
      * @throws \InvalidArgumentException If the query or fragment is invalid.
      */
-    private function filterQueryAndFragment($str)
+    private function filterQueryAndFragment($str): string
     {
         if (!is_string($str)) {
             throw new \InvalidArgumentException('Query and fragment must be a string');

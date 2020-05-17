@@ -19,7 +19,7 @@ class UriResolverTest extends TestCase
     /**
      * @dataProvider getResolveTestCases
      */
-    public function testResolveUri($base, $rel, $expectedTarget)
+    public function testResolveUri(string $base, string $rel, string $expectedTarget)
     {
         $baseUri = new Uri($base);
         $targetUri = UriResolver::resolve($baseUri, new Uri($rel));
@@ -35,7 +35,7 @@ class UriResolverTest extends TestCase
     /**
      * @dataProvider getResolveTestCases
      */
-    public function testRelativizeUri($base, $expectedRelativeReference, $target)
+    public function testRelativizeUri(string $base, string $expectedRelativeReference, string $target)
     {
         $baseUri = new Uri($base);
         $relativeUri = UriResolver::relativize($baseUri, new Uri($target));
@@ -56,7 +56,7 @@ class UriResolverTest extends TestCase
     /**
      * @dataProvider getRelativizeTestCases
      */
-    public function testRelativizeUriWithUniqueTests($base, $target, $expectedRelativeReference)
+    public function testRelativizeUriWithUniqueTests(string $base, string $target, string $expectedRelativeReference)
     {
         $baseUri = new Uri($base);
         $targetUri = new Uri($target);
@@ -68,7 +68,7 @@ class UriResolverTest extends TestCase
         self::assertSame((string) UriResolver::resolve($baseUri, $targetUri), (string) UriResolver::resolve($baseUri, $relativeUri));
     }
 
-    public function getResolveTestCases()
+    public function getResolveTestCases(): iterable
     {
         return [
             [self::RFC3986_BASE, 'g:h',           'g:h'],
@@ -175,7 +175,7 @@ class UriResolverTest extends TestCase
     /**
      * Some additional tests to getResolveTestCases() that only make sense for relativize.
      */
-    public function getRelativizeTestCases()
+    public function getRelativizeTestCases(): iterable
     {
         return [
             // targets that are relative-path references are returned as-is

@@ -262,7 +262,7 @@ class ResponseTest extends TestCase
         new Response(200, [$header => $headerValue]);
     }
 
-    public function invalidHeaderProvider()
+    public function invalidHeaderProvider(): iterable
     {
         return [
             ['foo', [], 'Header value can not be an empty array.'],
@@ -282,13 +282,12 @@ class ResponseTest extends TestCase
         $r->withHeader($header, $headerValue);
     }
 
-    public function invalidWithHeaderProvider()
+    public function invalidWithHeaderProvider(): iterable
     {
-        return array_merge($this->invalidHeaderProvider(), [
-            [[], 'foo', 'Header name must be a string but array provided.'],
-            [false, 'foo', 'Header name must be a string but boolean provided.'],
-            [new \stdClass(), 'foo', 'Header name must be a string but stdClass provided.'],
-        ]);
+        yield from $this->invalidHeaderProvider();
+        yield [[], 'foo', 'Header name must be a string but array provided.'];
+        yield [false, 'foo', 'Header name must be a string but boolean provided.'];
+        yield [new \stdClass(), 'foo', 'Header name must be a string but stdClass provided.'];
     }
 
     public function testHeaderValuesAreTrimmed()
@@ -338,7 +337,7 @@ class ResponseTest extends TestCase
         $response->withStatus($invalidValues);
     }
 
-    public function nonIntegerStatusCodeProvider()
+    public function nonIntegerStatusCodeProvider(): iterable
     {
         return [
             ['whatever'],
@@ -373,7 +372,7 @@ class ResponseTest extends TestCase
         $response->withStatus($invalidValues);
     }
 
-    public function invalidStatusCodeRangeProvider()
+    public function invalidStatusCodeRangeProvider(): iterable
     {
         return [
             [600],

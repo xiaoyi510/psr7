@@ -14,10 +14,10 @@ class LazyOpenStream implements StreamInterface
 {
     use StreamDecoratorTrait;
 
-    /** @var string File to open */
+    /** @var string */
     private $filename;
 
-    /** @var string $mode */
+    /** @var string */
     private $mode;
 
     /**
@@ -32,10 +32,8 @@ class LazyOpenStream implements StreamInterface
 
     /**
      * Creates the underlying stream lazily when required.
-     *
-     * @return StreamInterface
      */
-    protected function createStream()
+    protected function createStream(): StreamInterface
     {
         return stream_for(try_fopen($this->filename, $this->mode));
     }

@@ -14,12 +14,10 @@ class AppendStreamTest extends TestCase
     public function testValidatesStreamsAreReadable()
     {
         $a = new AppendStream();
-        $s = $this->getMockBuilder(StreamInterface::class)
-            ->setMethods(['isReadable'])
-            ->getMockForAbstractClass();
+        $s = $this->createMock(StreamInterface::class);
         $s->expects(self::once())
             ->method('isReadable')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Each stream must be readable');
         $a->addStream($s);
@@ -36,18 +34,16 @@ class AppendStreamTest extends TestCase
     public function testTriesToRewindOnSeek()
     {
         $a = new AppendStream();
-        $s = $this->getMockBuilder(StreamInterface::class)
-            ->setMethods(['isReadable', 'rewind', 'isSeekable'])
-            ->getMockForAbstractClass();
+        $s = $this->createMock(StreamInterface::class);
         $s->expects(self::once())
             ->method('isReadable')
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $s->expects(self::once())
             ->method('isSeekable')
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $s->expects(self::once())
             ->method('rewind')
-            ->will(self::throwException(new \RuntimeException()));
+            ->willThrowException(new \RuntimeException());
         $a->addStream($s);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Unable to seek stream 0 of the AppendStream');
@@ -169,15 +165,13 @@ class AppendStreamTest extends TestCase
         ]);
         self::assertEquals(6, $a->getSize());
 
-        $s = $this->getMockBuilder(StreamInterface::class)
-            ->setMethods(['isSeekable', 'isReadable'])
-            ->getMockForAbstractClass();
+        $s = $this->createMock(StreamInterface::class);
         $s->expects(self::once())
             ->method('isSeekable')
-            ->will(self::returnValue(null));
+            ->willReturn(false);
         $s->expects(self::once())
             ->method('isReadable')
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $a->addStream($s);
         self::assertNull($a->getSize());
     }
@@ -187,21 +181,19 @@ class AppendStreamTest extends TestCase
      */
     public function testCatchesExceptionsWhenCastingToString()
     {
-        $s = $this->getMockBuilder(StreamInterface::class)
-            ->setMethods(['isSeekable', 'read', 'isReadable', 'eof'])
-            ->getMockForAbstractClass();
+        $s = $this->createMock(StreamInterface::class);
         $s->expects(self::once())
             ->method('isSeekable')
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $s->expects(self::once())
             ->method('read')
-            ->will(self::throwException(new \RuntimeException('foo')));
+            ->willThrowException(new \RuntimeException('foo'));
         $s->expects(self::once())
             ->method('isReadable')
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $s->expects(self::any())
             ->method('eof')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $a = new AppendStream([$s]);
         self::assertFalse($a->eof());
 

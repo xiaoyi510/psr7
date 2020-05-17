@@ -31,9 +31,6 @@ final class HttpFactory implements
     UploadedFileFactoryInterface,
     UriFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createUploadedFile(
         StreamInterface $stream,
         int $size = null,
@@ -48,17 +45,11 @@ final class HttpFactory implements
         return new UploadedFile($stream, $size, $error, $clientFilename, $clientMediaType);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createStream(string $content = ''): StreamInterface
     {
         return \GuzzleHttp\Psr7\stream_for($content);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createStreamFromFile(string $file, string $mode = 'r'): StreamInterface
     {
         try {
@@ -74,17 +65,11 @@ final class HttpFactory implements
         return \GuzzleHttp\Psr7\stream_for($resource);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createStreamFromResource($resource): StreamInterface
     {
         return \GuzzleHttp\Psr7\stream_for($resource);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
         if (empty($method)) {
@@ -98,25 +83,16 @@ final class HttpFactory implements
         return new ServerRequest($method, $uri, [], null, '1.1', $serverParams);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
     {
         return new Response($code, [], null, '1.1', $reasonPhrase);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createRequest(string $method, $uri): RequestInterface
     {
         return new Request($method, $uri);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createUri(string $uri = ''): UriInterface
     {
         return new Uri($uri);

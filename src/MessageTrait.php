@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GuzzleHttp\Psr7;
 
+use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -11,24 +12,24 @@ use Psr\Http\Message\StreamInterface;
  */
 trait MessageTrait
 {
-    /** @var array Map of all registered headers, as original name => array of values */
+    /** @var array<string, string[]> Map of all registered headers, as original name => array of values */
     private $headers = [];
 
-    /** @var array Map of lowercase header name => original name at registration */
+    /** @var array<string, string> Map of lowercase header name => original name at registration */
     private $headerNames  = [];
 
     /** @var string */
     private $protocol = '1.1';
 
-    /** @var StreamInterface */
+    /** @var StreamInterface|null */
     private $stream;
 
-    public function getProtocolVersion()
+    public function getProtocolVersion(): string
     {
         return $this->protocol;
     }
 
-    public function withProtocolVersion($version)
+    public function withProtocolVersion($version): MessageInterface
     {
         if ($this->protocol === $version) {
             return $this;
@@ -39,17 +40,17 @@ trait MessageTrait
         return $new;
     }
 
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    public function hasHeader($header)
+    public function hasHeader($header): bool
     {
         return isset($this->headerNames[strtolower($header)]);
     }
 
-    public function getHeader($header)
+    public function getHeader($header): array
     {
         $header = strtolower($header);
 
@@ -62,12 +63,12 @@ trait MessageTrait
         return $this->headers[$header];
     }
 
-    public function getHeaderLine($header)
+    public function getHeaderLine($header): string
     {
         return implode(', ', $this->getHeader($header));
     }
 
-    public function withHeader($header, $value)
+    public function withHeader($header, $value): MessageInterface
     {
         $this->assertHeader($header);
         $value = $this->normalizeHeaderValue($value);
@@ -83,7 +84,7 @@ trait MessageTrait
         return $new;
     }
 
-    public function withAddedHeader($header, $value)
+    public function withAddedHeader($header, $value): MessageInterface
     {
         $this->assertHeader($header);
         $value = $this->normalizeHeaderValue($value);
@@ -101,7 +102,7 @@ trait MessageTrait
         return $new;
     }
 
-    public function withoutHeader($header)
+    public function withoutHeader($header): MessageInterface
     {
         $normalized = strtolower($header);
 
@@ -117,7 +118,7 @@ trait MessageTrait
         return $new;
     }
 
-    public function getBody()
+    public function getBody(): StreamInterface
     {
         if (!$this->stream) {
             $this->stream = stream_for('');
@@ -126,7 +127,7 @@ trait MessageTrait
         return $this->stream;
     }
 
-    public function withBody(StreamInterface $body)
+    public function withBody(StreamInterface $body): MessageInterface
     {
         if ($body === $this->stream) {
             return $this;
@@ -137,6 +138,9 @@ trait MessageTrait
         return $new;
     }
 
+    /**
+     * @param array<string|int, string|string[]> $headers
+     */
     private function setHeaders(array $headers): void
     {
         $this->headerNames = $this->headers = [];
@@ -159,6 +163,11 @@ trait MessageTrait
         }
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return string[]
+     */
     private function normalizeHeaderValue($value): array
     {
         if (!is_array($value)) {
@@ -180,7 +189,7 @@ trait MessageTrait
      * header-field = field-name ":" OWS field-value OWS
      * OWS          = *( SP / HTAB )
      *
-     * @param string[] $values Header values
+     * @param mixed[] $values Header values
      *
      * @return string[] Trimmed header values
      *
@@ -202,8 +211,10 @@ trait MessageTrait
 
     /**
      * @see https://tools.ietf.org/html/rfc7230#section-3.2
+     *
+     * @param mixed $header
      */
-    private function assertHeader($header)
+    private function assertHeader($header): void
     {
         if (!is_string($header)) {
             throw new \InvalidArgumentException(sprintf(

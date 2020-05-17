@@ -16,9 +16,7 @@ class NoSeekStreamTest extends TestCase
 {
     public function testCannotSeek()
     {
-        $s = $this->getMockBuilder(StreamInterface::class)
-            ->setMethods(['isSeekable', 'seek'])
-            ->getMockForAbstractClass();
+        $s = $this->createMock(StreamInterface::class);
         $s->expects(self::never())->method('seek');
         $s->expects(self::never())->method('isSeekable');
         $wrapped = new NoSeekStream($s);

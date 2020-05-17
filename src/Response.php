@@ -85,7 +85,7 @@ class Response implements ResponseInterface
 
     /**
      * @param int                                  $status  Status code
-     * @param array                                $headers Response headers
+     * @param array<string, string|string[]>       $headers Response headers
      * @param string|null|resource|StreamInterface $body    Response body
      * @param string                               $version Protocol version
      * @param string|null                          $reason  Reason phrase (when empty a default will be used based on the status code)
@@ -115,17 +115,17 @@ class Response implements ResponseInterface
         $this->protocol = $version;
     }
 
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
-    public function getReasonPhrase()
+    public function getReasonPhrase(): string
     {
         return $this->reasonPhrase;
     }
 
-    public function withStatus($code, $reasonPhrase = '')
+    public function withStatus($code, $reasonPhrase = ''): ResponseInterface
     {
         $this->assertStatusCodeIsInteger($code);
         $code = (int) $code;
@@ -136,18 +136,21 @@ class Response implements ResponseInterface
         if ($reasonPhrase == '' && isset(self::PHRASES[$new->statusCode])) {
             $reasonPhrase = self::PHRASES[$new->statusCode];
         }
-        $new->reasonPhrase = $reasonPhrase;
+        $new->reasonPhrase = (string) $reasonPhrase;
         return $new;
     }
 
-    private function assertStatusCodeIsInteger($statusCode)
+    /**
+     * @param mixed $statusCode
+     */
+    private function assertStatusCodeIsInteger($statusCode): void
     {
         if (filter_var($statusCode, FILTER_VALIDATE_INT) === false) {
             throw new \InvalidArgumentException('Status code must be an integer value.');
         }
     }
 
-    private function assertStatusCodeRange(int $statusCode)
+    private function assertStatusCodeRange(int $statusCode): void
     {
         if ($statusCode < 100 || $statusCode >= 600) {
             throw new \InvalidArgumentException('Status code must be an integer value between 1xx and 5xx.');

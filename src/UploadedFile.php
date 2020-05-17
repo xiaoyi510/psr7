@@ -48,7 +48,7 @@ class UploadedFile implements UploadedFileInterface
     private $moved = false;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $size;
 
@@ -62,7 +62,7 @@ class UploadedFile implements UploadedFileInterface
      */
     public function __construct(
         $streamOrFile,
-        int $size,
+        ?int $size,
         int $errorStatus,
         string $clientFilename = null,
         string $clientMediaType = null
@@ -79,6 +79,8 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * Depending on the value set file or stream variable
+     *
+     * @param StreamInterface|string|resource $streamOrFile
      *
      * @throws InvalidArgumentException
      */
@@ -124,10 +126,7 @@ class UploadedFile implements UploadedFileInterface
         return $this->error === UPLOAD_ERR_OK;
     }
 
-    /**
-     * @return bool
-     */
-    public function isMoved()
+    public function isMoved(): bool
     {
         return $this->moved;
     }
@@ -146,7 +145,7 @@ class UploadedFile implements UploadedFileInterface
         }
     }
 
-    public function getStream()
+    public function getStream(): StreamInterface
     {
         $this->validateActive();
 
@@ -154,10 +153,13 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        return new LazyOpenStream($this->file, 'r+');
+        /** @var string $file */
+        $file = $this->file;
+
+        return new LazyOpenStream($file, 'r+');
     }
 
-    public function moveTo($targetPath)
+    public function moveTo($targetPath): void
     {
         $this->validateActive();
 
@@ -168,7 +170,7 @@ class UploadedFile implements UploadedFileInterface
         }
 
         if ($this->file) {
-            $this->moved = PHP_SAPI == 'cli'
+            $this->moved = PHP_SAPI === 'cli'
                 ? rename($this->file, $targetPath)
                 : move_uploaded_file($this->file, $targetPath);
         } else {
@@ -187,22 +189,22 @@ class UploadedFile implements UploadedFileInterface
         }
     }
 
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    public function getError()
+    public function getError(): int
     {
         return $this->error;
     }
 
-    public function getClientFilename()
+    public function getClientFilename(): ?string
     {
         return $this->clientFilename;
     }
 
-    public function getClientMediaType()
+    public function getClientMediaType(): ?string
     {
         return $this->clientMediaType;
     }

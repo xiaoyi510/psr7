@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ServerRequestTest extends TestCase
 {
-    public function dataNormalizeFiles()
+    public function dataNormalizeFiles(): iterable
     {
         return [
             'Single file' => [
@@ -275,7 +275,7 @@ class ServerRequestTest extends TestCase
         ServerRequest::normalizeFiles(['test' => 'something']);
     }
 
-    public function dataGetUriFromGlobals()
+    public function dataGetUriFromGlobals(): iterable
     {
         $server = [
             'REQUEST_URI' => '/blog/article.php?id=10&user=foo',

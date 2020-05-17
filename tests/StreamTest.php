@@ -291,7 +291,7 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    public function gzipModeProvider()
+    public function gzipModeProvider(): iterable
     {
         return [
             ['mode' => 'rb9', 'readable' => true, 'writable' => false],
@@ -312,7 +312,7 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    public function readableModeProvider()
+    public function readableModeProvider(): iterable
     {
         return [
             ['r'],
@@ -358,7 +358,7 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    public function writableModeProvider()
+    public function writableModeProvider(): iterable
     {
         return [
             ['w'],
