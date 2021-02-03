@@ -1,5 +1,5 @@
 {
-    "name": "guzzlehttp/psr7",
+    "name": "xiaoyi510/psr7",
     "type": "library",
     "description": "PSR-7 message implementation that also provides common utility methods",
     "keywords": [
