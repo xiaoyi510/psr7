@@ -1,5 +1,4 @@
 diff --git a/src/Response.php b/src/Response.php
-index 91656f8..a97731b 100644
 --- a/src/Response.php
 +++ b/src/Response.php
 @@ -153,7 +153,7 @@ class Response implements ResponseInterface
